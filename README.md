@@ -6,7 +6,7 @@ Services:
 
 - AI Service (Python Flask)
 - Collaboration Service (NestJS)
-- REST API related to the database (Java Spring Boot)
+- REST API Service (Java Spring Boot)
 - Auth Service (Rust)
 
 Database (PostgreSQL)
