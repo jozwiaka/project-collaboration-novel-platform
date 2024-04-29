@@ -1,4 +1,4 @@
 #!/bin/bash
 git add .
-git commit -m "Deploy"
+git commit -m "Update"
 git push
