@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: novel-service-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: novel
+  template:
+    metadata:
+      labels:
+        app: novel
+    spec:
+      containers:
+      - name: novel-container
+        image: novel-image:latest
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: novel-service
+spec:
+  selector:
+    app: novel
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    # nodePort: 32001
+  type: LoadBalancer

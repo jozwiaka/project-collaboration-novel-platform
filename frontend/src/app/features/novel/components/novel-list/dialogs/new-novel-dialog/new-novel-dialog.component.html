@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Create New Novel</h1>
+
+<mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Novel Name</mat-label>
+    <input
+      matInput
+      placeholder="Enter novel name"
+      [(ngModel)]="novelName"
+    />
+  </mat-form-field>
+  <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button color="warn" (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onCreate()">Create</button>
+</mat-dialog-actions>

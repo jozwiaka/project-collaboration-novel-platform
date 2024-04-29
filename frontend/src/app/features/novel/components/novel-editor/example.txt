@@ -1,0 +1,35 @@
+import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import * as ot from 'ot';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CollaborativeEditingService {
+  private editor: ot.Editor;
+
+  constructor(private firestore: AngularFirestore) {
+    this.editor = new ot.Editor('');
+  }
+
+  initCollaborativeEditing(documentId: string) {
+    const docRef = this.firestore.doc(`documents/${documentId}`).ref;
+
+    docRef.onSnapshot(snapshot => {
+      const serverText = snapshot.data()?.text || '';
+      this.editor.set(serverText);
+    });
+
+    this.editor.on('change', (delta: ot.Delta) => {
+      docRef.update({ text: this.editor.text });
+    });
+  }
+
+  applyRemoteChange(delta: ot.Delta) {
+    this.editor.applyDelta(delta);
+  }
+
+  getEditorText(): string {
+    return this.editor.text;
+  }
+}

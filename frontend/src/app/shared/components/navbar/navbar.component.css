@@ -1,0 +1,11 @@
+.dropdown-menu {
+  position: absolute;
+  top: calc(100%); /* Adjust as needed */
+  right: 0;
+  left:auto;
+  z-index: 1000; /* Adjust as needed */
+}
+
+.nav-item{
+  margin-left: 12px;
+}

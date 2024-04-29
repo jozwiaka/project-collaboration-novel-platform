@@ -1,0 +1,82 @@
+<body ng-csp="no-unsafe-eval">
+  <app-navbar></app-navbar>
+  <main class="content content-alt" id="main-content">
+    <div id="settings-page-root">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10 col-lg-offset-1 col-md-12">
+            <div class="card">
+              <div class="page-header">
+                <h1>Account Settings</h1>
+              </div>
+              <div>
+                <h3>Emails and Affiliations</h3>
+                <p class="small">Add additional email addresses to your account to access any upgrades
+                  your university or institution has, to make it easier for collaborators to find you,
+                  and to make sure you can recover your account.</p>
+                <p class="small">To change your primary email, please add your new primary email address
+                  first (by clicking <strong>Add another email</strong>) and confirm it. Then click
+                  the <strong>Make Primary</strong> button. <a
+                    href="https://www.overleaf.com/learn/how-to/Managing_your_Overleaf_emails" target="_blank">Learn
+                    more</a> about managing your Overleaf emails.</p>
+                <div class="row">
+                  <div class="hidden-xs col-md-4">
+                    <div class="affiliations-table-cell"><strong>Email</strong></div>
+                  </div>
+                  <div class="hidden-xs col-md-8">
+                    <div class="affiliations-table-cell"><strong>Institution and role</strong></div>
+                  </div>
+                </div>
+                <div class="hidden-xs horizontal-divider"></div>
+                <div class="hidden-xs horizontal-divider"></div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="affiliations-table-cell">arekjozwiak21gmail.com<div class="small">
+                        <span class="label label-info">Primary</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5"></div>
+                  <div class="col-md-3">
+                    <div class="affiliations-table-cell text-md-right"> <span><button disabled="" type="button"
+                          class="btn btn-sm btn-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i><span
+                            class="sr-only">Remove</span></button></span></div>
+                  </div>
+                </div>
+                <div class="horizontal-divider"></div>
+                <div class="affiliations-table-row--highlighted">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="affiliations-table-cell"><button type="button" class="btn-inline-link btn">Add another
+                          email</button></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-5">
+                    <h3>Update Account Info</h3>
+                    <form id="account-info-form">
+                      <div class="form-group"><label for="first-name-input" class="control-label">First
+                          Name</label><input data-ol-dirty="false" type="text" id="first-name-input"
+                          class="form-control" value="Arek">
+                      </div>
+                      <div class="form-group"><label for="last-name-input" class="control-label">Last Name</label><input
+                          data-ol-dirty="false" type="text" id="last-name-input" class="form-control" value="Jozwiak">
+                      </div><button form="account-info-form" type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                  </div>
+                  <div class="col-md-5 col-md-offset-1">
+                    <h3>Change Password</h3>
+                    <p><a href="https://www.overleaf.com/user/password/reset" target="_blank">Please
+                        use the password reset form to set your password</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <app-footer></app-footer>
+</body>

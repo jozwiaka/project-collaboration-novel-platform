@@ -1,0 +1,57 @@
+.modal-body {
+  padding: 20px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.modal-header {
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 16.5625px;
+  padding: 15px;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+
+.novel-member {
+  padding:12.5px 0;
+  border-bottom: 1px solid #d0d5dd;
+}
+
+.btn-inline-link {
+  border-radius: 0;
+  color: #3265b2;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: 400;
+  padding: 0;
+  vertical-align: inherit;
+}
+
+.public-access-level {
+  padding:12.5px 0;
+  border-bottom: 1px solid #d0d5dd;
+}
+
+.invite-controls{
+  background-color: #f4f5f6;
+  margin-top: 12.5px;
+    padding: 12.5px;
+}
+
+.pull-right {
+  display: flex;
+  float: right !important;
+}
+
+.modal-footer {
+  background-color: #f4f5f6;
+  border-radius: 0 0 5px 5px;
+  border-top: 1px solid #e5e5e5;
+  padding: 19px 20px 20px;
+  text-align: right;
+}

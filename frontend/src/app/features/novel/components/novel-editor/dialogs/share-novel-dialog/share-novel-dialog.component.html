@@ -1,0 +1,130 @@
+<div class="modal-dialog">
+  <div class="modal-content" role="document">
+    <div class="modal-header">
+      <h4 class="modal-title">Share Novel</h4>
+      <button
+        type="button"
+        class="btn btn-danger btn-sm close"
+        data-dismiss="modal"
+        (click)="onClose()"
+      >
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
+    <div class="modal-body modal-body-share">
+      <div class="container-fluid">
+        <div class="public-access-level row">
+          <div class="text-center col-xs-12">
+            Link sharing is off, only invited users can view this novel.
+            <span>&nbsp;&nbsp;</span>
+            <button type="button" class="btn-inline-link btn btn-link">
+              Turn on link sharing
+            </button>
+            <span>&nbsp;&nbsp;</span>
+            <a
+              href="/learn/how-to/What_is_Link_Sharing%3F"
+              target="_blank"
+              rel="noopener"
+            >
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <div class="novel-member row">
+          <div class="col">{{ novel.author.email }}</div>
+          <div class="text-left col">Owner</div>
+        </div>
+        <ng-container *ngFor="let collaborator of collaborators">
+          <div
+            class="novel-member row"
+            *ngIf="collaborator.id !== novel.author.id"
+          >
+            <div class="col">{{ collaborator.user.email }}</div>
+            <div class="text-left col">
+              {{ collaborator.readOnly ? "Read Only" : "Can Edit" }}
+            </div>
+          </div>
+        </ng-container>
+        <div class="invite-controls row" *ngIf="canShare()">
+          <form class="">
+            <div class="form-group">
+              <div class="tags-input">
+                <label class="" id="downshift-0-label" for="downshift-0-input"
+                  >Share with your collaborators&nbsp;</label
+                >
+                <div class="host">
+                  <div
+                    role="combobox"
+                    aria-haspopup="listbox"
+                    aria-owns="downshift-0-menu"
+                    aria-expanded="false"
+                    class="tags"
+                  >
+                    <input
+                      id="downshift-0-input"
+                      aria-autocomplete="list"
+                      aria-controls="downshift-0-menu"
+                      aria-labelledby="downshift-0-label"
+                      autocomplete="off"
+                      class="input form-control"
+                      type="email"
+                      placeholder="joe@example.com, sue@example.com, …"
+                      size="12"
+                      [(ngModel)]="emails"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <div class="">
+                    <ul
+                      id="downshift-0-menu"
+                      role="listbox"
+                      aria-labelledby="downshift-0-label"
+                      class="suggestion-list"
+                    ></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="pull-right">
+                <div class="input-group">
+                  <select
+                    class="custom-select"
+                    id="inputGroupSelect01"
+                    [(ngModel)]="selectedPermissionOption"
+                    [ngModelOptions]="{ standalone: true }"
+                  >
+                    <option selected value="canEdit">Can Edit</option>
+                    <option value="readOnly">Read Only</option>
+                  </select>
+                </div>
+                <span>&nbsp;&nbsp;</span>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="onShare()"
+                >
+                  Share
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer modal-footer-share">
+      <div class="modal-footer-left"></div>
+      <div class="modal-footer-right">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="onClose()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

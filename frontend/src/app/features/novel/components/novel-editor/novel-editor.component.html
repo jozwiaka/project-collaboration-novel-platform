@@ -1,0 +1,257 @@
+<div class="novel-editor-container">
+  <header class="toolbar toolbar-header toolbar-with-labels bg-dark text-light d-flex" role="navigation"
+    aria-label="Novel Layout, Sharing, and Submission">
+    <div class="toolbar-left d-flex">
+      <div class="toolbar-item">
+        <button class="btn d-flex align-items-center btn-dark">
+          <i class="fa fa-bars fa-fw editor-menu-icon" aria-hidden="true"></i>
+          <div class="toolbar-label">Menu</div>
+        </button>
+      </div>
+      <div class="toolbar-item">
+        <a class="btn d-flex align-items-center btn-dark h-100" draggable="false" routerLink="/novel">
+          <i class="fa fa-home fa-fw" aria-hidden="true"></i>
+          <span class="item-name">Back to your novels</span>
+        </a>
+      </div>
+
+      <!-- <div class="toolbar-item">
+        <button class="btn d-flex align-items-center btn-dark h-100" draggable="false" (click)="saveChanges()"
+          [style.border-color]="isSaved?'green':'white'" style="border-width: 2px; border-style: solid;">
+          <i class="fa-regular fa-floppy-disk" style="scale: 1.1;"></i>
+          <span class="item-name">Save</span>
+        </button>
+      </div> -->
+
+      <!-- <div class="toolbar-item" style="padding-left: 10px;">
+        <div class="form-check form-switch d-flex align-items-center h-100">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+            [checked]="autosaveEnabled" (change)="toggleAutosave()" style="cursor:pointer"/>
+            <span class="item-name">Autosave {{autosaveEnabled ?"On":"Off"}}</span>
+        </div>
+      </div> -->
+    </div>
+    <!-- <a class="toolbar-header-upgrade-prompt btn btn-primary btn-xs" href="/user/subscription/plans?itm_referrer=editor-header-upgrade-prompt" target="_blank">Upgrade</a> -->
+    <div class="novel-name toolbar-item toolbar-center align-items-center d-flex w-100 justify-content-center"
+      (mouseover)="showEditTitleIcon = true" (mouseout)="showEditTitleIcon = false">
+      <ng-container *ngIf="!editingTitle">
+        <span class="name text-center" (dblclick)="editTitle()">{{
+          novel?.title
+          }}</span>
+        <a class="rename" role="button" (click)="editTitle()">
+          <i class="fa fa-pencil fa-fw" aria-hidden="true" [style.opacity]="showEditTitleIcon ? '1' : '0'"></i>
+          <!-- <span class="item-name">Rename</span> -->
+        </a>
+      </ng-container>
+      <ng-container *ngIf="editingTitle">
+        <input class="w-100 text-center" type="text" [value]="novel?.title" #titleInput
+          (blur)="updateTitle(titleInput.value)" (keydown.enter)="updateTitle(titleInput.value)"
+          (keydown.escape)="cancelTitleEditing()" autofocus />
+      </ng-container>
+    </div>
+    <div class="toolbar-right d-flex">
+      <div class="online-users toolbar-item">
+        <span class="d-flex align-items-center h-100">
+          <ng-container *ngFor="let user of onlineUsers">
+            <span class="online-user" style="background-color: rgb(217, 38, 92)">{{user.name[0].toUpperCase()}}</span>
+            <span class="item-name">{{user.name}}</span>
+          </ng-container>
+        </span>
+      </div>
+      <div class="online-users"></div>
+      <div class="toolbar-item">
+        <button class="btn d-flex align-items-center btn-dark" (click)="toggleAi()" [class.green-button]="showAi">
+          <i class="fa-solid fa-robot"></i>
+          <div class="toolbar-label">AI</div>
+        </button>
+      </div>
+      <div class="toolbar-item">
+        <button class="btn d-flex align-items-center btn-dark">
+          <i class="fa-solid fa-pen-to-square"></i>
+          <div class="toolbar-label">Review</div>
+        </button>
+      </div>
+      <div class="toolbar-item">
+        <button class="btn d-flex align-items-center btn-dark" (click)="showShareNovelDialog()">
+          <i class="fas fa-share"></i>
+          <div class="toolbar-label">Share</div>
+        </button>
+      </div>
+      <div class="toolbar-item">
+        <button id="publishButton" class="btn d-flex align-items-center btn-dark">
+          <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+          <div class="toolbar-label">Submit</div>
+        </button>
+      </div>
+      <div class="toolbar-item">
+        <button class="btn d-flex align-items-center btn-dark">
+          <i class="fa fa-history fa-fw" aria-hidden="true"></i>
+          <div class="toolbar-label">History</div>
+        </button>
+      </div>
+      <div class="toolbar-item layout-dropdown dropdown btn-group">
+        <button id="layout-dropdown" role="button" aria-haspopup="true" aria-expanded="false" type="button"
+          class="btn d-flex align-items-center dropdown-toggle btn btn-link btn-dark text-decoration-none">
+          <i class="fa fa-columns fa-fw" aria-hidden="true"></i>
+          <span class="toolbar-label">Layout</span>
+          <span class="caret"></span>
+        </button>
+        <ul role="menu" class="layout-dropdown-list dropdown-menu dropdown-menu-right bg-dark"
+          aria-labelledby="layout-dropdown">
+          <li role="presentation" class="">
+            <a role="menuitem" tabindex="-1" href="#">
+              <div class="layout-menu-item">
+                <div class="layout-menu-item-start">
+                  <div>
+                    <i class="fa fa-check fa-fw" aria-hidden="true"></i><span class="sr-only">Selected</span>
+                  </div>
+                  <div>
+                    <i class="fa fa-columns fa-fw" aria-hidden="true"></i>
+                  </div>
+                  <div>Editor &amp; PDF</div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li role="presentation" class="">
+            <a role="menuitem" tabindex="-1" href="#">
+              <div class="layout-menu-item">
+                <div class="layout-menu-item-start">
+                  <div><i class="fa fa- fa-fw" aria-hidden="true"></i></div>
+                  <div><i class="fa fa-code fa-fw" aria-hidden="true"></i></div>
+                  <div>Editor only <span class="subdued">(hide PDF)</span></div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li role="presentation" class="">
+            <a role="menuitem" tabindex="-1" href="#">
+              <div class="layout-menu-item">
+                <div class="layout-menu-item-start">
+                  <div><i class="fa fa- fa-fw" aria-hidden="true"></i></div>
+                  <div>
+                    <i class="fa fa-file-pdf-o fa-fw" aria-hidden="true"></i>
+                  </div>
+                  <div>PDF only <span class="subdued">(hide editor)</span></div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li role="presentation" class="">
+            <a role="menuitem" tabindex="-1" href="#">
+              <div class="layout-menu-item">
+                <div class="layout-menu-item-start">
+                  <div><i class="fa fa- fa-fw" aria-hidden="true"></i></div>
+                  <div>
+                    <i class="fa fa-window-restore fa-fw" aria-hidden="true"></i>
+                  </div>
+                  <div>PDF in separate tab</div>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="toolbar-item">
+        <button class="btn d-flex align-items-center btn-dark" (click)="toggleChat()" [class.green-button]="showChat">
+          <i class="fa fa-message fa-fw" aria-hidden="true"></i>
+          <div class="toolbar-label">Chat</div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-body">
+    <div class="d-flex" *ngIf="showAi" appResizable>
+      <div class="main-col ai-suggestion-container">
+        <div class="d-flex align-items-center justify-content-center">
+          <div>
+            <button class="btn btn-success" (click)="generateSuggestion()" [disabled]="generatingSuggestion">
+              <div class="row justify-content-center">
+                <div class="col-auto">Suggestion</div>
+                <div class="col-auto ml-auto" *ngIf="generatingSuggestion">
+                  <div class="loading-spinner"></div>
+                </div>
+              </div>
+            </button>
+          </div>
+
+          <div style="margin-left: 5px">
+            <button class="btn btn-light btn-sm" (click)="toggleSuggestionOptions()">
+              <i class="fa-solid fa-ellipsis"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="suggestion-options row" *ngIf="showSuggestionOptions">
+          <div class="col d-flex">
+            <div class="form-group">
+              <label for="suggestion-length" style="font-size: 14px">Suggestion Length:</label>
+              <input type="text" class="form-control" style="font-size: 14px" id="suggestion-length"
+                [(ngModel)]="suggestionOptions.suggestionLength" />
+            </div>
+          </div>
+          <div class="col d-flex">
+            <div class="form-group">
+              <label for="input-length" style="font-size: 14px">Input Length:</label>
+              <input type="text" class="form-control" style="font-size: 14px" id="input-length"
+                [(ngModel)]="suggestionOptions.inputLength" />
+            </div>
+          </div>
+        </div>
+
+        <span class="suggestion-text" *ngIf="aiSuggestion">
+          {{ aiSuggestion }}
+          <button class="btn btn-sm btn-light generate-suggestion-btn" (click)="appendSuggestion()"
+            [hidden]="collaborator?.readOnly">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </span>
+      </div>
+      <div class="horizontal-resize-handle" title="Resize" *ngIf="showAi"></div>
+    </div>
+
+
+    <div class="d-flex" appResizable>
+      <div class="main-col story-container">
+        <div id="editor"></div>
+      </div>
+      <div class="horizontal-resize-handle" title="Resize" *ngIf="showChat"></div>
+    </div>
+
+    <div class="d-flex" style="flex:auto" *ngIf="showChat">
+      <div class="main-col chat">
+        <div class="infinite-scroll messages">
+          <div>
+            <ul class="list-unstyled">
+              <li class="message" *ngFor="let message of messages">
+                <div class="date">
+                  <time *ngIf="message.createdAt">{{
+                    timeService.formatDate(message.createdAt)
+                    }}</time>
+                </div>
+                <div class="message-wrapper">
+                  <div class="name">
+                    <span>{{ message.user.name }}</span>
+                  </div>
+                  <div class="message" style="
+                      border-color: rgb(15, 131, 189);
+                      background-color: rgb(15, 131, 189);
+                    ">
+                    <div class="message-content">
+                      <div>{{ message.content }}</div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="new-message">
+          <textarea class="chat-input" placeholder="Send a message to your collaborators…" [(ngModel)]="messageContent"
+            (keydown.enter)="$event.preventDefault(); sendMessage()"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

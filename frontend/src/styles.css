@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.min.css";
+/* @import "~quill/dist/quill.core.css"; */
+@import "~quill/dist/quill.snow.css";
+@import "~quill/dist/quill.bubble.css";
+
+
+html, body { height: 100%;  margin: 0; padding: 0;}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 14px;}
+
+.loading-spinner {
+  border: 3px solid white;
+  border-left-color: #333;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+:host {
+  min-width: 40px;
+  padding-right: 10px;
+  position: relative;
+}
+
+.resizable {
+  min-width: 40px;
+  padding-right: 10px;
+  position: relative;
+}
+
+.grabber {
+  cursor: col-resize;
+  position: absolute;
+  background-color: goldenrod;
+  width: 10px;
+  height: 100%;
+  right: 0;
+  top: 0;
+}
+
+
