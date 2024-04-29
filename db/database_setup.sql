@@ -18,14 +18,21 @@ CREATE TABLE novel (
     FOREIGN KEY (author_id) REFERENCES usr(id) ON DELETE CASCADE
 );
 
-CREATE TABLE user_online
-(
+CREATE TABLE tag (
     id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
     user_id INT NOT NULL,
-    novel_id INT NOT NULL,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES usr(id) ON DELETE CASCADE,
-    FOREIGN KEY (novel_id) REFERENCES novel(id) ON DELETE CASCADE
+    CONSTRAINT unique_tag_name_user UNIQUE (name, user_id)
+);
+
+CREATE TABLE novel_tag (
+    id SERIAL PRIMARY KEY,
+    novel_id INT NOT NULL,
+    tag_id INT NOT NULL,
+    FOREIGN KEY (novel_id) REFERENCES novel(id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE,
+    CONSTRAINT unique_novel_tag UNIQUE (novel_id, tag_id)
 );
 
 CREATE TABLE collaborator (
