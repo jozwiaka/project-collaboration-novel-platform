@@ -54,29 +54,29 @@ services:
       - db
     restart: always
 
-  collaboration-service:
-    build:
-      context: ./
-      dockerfile: ./docker/collaboration-service.Dockerfile
-    container_name: collaboration-service-container
-    image: collaboration-service-image:latest
-    ports:
-      - "3000:3000"
-    networks:
-      - my_network
-    restart: always
+  # collaboration-service:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/collaboration-service.Dockerfile
+  #   container_name: collaboration-service-container
+  #   image: collaboration-service-image:latest
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - my_network
+  #   restart: always
 
-  frontend:
-    build:
-      context: ./
-      dockerfile: ./docker/frontend.Dockerfile
-    container_name: frontend-container
-    image: frontend-image:latest
-    ports:
-      - "4200:4200"
-    networks:
-      - my_network
-    restart: always
+  # frontend:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/frontend.Dockerfile
+  #   container_name: frontend-container
+  #   image: frontend-image:latest
+  #   ports:
+  #     - "4200:4200"
+  #   networks:
+  #     - my_network
+  #   restart: always
 
 volumes:
   db_data:
