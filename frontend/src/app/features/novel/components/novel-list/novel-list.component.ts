@@ -28,7 +28,7 @@ enum NovelOption {
   styleUrls: ['./novel-list.component.css'],
 })
 export class NovelListComponent implements OnInit {
-  novelOption: NovelOption = NovelOption.AllNovels;
+  filterOption: NovelOption = NovelOption.AllNovels;
   novels: Novel[] = [];
   page: Page = {
     size: 0,
@@ -117,7 +117,6 @@ export class NovelListComponent implements OnInit {
     const dialogRef = this.dialog.open(NewTagDialogComponent, {
       width: '600px',
       height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
-      data: {},
     });
 
     dialogRef.afterClosed().subscribe((tagTitle) => {
@@ -193,7 +192,7 @@ export class NovelListComponent implements OnInit {
   }
 
   resetOptions(): void {
-    this.novelOption = NovelOption.AllNovels;
+    this.filterOption = NovelOption.AllNovels;
     this.novelsSort = {
       sortBy: NovelsSortBy.UpdatedAt,
       direction: SortDirection.Desc,
@@ -202,7 +201,7 @@ export class NovelListComponent implements OnInit {
 
   changeNovelOption(newNovelOption: NovelOption): void {
     this.resetOptions();
-    this.novelOption = newNovelOption;
+    this.filterOption = newNovelOption;
     this.getDataFromPages(1);
   }
 
@@ -237,7 +236,7 @@ export class NovelListComponent implements OnInit {
     let userData = this.authService.currentUser;
     if (userData?.id) {
       let serviceMethod;
-      switch (this.novelOption) {
+      switch (this.filterOption) {
         case NovelOption.AllNovels:
           if (this.searchQuery !== '') {
             serviceMethod =

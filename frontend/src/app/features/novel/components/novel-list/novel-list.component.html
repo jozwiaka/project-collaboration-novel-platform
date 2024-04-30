@@ -42,7 +42,7 @@
         type="button"
         class="btn w-100 text-light border-0"
         style="text-align: left; font-size: 16px"
-        [ngClass]="{ 'bg-dark': novelOption === NovelOption.AllNovels }"
+        [ngClass]="{ 'bg-dark': filterOption === NovelOption.AllNovels }"
         (click)="changeNovelOption(NovelOption.AllNovels)"
       >
         All Novels
@@ -52,7 +52,7 @@
         type="button"
         class="btn w-100 text-light border-0"
         style="text-align: left; font-size: 16px"
-        [ngClass]="{ 'bg-dark': novelOption === NovelOption.YourNovels }"
+        [ngClass]="{ 'bg-dark': filterOption === NovelOption.YourNovels }"
         (click)="changeNovelOption(NovelOption.YourNovels)"
       >
         Your Novels
@@ -62,7 +62,7 @@
         type="button"
         class="btn w-100 text-light border-0"
         style="text-align: left; font-size: 16px"
-        [ngClass]="{ 'bg-dark': novelOption === NovelOption.SharedWithYou }"
+        [ngClass]="{ 'bg-dark': filterOption === NovelOption.SharedWithYou }"
         (click)="changeNovelOption(NovelOption.SharedWithYou)"
       >
         Shared with you
@@ -101,7 +101,7 @@
       <h2 class="fw-bold">All Novels</h2>
 
       <input
-        placeholder="Search in {{novelOption}}..."
+        placeholder="Search in {{filterOption}}..."
         class="form-control"
         type="text"
         [(ngModel)]="searchQuery"

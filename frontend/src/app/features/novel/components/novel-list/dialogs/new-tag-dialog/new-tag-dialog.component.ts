@@ -15,8 +15,7 @@ export class NewTagDialogComponent {
   errorMessage: string = '';
 
   constructor(
-    public dialogRef: MatDialogRef<NewTagDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    public dialogRef: MatDialogRef<NewTagDialogComponent> // @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   onCancel(): void {
