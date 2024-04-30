@@ -12,6 +12,8 @@ import { TimeService } from 'src/app/core/services/time.service';
 import { NewNovelDialogComponent } from './dialogs/new-novel-dialog/new-novel-dialog.component';
 import { NovelDTO, NovelsSortBy } from '../../models/novel-api.models';
 import { CollaboratorService } from '../../services/collaborator.service';
+import { NewTagDialogComponent } from './dialogs/new-tag-dialog/new-tag-dialog.component';
+import { TagDTO } from '../../models/tag-api.models';
 
 enum NovelOption {
   AllNovels = 'all novels',
@@ -106,6 +108,42 @@ export class NovelListComponent implements OnInit {
           },
         });
       }
+    });
+  }
+
+  createNewTag(): void {
+    const dialogRef = this.dialog.open(NewTagDialogComponent, {
+      width: '600px',
+      height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((tagTitle) => {
+      // if (!this.authService.currentUser?.id || !tagTitle) {
+      //   return;
+      // }
+      // let tagData: TagDTO = {
+      //   title: tagTitle,
+      //   authorId: this.authService.currentUser.id,
+      // };
+      // for (let i = 0; i < 1; i++) {
+      //   this.tagService.create(tagData).subscribe({
+      //     next: (response: TagDTO) => {
+      //       if (this.authService?.currentUser?.id && response.id) {
+      //         let collaboratorData: CollaboratorDTO = {
+      //           userId: this.authService.currentUser.id,
+      //           tagId: response.id,
+      //           readOnly: false,
+      //         };
+      //         this.collaboratorService.create(collaboratorData).subscribe({
+      //           next: () => {
+      //             this.router.navigateByUrl(`tag/${response.id}`);
+      //           },
+      //         });
+      //       }
+      //     },
+      //   });
+      // }
     });
   }
 

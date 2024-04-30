@@ -1,12 +1,12 @@
-<h1 mat-dialog-title>Create New Novel</h1>
+<h1 mat-dialog-title>Create New Tag</h1>
 
 <mat-dialog-content>
   <mat-form-field appearance="fill">
-    <mat-label>Novel Name</mat-label>
+    <mat-label>New Tag Name</mat-label>
     <input
       matInput
-      placeholder="Novel Name"
-      [(ngModel)]="novelName"
+      placeholder="Tag Name"
+      [(ngModel)]="tagName"
     />
   </mat-form-field>
   <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>

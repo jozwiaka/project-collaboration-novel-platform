@@ -16,12 +16,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { ShareNovelDialogComponent } from './components/novel-editor/dialogs/share-novel-dialog/share-novel-dialog.component';
 import { ResizableModule } from 'angular-resizable-element';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { NewTagDialogComponent } from './components/novel-list/dialogs/new-tag-dialog/new-tag-dialog.component';
 
 @NgModule({
   declarations: [
     NovelListComponent,
     NovelEditorComponent,
     NewNovelDialogComponent,
+    NewTagDialogComponent,
     ShareNovelDialogComponent,
   ],
   imports: [
