@@ -18,7 +18,9 @@ public interface NovelRepository extends JpaRepository<Novel, Integer> {
             "WHERE n.authorId <> :userId AND c.user.id = :userId")
     Page<Novel> findSharedWithUserId(@Param("userId") Integer userId, Pageable pageable);
 
-    
+    Page<Novel> findByNovelTags_Tag_Id(Integer tagId, Pageable pageable);
+
+//    TITLES
 
     Page<Novel> findByAuthorIdAndTitleContainingIgnoreCase(Integer authorId, String title, Pageable pageable);
 
@@ -27,4 +29,6 @@ public interface NovelRepository extends JpaRepository<Novel, Integer> {
     @Query("SELECT n FROM Novel n JOIN n.collaborators c " +
             "WHERE n.authorId <> :userId AND c.user.id = :userId AND lower(n.title) LIKE %:title%")
     Page<Novel> findSharedWithUserIdAndTitleContainingIgnoreCase(@Param("userId") Integer userId, @Param("title") String title, Pageable pageable);
+
+    Page<Novel> findByNovelTags_Tag_IdAndTitleContainingIgnoreCase(Integer tagId, String title, Pageable pageable);
 }

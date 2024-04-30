@@ -89,12 +89,13 @@ INSERT INTO tag (name, user_id) VALUES
 
 -- Inserting novel tags
 INSERT INTO novel_tag (novel_id, tag_id) VALUES
-(1, 1), -- The Great Adventure tagged as Adventure
-(1, 2), -- The Great Adventure tagged as Adventure2
-(2, 3), -- Mystery Mansion tagged as Mystery
-(2, 4), -- Mystery Mansion tagged as Mystery2
-(3, 5), -- Fantasy World tagged as Fantasy
-(3, 6); -- Fantasy World tagged as Fantasy2
+(1, 1),
+(2, 1),
+(1, 2),
+(2, 3), 
+(2, 4), 
+(3, 5), 
+(3, 6); 
 
 -- Inserting collaborators
 INSERT INTO collaborator (user_id, novel_id, is_read_only) VALUES
