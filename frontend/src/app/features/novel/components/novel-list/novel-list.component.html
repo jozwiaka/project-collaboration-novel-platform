@@ -42,14 +42,14 @@
         Organize Novels
       </div>
 
-      <button type="button" class="tag-name btn w-100" style="text-align: left">
+      <button type="button" class="tag-name btn w-100" style="text-align: left" (click)="createNewTag()">
         <i class="fas fa-plus text-light" style="font-size: 16px"></i>
-        <span class="name text-light" style="padding-left: 0.5em; font-size: 16px" (click)="createNewTag()">New
+        <span class="name text-light" style="padding-left: 0.5em; font-size: 16px">New
           Tag</span>
       </button>
       <ul class="list-unstyled">
-        <li class="tag" *ngFor="let tag of tags">
-          <button type="button" class="tag-name btn w-100">
+        <li class="tag d-flex" *ngFor="let tag of tags">
+          <button type="button"  style="text-align: left" class="tag-name btn w-100">
             <span class="name text-light">
               {{tag.name}}
               <span class="subdued text-light">
@@ -66,7 +66,6 @@
               <li><button type="button" class="tag-action btn btn-default">Edit</button></li>
               <li><button type="button" class="tag-action btn btn-default">Delete</button></li>
             </ul>
-
           </span>
         </li>
       </ul>

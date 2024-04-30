@@ -3,7 +3,7 @@ import { TagService } from './../../services/tag.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { mergeMap, forkJoin, map, switchMap } from 'rxjs';
+import { mergeMap, forkJoin, map, switchMap, Observable } from 'rxjs';
 import { UserDTO } from 'src/app/core/models/user-api.models';
 import { CollaboratorDTO } from 'src/app/features/novel/models/collaborator-api.models';
 import { Novel } from 'src/app/features/novel/models/novel.model';
@@ -67,20 +67,29 @@ export class NovelListComponent implements OnInit {
 
   ngOnInit(): void {
     this.changeNovelOption(NovelOption.AllNovels);
-    this.fetchData();
+    this.fetchInitialData();
   }
 
-  fetchData() {
+  fetchInitialData() {
+    this.fetchTags();
+  }
+
+  fetchTags() {
     if (this.authService.currentUser?.id) {
       const tagsSort: Sort = {
         sortBy: TagsSortBy.Name,
         direction: SortDirection.Desc,
       };
       this.tagService
-        .findByUserId(this.authService.currentUser?.id, 1, tagsSort)
+        .findByUserId(this.authService.currentUser?.id, tagsSort)
+        .pipe(
+          switchMap((response: TagDTO[]) =>
+            forkJoin(response.map((tagData) => this.tagService.build(tagData)))
+          )
+        )
         .subscribe({
-          next: (response: TagsResponse) => {
-            // response.novelsPage.totalElements
+          next: (tags: Tag[]) => {
+            this.tags = tags.sort((a, b) => a.name.localeCompare(b.name));
           },
         });
     }
