@@ -52,8 +52,8 @@
         type="button"
         class="btn w-100 text-light border-0"
         style="text-align: left; font-size: 16px"
-        [ngClass]="{ 'bg-dark': novelOption === NovelOption.MyNovels }"
-        (click)="changeNovelOption(NovelOption.MyNovels)"
+        [ngClass]="{ 'bg-dark': novelOption === NovelOption.YourNovels }"
+        (click)="changeNovelOption(NovelOption.YourNovels)"
       >
         Your Novels
       </button>
@@ -100,7 +100,7 @@
       <h2 class="fw-bold">All Novels</h2>
 
       <input
-        placeholder="Search in all novels..."
+        placeholder="Search in {{novelOption}}..."
         class="form-control"
         type="text"
         [(ngModel)]="searchQuery"

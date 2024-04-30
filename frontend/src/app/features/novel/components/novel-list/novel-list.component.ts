@@ -14,9 +14,9 @@ import { NovelDTO, NovelsSortBy } from '../../models/novel-api.models';
 import { CollaboratorService } from '../../services/collaborator.service';
 
 enum NovelOption {
-  AllNovels,
-  MyNovels,
-  SharedWithYou,
+  AllNovels = 'all novels',
+  YourNovels = 'your novels',
+  SharedWithYou = 'shared with you',
 }
 
 @Component({
@@ -215,7 +215,7 @@ export class NovelListComponent implements OnInit {
             );
           }
           break;
-        case NovelOption.MyNovels:
+        case NovelOption.YourNovels:
           if (this.searchQuery !== '') {
             serviceMethod = this.novelService.findByAuthorIdAndTitleContaining(
               userData.id,

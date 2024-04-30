@@ -36,6 +36,9 @@ public class Novel {
     @OneToMany(mappedBy = "novel")
     private List<Collaborator> collaborators;
 
+    // @ManyToMany(mappedBy = "novel")
+    // private List<NovelTag> novelTags;
+
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
