@@ -44,12 +44,12 @@
 
       <button type="button" class="tag-name btn w-100" style="text-align: left" (click)="createNewTag()">
         <i class="fas fa-plus text-light" style="font-size: 16px"></i>
-        <span class="name text-light" style="padding-left: 0.5em; font-size: 16px">New
-          Tag</span>
+        <span class="name text-light" style="padding-left: 0.5em; font-size: 16px">New Tag</span>
       </button>
+
       <ul class="list-unstyled">
         <li class="tag d-flex" *ngFor="let tag of tags">
-          <button type="button"  style="text-align: left" class="tag-name btn w-100">
+          <button type="button" style="text-align: left" class="tag-name btn w-100">
             <span class="name text-light">
               {{tag.name}}
               <span class="subdued text-secondary">
@@ -57,16 +57,14 @@
               </span>
             </span>
           </button>
-          <span class="dropdown tag-menu">
-            <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle="" aria-haspopup="true"
-              aria-expanded="false">
-              <span class="caret"></span>
+          <div class="tag-menu dropdown">
+            <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle="" (click)="toggleTag(tag.id)">
             </button>
-            <ul class="dropdown-menu dropdown-menu-right" role="menu">
-              <li><button type="button" class="tag-action btn btn-default">Edit</button></li>
-              <li><button type="button" class="tag-action btn btn-default">Delete</button></li>
+            <ul class="dropdown-menu" role="menu" [class.show]="tag.open">
+              <a type="button" class="tag-action btn btn-default dropdown-item">Edit</a>
+              <a type="button" class="tag-action btn btn-default dropdown-item">Delete</a>
             </ul>
-          </span>
+          </div>
         </li>
       </ul>
     </aside>
@@ -76,8 +74,8 @@
     <div class="h-100" style="background-color: rgb(241, 241, 241); padding: 25px 15px">
       <h2 class="fw-bold">All Novels</h2>
 
-      <input placeholder="Search in {{novelsFilterOption}}..." class="form-control" type="text" [(ngModel)]="searchQuery"
-        (ngModelChange)="onSearchChange()" />
+      <input placeholder="Search in {{novelsFilterOption}}..." class="form-control" type="text"
+        [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()" />
       <!-- <i class="fa-solid fa-magnifying-glass form-control-feedback-left"></i> -->
 
       <table class="table">

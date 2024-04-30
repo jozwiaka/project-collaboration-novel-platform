@@ -82,9 +82,11 @@ export class NovelListComponent implements OnInit {
       this.tagService
         .findByUserId(this.authService.currentUser?.id, tagsSort)
         .pipe(
-          switchMap((response: TagDTO[]) =>
-            forkJoin(response.map((tagData) => this.tagService.build(tagData)))
-          )
+          mergeMap((response: TagDTO[]) => {
+            return forkJoin(
+              response.map((tagData) => this.tagService.build(tagData))
+            );
+          })
         )
         .subscribe({
           next: (tags: Tag[]) => {
@@ -104,6 +106,16 @@ export class NovelListComponent implements OnInit {
 
   toggleDropdown(): void {
     this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  toggleTag(tagId: number | undefined): void {
+    for (let i = 0; i < this.tags.length; i++) {
+      if (this.tags[i].id === tagId) {
+        this.tags[i].open = !this.tags[i].open;
+      } else {
+        this.tags[i].open = false;
+      }
+    }
   }
 
   createBlankNovel(): void {

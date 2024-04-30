@@ -7,9 +7,10 @@ export class Tag {
   name: string;
   user: User;
   totalElements: number;
+  open: boolean = false;
 
   constructor(tagData: TagDTO, user: User, totalElements: number) {
-    this.id = tagData.userId;
+    this.id = tagData.id;
     this.name = tagData.name;
     this.user = user;
     this.totalElements = totalElements;
