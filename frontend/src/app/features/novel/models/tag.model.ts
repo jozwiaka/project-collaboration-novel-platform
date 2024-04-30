@@ -6,13 +6,11 @@ export class Tag {
   id?: number;
   name: string;
   user: User;
-  novel: Novel;
 
-  constructor(tagData: TagDTO, user: User, novel: Novel) {
+  constructor(tagData: TagDTO, user: User) {
     this.id = tagData.userId;
     this.name = tagData.name;
     this.user = user;
-    this.novel = novel;
   }
 
   getData(): TagDTO {

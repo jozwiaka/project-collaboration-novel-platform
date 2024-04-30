@@ -1,8 +1,9 @@
+import { TagsResponse } from './../../models/tag-api.models';
 import { TagService } from './../../services/tag.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { mergeMap, forkJoin, map } from 'rxjs';
+import { mergeMap, forkJoin, map, switchMap } from 'rxjs';
 import { UserDTO } from 'src/app/core/models/user-api.models';
 import { CollaboratorDTO } from 'src/app/features/novel/models/collaborator-api.models';
 import { Novel } from 'src/app/features/novel/models/novel.model';
@@ -14,7 +15,8 @@ import { NewNovelDialogComponent } from './dialogs/new-novel-dialog/new-novel-di
 import { NovelDTO, NovelsSortBy } from '../../models/novel-api.models';
 import { CollaboratorService } from '../../services/collaborator.service';
 import { NewTagDialogComponent } from './dialogs/new-tag-dialog/new-tag-dialog.component';
-import { TagDTO } from '../../models/tag-api.models';
+import { TagDTO, TagsSortBy } from '../../models/tag-api.models';
+import { Tag } from '../../models/tag.model';
 
 enum NovelOption {
   AllNovels = 'all novels',
@@ -30,7 +32,7 @@ enum NovelOption {
 export class NovelListComponent implements OnInit {
   filterOption: NovelOption = NovelOption.AllNovels;
   novels: Novel[] = [];
-  page: Page = {
+  novelsPage: Page = {
     size: 0,
     totalElements: 0,
     totalPages: 0,
@@ -51,6 +53,8 @@ export class NovelListComponent implements OnInit {
 
   searchQuery: string = '';
 
+  tags: Tag[] = [];
+
   constructor(
     private novelService: NovelService,
     private authService: AuthService,
@@ -63,6 +67,23 @@ export class NovelListComponent implements OnInit {
 
   ngOnInit(): void {
     this.changeNovelOption(NovelOption.AllNovels);
+    this.fetchData();
+  }
+
+  fetchData() {
+    if (this.authService.currentUser?.id) {
+      const tagsSort: Sort = {
+        sortBy: TagsSortBy.Name,
+        direction: SortDirection.Desc,
+      };
+      this.tagService
+        .findByUserId(this.authService.currentUser?.id, 1, tagsSort)
+        .subscribe({
+          next: (response: TagsResponse) => {
+            // response.novelsPage.totalElements
+          },
+        });
+    }
   }
 
   navigateToUserSettings(): void {
@@ -120,31 +141,26 @@ export class NovelListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((tagTitle) => {
-      // if (!this.authService.currentUser?.id || !tagTitle) {
-      //   return;
-      // }
-      // let tagData: TagDTO = {
-      //   title: tagTitle,
-      //   authorId: this.authService.currentUser.id,
-      // };
-      // for (let i = 0; i < 1; i++) {
-      //   this.tagService.create(tagData).subscribe({
-      //     next: (response: TagDTO) => {
-      //       if (this.authService?.currentUser?.id && response.id) {
-      //         let collaboratorData: CollaboratorDTO = {
-      //           userId: this.authService.currentUser.id,
-      //           tagId: response.id,
-      //           readOnly: false,
-      //         };
-      //         this.collaboratorService.create(collaboratorData).subscribe({
-      //           next: () => {
-      //             this.router.navigateByUrl(`tag/${response.id}`);
-      //           },
-      //         });
-      //       }
-      //     },
-      //   });
-      // }
+      if (!this.authService.currentUser?.id || !tagTitle) {
+        return;
+      }
+      let tagData: TagDTO = {
+        name: tagTitle,
+        userId: this.authService.currentUser.id,
+      };
+      this.tagService
+        .create(tagData)
+        .pipe(
+          switchMap((response: TagDTO) => {
+            return this.tagService.build(response);
+          })
+        )
+        .subscribe({
+          next: (tag: Tag) => {
+            this.tags.push(tag);
+            this.tags.sort((a, b) => a.name.localeCompare(b.name));
+          },
+        });
     });
   }
 
@@ -184,11 +200,11 @@ export class NovelListComponent implements OnInit {
   }
 
   getHowManyPagesToShow(): number {
-    const diff = this.page.totalElements - this.novels.length;
-    if (diff < this.page.size) {
+    const diff = this.novelsPage.totalElements - this.novels.length;
+    if (diff < this.novelsPage.size) {
       return diff;
     }
-    return this.page.size;
+    return this.novelsPage.size;
   }
 
   resetOptions(): void {
@@ -220,16 +236,16 @@ export class NovelListComponent implements OnInit {
   }
 
   getDataFromCurrentPages() {
-    this.getDataFromPages(this.page.number + 1);
+    this.getDataFromPages(this.novelsPage.number + 1);
   }
 
   getDataFromNextPage() {
-    this.page.number++;
-    this.getDataFromPages(this.page.number + 1);
+    this.novelsPage.number++;
+    this.getDataFromPages(this.novelsPage.number + 1);
   }
 
   getDataFromAllPages() {
-    this.getDataFromPages(this.page.totalPages);
+    this.getDataFromPages(this.novelsPage.totalPages);
   }
 
   private getDataFromPages(pages: number) {
@@ -306,20 +322,20 @@ export class NovelListComponent implements OnInit {
 
             if (!observables.length) {
               this.novels = [];
-              this.page = data.page;
+              this.novelsPage = data.page;
             }
 
             return forkJoin(observables).pipe(
               map((novels) => {
-                return { novels, page: data.page };
+                return { novels, novelsPage: data.page };
               })
             );
           })
         )
         .subscribe({
-          next: ({ novels, page }) => {
+          next: ({ novels, novelsPage }) => {
             this.novels = novels;
-            this.page = page;
+            this.novelsPage = novelsPage;
           },
           error: (err) => {},
         });

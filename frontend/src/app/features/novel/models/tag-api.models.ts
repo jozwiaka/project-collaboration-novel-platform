@@ -13,6 +13,6 @@ export interface TagsResponse {
   page: Page;
 }
 
-// export enum TagsSortBy {
-//   CreatedAt = 'createdAt',
-// }
+export enum TagsSortBy {
+  Name = 'name',
+}

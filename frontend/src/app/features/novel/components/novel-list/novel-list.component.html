@@ -1,70 +1,39 @@
 <app-navbar></app-navbar>
 <div class="d-flex">
   <div>
-    <aside
-      class="text-light p-0 m-0"
-      style="
+    <aside class="text-light p-0 m-0" style="
         background-color: #2c394f;
         min-height: 1000px;
         height: 100%;
         width: 200px;
-      "
-    >
+      ">
       <div class="dropdown mb-4">
-        <button
-          id="new-novel-button-sidebar"
-          type="button"
-          class="btn btn-success w-100"
-          (click)="toggleDropdown()"
-          style="font-size: 16px"
-        >
+        <button id="new-novel-button-sidebar" type="button" class="btn btn-success w-100" (click)="toggleDropdown()"
+          style="font-size: 16px">
           New Novel
         </button>
         <ul class="dropdown-menu w-100" [class.show]="dropdownOpen">
-          <a
-            class="dropdown-item w-100"
-            style="font-size: 16px"
-            (click)="createBlankNovel()"
-            >Blank Novel</a
-          >
-          <a class="dropdown-item w-100" style="font-size: 16px"
-            >Example Novel</a
-          >
-          <a class="dropdown-item w-100" style="font-size: 16px"
-            >Upload Novel</a
-          >
-          <a class="dropdown-item w-100" style="font-size: 16px"
-            >Import from GitHub</a
-          >
+          <a class="dropdown-item w-100" style="font-size: 16px" (click)="createBlankNovel()">Blank Novel</a>
+          <a class="dropdown-item w-100" style="font-size: 16px">Example Novel</a>
+          <a class="dropdown-item w-100" style="font-size: 16px">Upload Novel</a>
+          <a class="dropdown-item w-100" style="font-size: 16px">Import from GitHub</a>
         </ul>
       </div>
-      <button
-        type="button"
-        class="btn w-100 text-light border-0"
-        style="text-align: left; font-size: 16px"
+      <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px"
         [ngClass]="{ 'bg-dark': filterOption === NovelOption.AllNovels }"
-        (click)="changeNovelOption(NovelOption.AllNovels)"
-      >
+        (click)="changeNovelOption(NovelOption.AllNovels)">
         All Novels
       </button>
 
-      <button
-        type="button"
-        class="btn w-100 text-light border-0"
-        style="text-align: left; font-size: 16px"
+      <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px"
         [ngClass]="{ 'bg-dark': filterOption === NovelOption.YourNovels }"
-        (click)="changeNovelOption(NovelOption.YourNovels)"
-      >
+        (click)="changeNovelOption(NovelOption.YourNovels)">
         Your Novels
       </button>
 
-      <button
-        type="button"
-        class="btn w-100 text-light border-0"
-        style="text-align: left; font-size: 16px"
+      <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px"
         [ngClass]="{ 'bg-dark': filterOption === NovelOption.SharedWithYou }"
-        (click)="changeNovelOption(NovelOption.SharedWithYou)"
-      >
+        (click)="changeNovelOption(NovelOption.SharedWithYou)">
         Shared with you
       </button>
 
@@ -73,40 +42,43 @@
         Organize Novels
       </div>
 
+      <button type="button" class="tag-name btn w-100" style="text-align: left">
+        <i class="fas fa-plus text-light" style="font-size: 16px"></i>
+        <span class="name text-light" style="padding-left: 0.5em; font-size: 16px" (click)="createNewTag()">New
+          Tag</span>
+      </button>
       <ul class="list-unstyled">
-        <li class="tag">
-          <button
-            type="button"
-            class="tag-name btn w-100"
-            style="text-align: left"
-          >
-            <i class="fas fa-plus text-light" style="font-size: 16px"></i>
-            <span
-              class="name text-light"
-              style="padding-left: 0.5em; font-size: 16px"
-              (click)="createNewTag()"
-              >New Tag</span
-            >
+        <li class="tag" *ngFor="let tag of tags">
+          <button type="button" class="tag-name btn w-100">
+            <span class="name text-light">
+              {{tag.name}}
+              <span class="subdued text-light">
+                (6)
+              </span>
+            </span>
           </button>
+          <span class="dropdown tag-menu">
+            <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle="" aria-haspopup="true"
+              aria-expanded="false">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+              <li><button type="button" class="tag-action btn btn-default">Edit</button></li>
+              <li><button type="button" class="tag-action btn btn-default">Delete</button></li>
+            </ul>
+
+          </span>
         </li>
       </ul>
     </aside>
   </div>
 
   <div style="flex: 1">
-    <div
-      class="h-100"
-      style="background-color: rgb(241, 241, 241); padding: 25px 15px"
-    >
+    <div class="h-100" style="background-color: rgb(241, 241, 241); padding: 25px 15px">
       <h2 class="fw-bold">All Novels</h2>
 
-      <input
-        placeholder="Search in {{filterOption}}..."
-        class="form-control"
-        type="text"
-        [(ngModel)]="searchQuery"
-        (ngModelChange)="onSearchChange()"
-      />
+      <input placeholder="Search in {{filterOption}}..." class="form-control" type="text" [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()" />
       <!-- <i class="fa-solid fa-magnifying-glass form-control-feedback-left"></i> -->
 
       <table class="table">
@@ -114,49 +86,28 @@
           <tr>
             <th scope="col table-header" class="align-middle">#</th>
             <th scope="col table-header" class="w-50">
-              <button
-                class="btn table-header border-0"
-                (click)="changeSortBy(NovelsSortBy.Title)"
-              >
+              <button class="btn table-header border-0" (click)="changeSortBy(NovelsSortBy.Title)">
                 Title
-                <i
-                  *ngIf="novelsSort.sortBy === NovelsSortBy.Title"
-                  class="fa fa-caret-{{
+                <i *ngIf="novelsSort.sortBy === NovelsSortBy.Title" class="fa fa-caret-{{
                     novelsSort.direction === SortDirection.Asc ? 'up' : 'down'
-                  }}"
-                  aria-hidden="true"
-                ></i>
+                  }}" aria-hidden="true"></i>
               </button>
             </th>
             <th scope="col table-header">
-              <button
-                class="btn table-header border-0"
-                (click)="changeSortBy(NovelsSortBy.Author)"
-              >
+              <button class="btn table-header border-0" (click)="changeSortBy(NovelsSortBy.Author)">
                 Owner
-                <i
-                  *ngIf="novelsSort.sortBy === NovelsSortBy.Author"
-                  class="fa fa-caret-{{
+                <i *ngIf="novelsSort.sortBy === NovelsSortBy.Author" class="fa fa-caret-{{
                     novelsSort.direction === SortDirection.Asc ? 'up' : 'down'
-                  }}"
-                  aria-hidden="true"
-                ></i>
+                  }}" aria-hidden="true"></i>
               </button>
             </th>
 
             <th scope="col">
-              <button
-                class="btn table-header border-0"
-                (click)="changeSortBy(NovelsSortBy.UpdatedAt)"
-              >
+              <button class="btn table-header border-0" (click)="changeSortBy(NovelsSortBy.UpdatedAt)">
                 Last Modified
-                <i
-                  *ngIf="novelsSort.sortBy === NovelsSortBy.UpdatedAt"
-                  class="fa fa-caret-{{
+                <i *ngIf="novelsSort.sortBy === NovelsSortBy.UpdatedAt" class="fa fa-caret-{{
                     novelsSort.direction === SortDirection.Asc ? 'up' : 'down'
-                  }}"
-                  aria-hidden="true"
-                ></i>
+                  }}" aria-hidden="true"></i>
               </button>
             </th>
 
@@ -169,7 +120,7 @@
             <td class="align-middle">
               <a [href]="'novel/' + novel.id" class="text-decoration-none">{{
                 novel.title
-              }}</a>
+                }}</a>
             </td>
             <td class="align-middle">
               {{ getOwnerName(novel.author) }}
@@ -185,10 +136,7 @@
                 <i class="fa-solid fa-copy"></i>
                 <span class="btn-name">Copy</span>
               </button>
-              <button
-                class="btn btn-link action-btn"
-                title="Download .zip file"
-              >
+              <button class="btn btn-link action-btn" title="Download .zip file">
                 <i class="fa-solid fa-cloud-arrow-down"></i>
                 <span class="btn-name">Download .zip file</span>
               </button>
@@ -196,11 +144,7 @@
                 <i class="fa-solid fa-file-pdf"></i>
                 <span class="btn-name">Download PDF</span>
               </button>
-              <button
-                class="btn btn-link action-btn"
-                title="Delete"
-                (click)="removeNovel(novel)"
-              >
+              <button class="btn btn-link action-btn" title="Delete" (click)="removeNovel(novel)">
                 <i class="fa-solid fa-trash-alt"></i>
                 <span class="btn-name">Delete</span>
               </button>
@@ -209,28 +153,16 @@
         </tbody>
       </table>
 
-      <div
-        class="align-middle justify-content-center align-items-center text-center"
-      >
-        <button
-          (click)="getDataFromNextPage()"
-          *ngIf="getHowManyPagesToShow()"
-          type="button"
-          class="btn btn-light btn-outline-dark"
-          style="margin-bottom: 10px; font-size: 14px"
-        >
+      <div class="align-middle justify-content-center align-items-center text-center">
+        <button (click)="getDataFromNextPage()" *ngIf="getHowManyPagesToShow()" type="button"
+          class="btn btn-light btn-outline-dark" style="margin-bottom: 10px; font-size: 14px">
           Show {{ getHowManyPagesToShow() }} more
         </button>
         <div>
-          Showing {{ novels.length }} out of {{ page.totalElements }} novels.
-          <button
-            (click)="getDataFromAllPages()"
-            *ngIf="novels.length !== page.totalElements"
-            type="button"
-            class="btn btn-link text-decoration-none"
-            aria-label="Show all novels"
-            style="padding: 0px; font-size: 14px"
-          >
+          Showing {{ novels.length }} out of {{ novelsPage.totalElements }} novels.
+          <button (click)="getDataFromAllPages()" *ngIf="novels.length !== novelsPage.totalElements" type="button"
+            class="btn btn-link text-decoration-none" aria-label="Show all novels"
+            style="padding: 0px; font-size: 14px">
             Show all
           </button>
         </div>
