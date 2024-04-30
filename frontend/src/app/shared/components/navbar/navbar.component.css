@@ -6,6 +6,10 @@
   z-index: 1000; /* Adjust as needed */
 }
 
+.dropdown-item{
+  cursor:pointer;
+}
+
 .nav-item{
   margin-left: 12px;
 }
