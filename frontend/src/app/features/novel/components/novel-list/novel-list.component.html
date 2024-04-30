@@ -20,20 +20,20 @@
         </ul>
       </div>
       <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px"
-        [ngClass]="{ 'bg-dark': filterOption === NovelOption.AllNovels }"
-        (click)="changeNovelOption(NovelOption.AllNovels)">
+        [ngClass]="{ 'bg-dark': novelsFilterOption === NovelsFilterOption.AllNovels }"
+        (click)="changeNovelOption(NovelsFilterOption.AllNovels)">
         All Novels
       </button>
 
       <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px"
-        [ngClass]="{ 'bg-dark': filterOption === NovelOption.YourNovels }"
-        (click)="changeNovelOption(NovelOption.YourNovels)">
+        [ngClass]="{ 'bg-dark': novelsFilterOption === NovelsFilterOption.YourNovels }"
+        (click)="changeNovelOption(NovelsFilterOption.YourNovels)">
         Your Novels
       </button>
 
       <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px"
-        [ngClass]="{ 'bg-dark': filterOption === NovelOption.SharedWithYou }"
-        (click)="changeNovelOption(NovelOption.SharedWithYou)">
+        [ngClass]="{ 'bg-dark': novelsFilterOption === NovelsFilterOption.SharedWithYou }"
+        (click)="changeNovelOption(NovelsFilterOption.SharedWithYou)">
         Shared with you
       </button>
 
@@ -52,7 +52,7 @@
           <button type="button"  style="text-align: left" class="tag-name btn w-100">
             <span class="name text-light">
               {{tag.name}}
-              <span class="subdued" style="color:rgb(191, 191, 191)">
+              <span class="subdued text-secondary">
                 ({{tag.totalElements}})
               </span>
             </span>
@@ -76,7 +76,7 @@
     <div class="h-100" style="background-color: rgb(241, 241, 241); padding: 25px 15px">
       <h2 class="fw-bold">All Novels</h2>
 
-      <input placeholder="Search in {{filterOption}}..." class="form-control" type="text" [(ngModel)]="searchQuery"
+      <input placeholder="Search in {{novelsFilterOption}}..." class="form-control" type="text" [(ngModel)]="searchQuery"
         (ngModelChange)="onSearchChange()" />
       <!-- <i class="fa-solid fa-magnifying-glass form-control-feedback-left"></i> -->
 

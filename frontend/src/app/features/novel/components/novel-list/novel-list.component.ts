@@ -18,10 +18,11 @@ import { NewTagDialogComponent } from './dialogs/new-tag-dialog/new-tag-dialog.c
 import { TagDTO, TagsSortBy } from '../../models/tag-api.models';
 import { Tag } from '../../models/tag.model';
 
-enum NovelOption {
+enum NovelsFilterOption {
   AllNovels = 'all novels',
   YourNovels = 'your novels',
   SharedWithYou = 'shared with you',
+  Tag = 'tag',
 }
 
 @Component({
@@ -30,7 +31,7 @@ enum NovelOption {
   styleUrls: ['./novel-list.component.css'],
 })
 export class NovelListComponent implements OnInit {
-  filterOption: NovelOption = NovelOption.AllNovels;
+  novelsFilterOption: NovelsFilterOption = NovelsFilterOption.AllNovels;
   novels: Novel[] = [];
   novelsPage: Page = {
     size: 0,
@@ -46,7 +47,7 @@ export class NovelListComponent implements OnInit {
 
   errorMessage: string = '';
 
-  NovelOption = NovelOption;
+  NovelsFilterOption = NovelsFilterOption;
   NovelsSortBy = NovelsSortBy;
   SortDirection = SortDirection;
   dropdownOpen = false;
@@ -66,7 +67,7 @@ export class NovelListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.changeNovelOption(NovelOption.AllNovels);
+    this.changeNovelOption(NovelsFilterOption.AllNovels);
     this.fetchInitialData();
   }
 
@@ -217,16 +218,16 @@ export class NovelListComponent implements OnInit {
   }
 
   resetOptions(): void {
-    this.filterOption = NovelOption.AllNovels;
+    this.novelsFilterOption = NovelsFilterOption.AllNovels;
     this.novelsSort = {
       sortBy: NovelsSortBy.UpdatedAt,
       direction: SortDirection.Desc,
     };
   }
 
-  changeNovelOption(newNovelOption: NovelOption): void {
+  changeNovelOption(newNovelOption: NovelsFilterOption): void {
     this.resetOptions();
-    this.filterOption = newNovelOption;
+    this.novelsFilterOption = newNovelOption;
     this.getDataFromPages(1);
   }
 
@@ -261,8 +262,8 @@ export class NovelListComponent implements OnInit {
     let userData = this.authService.currentUser;
     if (userData?.id) {
       let serviceMethod;
-      switch (this.filterOption) {
-        case NovelOption.AllNovels:
+      switch (this.novelsFilterOption) {
+        case NovelsFilterOption.AllNovels:
           if (this.searchQuery !== '') {
             serviceMethod =
               this.novelService.findByCollaboratorsUserIdAndTitleContaining(
@@ -279,7 +280,7 @@ export class NovelListComponent implements OnInit {
             );
           }
           break;
-        case NovelOption.YourNovels:
+        case NovelsFilterOption.YourNovels:
           if (this.searchQuery !== '') {
             serviceMethod = this.novelService.findByAuthorIdAndTitleContaining(
               userData.id,
@@ -295,7 +296,7 @@ export class NovelListComponent implements OnInit {
             );
           }
           break;
-        case NovelOption.SharedWithYou:
+        case NovelsFilterOption.SharedWithYou:
           if (this.searchQuery !== '') {
             serviceMethod =
               this.novelService.findSharedWithUserIdAndTitleContaining(
