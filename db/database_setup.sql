@@ -64,3 +64,51 @@ CREATE TABLE token (
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES usr(id) ON DELETE CASCADE
 );
+
+
+-- Inserting users
+INSERT INTO usr (name, email, password_hash) VALUES
+('Alice', 'alice@example.com', 'hashed_password_1'),
+('Bob', 'bob@example.com', 'hashed_password_2'),
+('Charlie', 'charlie@example.com', 'hashed_password_3');
+
+-- Inserting novels
+INSERT INTO novel (title, author_id, content) VALUES
+('The Great Adventure', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+('Mystery Mansion', 2, 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
+('Fantasy World', 3, 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.');
+
+-- Inserting tags
+INSERT INTO tag (name, user_id) VALUES
+('Adventure', 1),
+('Adventure2', 1),
+('Mystery', 2),
+('Mystery2', 2),
+('Fantasy', 3),
+('Fantasy2', 3);
+
+-- Inserting novel tags
+INSERT INTO novel_tag (novel_id, tag_id) VALUES
+(1, 1), -- The Great Adventure tagged as Adventure
+(1, 2), -- The Great Adventure tagged as Adventure2
+(2, 3), -- Mystery Mansion tagged as Mystery
+(2, 4), -- Mystery Mansion tagged as Mystery2
+(3, 5), -- Fantasy World tagged as Fantasy
+(3, 6); -- Fantasy World tagged as Fantasy2
+
+-- Inserting collaborators
+INSERT INTO collaborator (user_id, novel_id, is_read_only) VALUES
+(2, 1, false), -- Bob is a collaborator on The Great Adventure
+(3, 2, true); -- Charlie is a read-only collaborator on Mystery Mansion
+
+-- Inserting messages
+INSERT INTO message (user_id, novel_id, content) VALUES
+(1, 1, 'This is a message about The Great Adventure'),
+(2, 2, 'This is a message about Mystery Mansion'),
+(3, 3, 'This is a message about Fantasy World');
+
+-- Inserting tokens
+INSERT INTO token (user_id, token, expiration_date) VALUES
+(1, 'token_1', '2024-05-30 12:00:00'),
+(2, 'token_2', '2024-05-30 12:00:00'),
+(3, 'token_3', '2024-05-30 12:00:00');
