@@ -6,11 +6,13 @@ export class Tag {
   id?: number;
   name: string;
   user: User;
+  totalElements: number;
 
-  constructor(tagData: TagDTO, user: User) {
+  constructor(tagData: TagDTO, user: User, totalElements: number) {
     this.id = tagData.userId;
     this.name = tagData.name;
     this.user = user;
+    this.totalElements = totalElements;
   }
 
   getData(): TagDTO {
