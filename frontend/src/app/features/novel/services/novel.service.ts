@@ -72,6 +72,15 @@ export class NovelService {
     return this.find(url, totalNumberOfPages, sort);
   }
 
+  findByTagId(
+    tagId: number,
+    totalNumberOfPages: number,
+    sort: Sort
+  ): Observable<NovelsResponse> {
+    const url = `${this.baseUrl}/search/findByNovelTags_Tag_Id?tagId=${tagId}`;
+    return this.find(url, totalNumberOfPages, sort);
+  }
+
   findByAuthorIdAndTitleContaining(
     authorId: number,
     totalNumberOfPages: number,
@@ -99,6 +108,16 @@ export class NovelService {
     title: string
   ): Observable<NovelsResponse> {
     const url = `${this.baseUrl}/search/findByCollaborators_User_IdAndTitleContainingIgnoreCase?userId=${userId}&title=${title}`;
+    return this.find(url, totalNumberOfPages, sort);
+  }
+
+  findByTagIdAndTitleContaining(
+    tagId: number,
+    totalNumberOfPages: number,
+    sort: Sort,
+    title: string
+  ): Observable<NovelsResponse> {
+    const url = `${this.baseUrl}/search/findByNovelTags_Tag_IdAndTitleContainingIgnoreCase?tagId=${tagId}&title=${title}`;
     return this.find(url, totalNumberOfPages, sort);
   }
 
