@@ -45,8 +45,6 @@ export class NovelListComponent implements OnInit {
     direction: SortDirection.Desc,
   };
 
-  errorMessage: string = '';
-
   NovelsFilterOption = NovelsFilterOption;
   NovelsSortBy = NovelsSortBy;
   SortDirection = SortDirection;
