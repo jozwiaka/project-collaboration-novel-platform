@@ -208,6 +208,16 @@ export class NovelListComponent implements OnInit {
     }
   }
 
+  removeTag(tag: Tag): void {
+    if (tag.id) {
+      this.tagService.remove(tag.id).subscribe({
+        next: () => {
+          this.tags = this.tags.filter((t) => tag.id !== t.id);
+        },
+      });
+    }
+  }
+
   navigateToNovel(id: number): void {
     this.router.navigateByUrl(`novel/${id}`);
   }

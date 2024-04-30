@@ -17,6 +17,7 @@ import { ShareNovelDialogComponent } from './components/novel-editor/dialogs/sha
 import { ResizableModule } from 'angular-resizable-element';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NewTagDialogComponent } from './components/novel-list/dialogs/new-tag-dialog/new-tag-dialog.component';
+import { EditTagDialogComponent } from './components/novel-list/dialogs/edit-tag-dialog/edit-tag-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { NewTagDialogComponent } from './components/novel-list/dialogs/new-tag-d
     NovelEditorComponent,
     NewNovelDialogComponent,
     NewTagDialogComponent,
+    EditTagDialogComponent,
     ShareNovelDialogComponent,
   ],
   imports: [

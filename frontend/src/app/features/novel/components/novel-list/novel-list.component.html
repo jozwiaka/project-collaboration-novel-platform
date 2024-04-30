@@ -62,7 +62,7 @@
             </button>
             <ul class="dropdown-menu" role="menu" [class.show]="tag.open">
               <a type="button" class="tag-action btn btn-default dropdown-item">Edit</a>
-              <a type="button" class="tag-action btn btn-default dropdown-item">Delete</a>
+              <a type="button" class="tag-action btn btn-default dropdown-item" (click)="removeTag(tag)">Delete</a>
             </ul>
           </div>
         </li>

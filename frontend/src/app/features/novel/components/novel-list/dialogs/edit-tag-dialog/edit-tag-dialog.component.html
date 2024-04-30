@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Create Edit Tag</h1>
+
+<mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Edit Tag Name</mat-label>
+    <input
+      matInput
+      placeholder="Tag Name"
+      [(ngModel)]="tagName"
+    />
+  </mat-form-field>
+  <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button color="warn" (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onCreate()">Create</button>
+</mat-dialog-actions>
