@@ -1,3 +1,4 @@
+import { TagService } from './../../services/tag.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -55,6 +56,7 @@ export class NovelListComponent implements OnInit {
     private authService: AuthService,
     public timeService: TimeService,
     private collaboratorService: CollaboratorService,
+    private tagService: TagService,
     private router: Router,
     public dialog: MatDialog
   ) {}
