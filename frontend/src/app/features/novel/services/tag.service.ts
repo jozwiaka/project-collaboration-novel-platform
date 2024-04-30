@@ -35,6 +35,11 @@ export class TagService {
       .pipe(catchError(this.handleError));
   }
 
+  update(tag: TagDTO): Observable<TagDTO> {
+    const url = `${this.baseUrl}/${tag.id}`;
+    return this.http.put<TagDTO>(url, tag).pipe(catchError(this.handleError));
+  }
+
   remove(id: number): Observable<void> {
     const url = `${this.baseUrl}/${id}`;
     return this.http.delete<void>(url).pipe(catchError(this.handleError));

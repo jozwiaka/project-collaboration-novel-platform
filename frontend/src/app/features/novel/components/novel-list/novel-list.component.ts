@@ -17,6 +17,7 @@ import { CollaboratorService } from '../../services/collaborator.service';
 import { NewTagDialogComponent } from './dialogs/new-tag-dialog/new-tag-dialog.component';
 import { TagDTO, TagsSortBy } from '../../models/tag-api.models';
 import { Tag } from '../../models/tag.model';
+import { EditTagDialogComponent } from './dialogs/edit-tag-dialog/edit-tag-dialog.component';
 
 enum NovelsFilterOption {
   AllNovels = 'all novels',
@@ -155,7 +156,7 @@ export class NovelListComponent implements OnInit {
   }
 
   createNewTag(): void {
-    const dialogRef = this.dialog.open(NewTagDialogComponent, {
+    const dialogRef = this.dialog.open(EditTagDialogComponent, {
       width: '600px',
       height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
     });
@@ -181,6 +182,32 @@ export class NovelListComponent implements OnInit {
             this.tags.sort((a, b) => a.name.localeCompare(b.name));
           },
         });
+    });
+  }
+
+  editTag(tag: Tag): void {
+    const dialogRef = this.dialog.open(NewTagDialogComponent, {
+      width: '600px',
+      height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
+    });
+
+    dialogRef.afterClosed().subscribe((tagTitle) => {
+      if (!this.authService.currentUser?.id || !tagTitle) {
+        return;
+      }
+      let tagData: TagDTO = tag.getData();
+      tagData.name = tagTitle;
+
+      this.tagService.update(tagData).subscribe({
+        next: () => {
+          this.tags.forEach((t) => {
+            if (t.id === tagData.id) {
+              t.name = tagData.name;
+            }
+          });
+          this.tags.sort((a, b) => a.name.localeCompare(b.name));
+        },
+      });
     });
   }
 
