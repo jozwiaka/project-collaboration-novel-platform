@@ -1,6 +1,6 @@
-package com.jozwiaka.restapiservice.repositories;
+package com.jozwiaka.restapiservice.respository;
 
-import com.jozwiaka.restapiservice.models.User;
+import com.jozwiaka.restapiservice.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

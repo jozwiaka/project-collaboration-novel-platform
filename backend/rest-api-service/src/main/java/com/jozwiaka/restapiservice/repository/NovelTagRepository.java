@@ -1,6 +1,6 @@
-package com.jozwiaka.restapiservice.repositories;
+package com.jozwiaka.restapiservice.respository;
 
-import com.jozwiaka.restapiservice.models.NovelTag;
+import com.jozwiaka.restapiservice.model.NovelTag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.data.domain.Page;

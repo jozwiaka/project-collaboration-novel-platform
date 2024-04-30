@@ -1,6 +1,6 @@
 package com.jozwiaka.restapiservice.config;
 
-import com.jozwiaka.restapiservice.models.User;
+import com.jozwiaka.restapiservice.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;

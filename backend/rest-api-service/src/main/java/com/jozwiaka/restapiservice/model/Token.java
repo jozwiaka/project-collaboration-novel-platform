@@ -1,4 +1,4 @@
-package com.jozwiaka.restapiservice.models;
+package com.jozwiaka.restapiservice.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
