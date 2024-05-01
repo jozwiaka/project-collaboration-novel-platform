@@ -48,7 +48,7 @@
       </button>
 
       <ul class="list-unstyled">
-        <li class="tag d-flex" *ngFor="let tag of tags" [ngClass]="{ 'bg-dark': true }">
+        <li class="tag d-flex" *ngFor="let tag of tags" [ngClass]="{ 'bg-dark': tag.id===activeTag?.id }">
           <button type="button" class="btn w-100 text-light border-0" style="text-align: left" [id]="tag.id" (click)="changeNovelOption(tag.name)">
             <span class="name text-light">
               {{tag.name}}

@@ -56,7 +56,7 @@ export class NovelListComponent implements OnInit {
   dropdownOpen = false;
 
   searchQuery: string = '';
-
+  activeTag: Tag | undefined;
   tags: Tag[] = [];
   tagMenu: TagMenu = {
     tagId: 0,
@@ -287,6 +287,9 @@ export class NovelListComponent implements OnInit {
   changeNovelOption(newNovelsFilterOption: string): void {
     this.resetOptions();
     this.novelsFilterOption = newNovelsFilterOption;
+    this.activeTag = this.tags.find(
+      (tag) => tag.name === this.novelsFilterOption
+    );
     this.getDataFromPages(1);
   }
 
@@ -373,20 +376,17 @@ export class NovelListComponent implements OnInit {
           }
           break;
         default: //check if it is related to tag
-          const foundTag = this.tags.find(
-            (tag) => tag.name === this.novelsFilterOption
-          );
-          if (foundTag?.id) {
+          if (this.activeTag?.id) {
             if (this.searchQuery !== '') {
               serviceMethod = this.novelService.findByTagIdAndTitleContaining(
-                foundTag.id,
+                this.activeTag.id,
                 pages,
                 this.novelsSort,
                 this.searchQuery
               );
             } else {
               serviceMethod = this.novelService.findByTagId(
-                foundTag.id,
+                this.activeTag.id,
                 pages,
                 this.novelsSort
               );
