@@ -7,7 +7,6 @@ export class Tag {
   name: string;
   user: User;
   totalElements: number;
-  open: boolean = false;
 
   constructor(tagData: TagDTO, user: User, totalElements: number) {
     this.id = tagData.id;

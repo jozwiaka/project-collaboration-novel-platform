@@ -48,8 +48,8 @@
       </button>
 
       <ul class="list-unstyled">
-        <li class="tag d-flex" *ngFor="let tag of tags">
-          <button type="button" class="btn w-100 text-light border-0" style="text-align: left">
+        <li class="tag d-flex" *ngFor="let tag of tags" [ngClass]="{ 'bg-dark': true }">
+          <button type="button" class="btn w-100 text-light border-0" style="text-align: left" [id]="tag.id" (click)="changeNovelOption(tag.name)">
             <span class="name text-light">
               {{tag.name}}
               <span class="subdued text-secondary">
@@ -58,9 +58,9 @@
             </span>
           </button>
           <div class="tag-menu dropdown">
-            <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle="" (click)="toggleTag(tag.id)">
+            <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle="" (click)="toggleTagMenu(tag.id)">
             </button>
-            <ul class="dropdown-menu" role="menu" [class.show]="tag.open">
+            <ul class="dropdown-menu" role="menu" [class.show]="tagMenu.tagId===tag.id && tagMenu.show">
               <a type="button" class="tag-action btn btn-default dropdown-item" (click)="editTag(tag)">Edit</a>
               <a type="button" class="tag-action btn btn-default dropdown-item" (click)="removeTag(tag)">Delete</a>
             </ul>

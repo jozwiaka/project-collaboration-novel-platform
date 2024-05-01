@@ -23,7 +23,11 @@ enum NovelsFilterOption {
   AllNovels = 'all novels',
   YourNovels = 'your novels',
   SharedWithYou = 'shared with you',
-  Tag = 'tag',
+}
+
+interface TagMenu {
+  tagId: number;
+  show: boolean;
 }
 
 @Component({
@@ -32,7 +36,7 @@ enum NovelsFilterOption {
   styleUrls: ['./novel-list.component.css'],
 })
 export class NovelListComponent implements OnInit {
-  novelsFilterOption: NovelsFilterOption = NovelsFilterOption.AllNovels;
+  novelsFilterOption: string = NovelsFilterOption.AllNovels;
   novels: Novel[] = [];
   novelsPage: Page = {
     size: 0,
@@ -54,6 +58,10 @@ export class NovelListComponent implements OnInit {
   searchQuery: string = '';
 
   tags: Tag[] = [];
+  tagMenu: TagMenu = {
+    tagId: 0,
+    show: false,
+  };
 
   constructor(
     private novelService: NovelService,
@@ -111,13 +119,15 @@ export class NovelListComponent implements OnInit {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
-  toggleTag(tagId: number | undefined): void {
-    for (let i = 0; i < this.tags.length; i++) {
-      if (this.tags[i].id === tagId) {
-        this.tags[i].open = !this.tags[i].open;
-      } else {
-        this.tags[i].open = false;
-      }
+  toggleTagMenu(tagId: number | undefined): void {
+    if (!tagId) {
+      return;
+    }
+    if (this.tagMenu.tagId === tagId) {
+      this.tagMenu.show = !this.tagMenu.show;
+    } else {
+      this.tagMenu.tagId = tagId;
+      this.tagMenu.show = true;
     }
   }
 
@@ -274,9 +284,9 @@ export class NovelListComponent implements OnInit {
     };
   }
 
-  changeNovelOption(newNovelOption: NovelsFilterOption): void {
+  changeNovelOption(newNovelsFilterOption: string): void {
     this.resetOptions();
-    this.novelsFilterOption = newNovelOption;
+    this.novelsFilterOption = newNovelsFilterOption;
     this.getDataFromPages(1);
   }
 
@@ -362,8 +372,29 @@ export class NovelListComponent implements OnInit {
             );
           }
           break;
-        default:
-          return;
+        default: //check if it is related to tag
+          const foundTag = this.tags.find(
+            (tag) => tag.name === this.novelsFilterOption
+          );
+          if (foundTag?.id) {
+            if (this.searchQuery !== '') {
+              serviceMethod = this.novelService.findByTagIdAndTitleContaining(
+                foundTag.id,
+                pages,
+                this.novelsSort,
+                this.searchQuery
+              );
+            } else {
+              serviceMethod = this.novelService.findByTagId(
+                foundTag.id,
+                pages,
+                this.novelsSort
+              );
+            }
+            break;
+          } else {
+            return;
+          }
       }
 
       serviceMethod
