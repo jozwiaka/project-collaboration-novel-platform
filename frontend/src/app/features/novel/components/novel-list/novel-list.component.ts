@@ -146,6 +146,18 @@ export class NovelListComponent implements OnInit {
     }
   }
 
+  allNovelsCheckboxesChanged(event: any) {
+    // if (novelId) {
+    //   if (event.target.checked) {
+    //     this.checkedNovelIds.push(novelId);
+    //   } else {
+    //     this.checkedNovelIds = this.checkedNovelIds.filter(
+    //       (id) => id !== novelId
+    //     );
+    //   }
+    // }
+  }
+
   createBlankNovel(): void {
     const dialogRef = this.dialog.open(NewNovelDialogComponent, {
       width: '600px',
