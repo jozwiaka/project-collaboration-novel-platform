@@ -17,7 +17,4 @@ public class Tag {
     @Column(name = "user_id")
     private Integer userId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private User user;
 }

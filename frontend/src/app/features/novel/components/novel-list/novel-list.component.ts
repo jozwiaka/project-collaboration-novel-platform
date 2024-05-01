@@ -85,7 +85,9 @@ export class NovelListComponent implements OnInit {
         .pipe(
           mergeMap((response: TagDTO[]) => {
             return forkJoin(
-              response.map((tagData) => this.tagService.build(tagData))
+              response.map((tagData) => {
+                return this.tagService.build(tagData);
+              })
             );
           })
         )
@@ -156,7 +158,7 @@ export class NovelListComponent implements OnInit {
   }
 
   createNewTag(): void {
-    const dialogRef = this.dialog.open(EditTagDialogComponent, {
+    const dialogRef = this.dialog.open(NewTagDialogComponent, {
       width: '600px',
       height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
     });
@@ -172,7 +174,7 @@ export class NovelListComponent implements OnInit {
       this.tagService
         .create(tagData)
         .pipe(
-          switchMap((response: TagDTO) => {
+          mergeMap((response: TagDTO) => {
             return this.tagService.build(response);
           })
         )
