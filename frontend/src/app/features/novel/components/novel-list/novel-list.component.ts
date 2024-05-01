@@ -20,11 +20,10 @@ import { Tag } from '../../models/tag.model';
 import { EditTagDialogComponent } from './dialogs/edit-tag-dialog/edit-tag-dialog.component';
 
 enum NovelsFilterOption {
-  AllNovels = 'all novels',
-  YourNovels = 'your novels',
-  SharedWithYou = 'shared with you',
+  AllNovels = 'All Novels',
+  YourNovels = 'Your Novels',
+  SharedWithYou = 'Shared with you',
 }
-
 interface TagMenu {
   tagId: number;
   show: boolean;
@@ -49,6 +48,8 @@ export class NovelListComponent implements OnInit {
     sortBy: NovelsSortBy.UpdatedAt,
     direction: SortDirection.Desc,
   };
+
+  searchOption: string = '';
 
   NovelsFilterOption = NovelsFilterOption;
   NovelsSortBy = NovelsSortBy;
@@ -327,6 +328,7 @@ export class NovelListComponent implements OnInit {
       );
 
       if (this.activeTag?.id) {
+        this.searchOption = this.activeTag.name;
         if (this.searchQuery !== '') {
           serviceMethod = this.novelService.findByTagIdAndTitleContaining(
             this.activeTag.id,
@@ -344,6 +346,7 @@ export class NovelListComponent implements OnInit {
       } else {
         switch (this.novelsFilterOption) {
           case NovelsFilterOption.AllNovels:
+            this.searchOption = 'in all novels';
             if (this.searchQuery !== '') {
               serviceMethod =
                 this.novelService.findByCollaboratorsUserIdAndTitleContaining(
@@ -361,6 +364,7 @@ export class NovelListComponent implements OnInit {
             }
             break;
           case NovelsFilterOption.YourNovels:
+            this.searchOption = 'in your novels';
             if (this.searchQuery !== '') {
               serviceMethod =
                 this.novelService.findByAuthorIdAndTitleContaining(
@@ -378,6 +382,7 @@ export class NovelListComponent implements OnInit {
             }
             break;
           case NovelsFilterOption.SharedWithYou:
+            this.searchOption = 'in shared with you';
             if (this.searchQuery !== '') {
               serviceMethod =
                 this.novelService.findSharedWithUserIdAndTitleContaining(
