@@ -186,7 +186,7 @@ export class NovelListComponent implements OnInit {
   }
 
   editTag(tag: Tag): void {
-    const dialogRef = this.dialog.open(NewTagDialogComponent, {
+    const dialogRef = this.dialog.open(EditTagDialogComponent, {
       width: '600px',
       height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
     });

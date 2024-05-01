@@ -22,7 +22,7 @@ export class EditTagDialogComponent {
     this.dialogRef.close();
   }
 
-  onCreate(): void {
+  onEdit(): void {
     if (this.tagName.trim() === '') {
       this.errorMessage = 'Tag name cannot be empty';
     } else {
