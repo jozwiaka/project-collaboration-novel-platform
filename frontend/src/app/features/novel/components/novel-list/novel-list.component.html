@@ -156,7 +156,7 @@
         <tbody>
           <tr *ngFor="let novel of novels; let i = index">
             <td class="align-middle">
-              <input class="form-check-input" type="checkbox" value="" [id]="novel.id">
+              <input class="form-check-input" type="checkbox" value="" [id]="novel.id" (change)="novelCheckboxChanged($event, novel.id)">
             </td>
             <!-- <td class="align-middle">{{ i + 1 }}</td> -->
             <td class="align-middle">

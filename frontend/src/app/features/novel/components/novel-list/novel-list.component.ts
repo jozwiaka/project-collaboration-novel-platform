@@ -64,6 +64,8 @@ export class NovelListComponent implements OnInit {
     show: false,
   };
 
+  checkedNovelIds: number[] = [];
+
   constructor(
     private novelService: NovelService,
     private authService: AuthService,
@@ -129,6 +131,18 @@ export class NovelListComponent implements OnInit {
     } else {
       this.tagMenu.tagId = tagId;
       this.tagMenu.show = true;
+    }
+  }
+
+  novelCheckboxChanged(event: any, novelId: number | undefined) {
+    if (novelId) {
+      if (event.target.checked) {
+        this.checkedNovelIds.push(novelId);
+      } else {
+        this.checkedNovelIds = this.checkedNovelIds.filter(
+          (id) => id !== novelId
+        );
+      }
     }
   }
 
