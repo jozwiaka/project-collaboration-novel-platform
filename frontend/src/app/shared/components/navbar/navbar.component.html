@@ -4,28 +4,26 @@
       <i class="fas fa-book fa-2x mr-2 text-light"></i>
       <h1 class="text-light m-0" style="padding-left: 0.5em">Noveleaf</h1>
     </div>
-    <div>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="btn btn-success text-light" style="font-size: 16px" href="novel">
-            Novels
-          </a>
-        </li>
-        <li class="nav-item">
-          <button class="btn btn-success text-light" style="font-size: 16px" role="button" (click)="toggleDropdown()">
-            Account
-          </button>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"
-            [ngClass]="{ show: isDropdownOpen }">
-            <span class="dropdown-item-text" style="font-size: 16px; color: grey">{{ authService.currentUser?.name
-              }}</span>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" style="font-size: 16px" href="user/settings">Account Settings</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" style="font-size: 16px" (click)="logout()">Log Out</a>
-          </div>
-        </li>
-      </ul>
-  </div>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="btn btn-success text-light" style="font-size: 16px" href="novel">
+          Novels
+        </a>
+      </li>
+      <li class="nav-item">
+        <button class="btn btn-success text-light" style="font-size: 16px" role="button" (click)="toggleDropdown()">
+          Account
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"
+          [ngClass]="{ show: isDropdownOpen }">
+          <span class="dropdown-item-text" style="font-size: 16px; color: grey">{{ authService.currentUser?.name
+            }}</span>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" style="font-size: 16px" href="user/settings">Account Settings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" style="font-size: 16px" (click)="logout()">Log Out</a>
+        </div>
+      </li>
+    </ul>
   </div>
 </nav>
