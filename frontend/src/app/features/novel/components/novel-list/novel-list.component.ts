@@ -287,9 +287,6 @@ export class NovelListComponent implements OnInit {
   changeNovelOption(newNovelsFilterOption: string): void {
     this.resetOptions();
     this.novelsFilterOption = newNovelsFilterOption;
-    this.activeTag = this.tags.find(
-      (tag) => tag.name === this.novelsFilterOption
-    );
     this.getDataFromPages(1);
   }
 
@@ -324,77 +321,82 @@ export class NovelListComponent implements OnInit {
     let userData = this.authService.currentUser;
     if (userData?.id) {
       let serviceMethod;
-      switch (this.novelsFilterOption) {
-        case NovelsFilterOption.AllNovels:
-          if (this.searchQuery !== '') {
-            serviceMethod =
-              this.novelService.findByCollaboratorsUserIdAndTitleContaining(
-                userData.id,
-                pages,
-                this.novelsSort,
-                this.searchQuery
-              );
-          } else {
-            serviceMethod = this.novelService.findByCollaboratorsUserId(
-              userData.id,
-              pages,
-              this.novelsSort
-            );
-          }
-          break;
-        case NovelsFilterOption.YourNovels:
-          if (this.searchQuery !== '') {
-            serviceMethod = this.novelService.findByAuthorIdAndTitleContaining(
-              userData.id,
-              pages,
-              this.novelsSort,
-              this.searchQuery
-            );
-          } else {
-            serviceMethod = this.novelService.findByAuthorId(
-              userData.id,
-              pages,
-              this.novelsSort
-            );
-          }
-          break;
-        case NovelsFilterOption.SharedWithYou:
-          if (this.searchQuery !== '') {
-            serviceMethod =
-              this.novelService.findSharedWithUserIdAndTitleContaining(
-                userData.id,
-                pages,
-                this.novelsSort,
-                this.searchQuery
-              );
-          } else {
-            serviceMethod = this.novelService.findSharedWithUserId(
-              userData.id,
-              pages,
-              this.novelsSort
-            );
-          }
-          break;
-        default: //check if it is related to tag
-          if (this.activeTag?.id) {
+
+      this.activeTag = this.tags.find(
+        (tag) => tag.name === this.novelsFilterOption
+      );
+
+      if (this.activeTag?.id) {
+        if (this.searchQuery !== '') {
+          serviceMethod = this.novelService.findByTagIdAndTitleContaining(
+            this.activeTag.id,
+            pages,
+            this.novelsSort,
+            this.searchQuery
+          );
+        } else {
+          serviceMethod = this.novelService.findByTagId(
+            this.activeTag.id,
+            pages,
+            this.novelsSort
+          );
+        }
+      } else {
+        switch (this.novelsFilterOption) {
+          case NovelsFilterOption.AllNovels:
             if (this.searchQuery !== '') {
-              serviceMethod = this.novelService.findByTagIdAndTitleContaining(
-                this.activeTag.id,
-                pages,
-                this.novelsSort,
-                this.searchQuery
-              );
+              serviceMethod =
+                this.novelService.findByCollaboratorsUserIdAndTitleContaining(
+                  userData.id,
+                  pages,
+                  this.novelsSort,
+                  this.searchQuery
+                );
             } else {
-              serviceMethod = this.novelService.findByTagId(
-                this.activeTag.id,
+              serviceMethod = this.novelService.findByCollaboratorsUserId(
+                userData.id,
                 pages,
                 this.novelsSort
               );
             }
             break;
-          } else {
+          case NovelsFilterOption.YourNovels:
+            if (this.searchQuery !== '') {
+              serviceMethod =
+                this.novelService.findByAuthorIdAndTitleContaining(
+                  userData.id,
+                  pages,
+                  this.novelsSort,
+                  this.searchQuery
+                );
+            } else {
+              serviceMethod = this.novelService.findByAuthorId(
+                userData.id,
+                pages,
+                this.novelsSort
+              );
+            }
+            break;
+          case NovelsFilterOption.SharedWithYou:
+            if (this.searchQuery !== '') {
+              serviceMethod =
+                this.novelService.findSharedWithUserIdAndTitleContaining(
+                  userData.id,
+                  pages,
+                  this.novelsSort,
+                  this.searchQuery
+                );
+            } else {
+              serviceMethod = this.novelService.findSharedWithUserId(
+                userData.id,
+                pages,
+                this.novelsSort
+              );
+            }
+            break;
+          default:
             return;
-          }
+        }
       }
 
       serviceMethod
