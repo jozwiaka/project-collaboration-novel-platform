@@ -3,7 +3,7 @@ import { TagService } from './../../services/tag.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { mergeMap, forkJoin, map, switchMap, Observable } from 'rxjs';
+import { mergeMap, forkJoin, map, switchMap, Observable, of } from 'rxjs';
 import { UserDTO } from 'src/app/core/models/user-api.models';
 import { CollaboratorDTO } from 'src/app/features/novel/models/collaborator-api.models';
 import { Novel } from 'src/app/features/novel/models/novel.model';
@@ -297,31 +297,36 @@ export class NovelListComponent implements OnInit {
     }
   }
 
-  // removeCheckedNovels() {
-  //   if (!this.authService.currentUser?.id) {
-  //     return;
-  //   }
-  //   let novelsToDelete = this.novelCheckboxes
-  //     .filter((ncb) => ncb.getChecked())
-  //     .map((ncb) => ncb.novel);
-  //   const observables = novelsToDelete.map((novel) => {
-  //     if (this.authService.currentUser?.id === novel.author.id && novel.id) {
-  //       return this.novelService.remove(novel.id)
-  //       });
-  //     }
-  //     //  else {
-  //     //   this.collaboratorService
-  //     //     .findByNovelIdAndUserId(novel.id, this.authService.currentUser?.id)
-  //     //     .subscribe({
-  //     //       next: (response: CollaboratorDTO) => {
-  //     //         if (response.id) {
-  //     //           this.collaboratorService.remove(response.id).subscribe();
-  //     //         }
-  //     //       },
-  //     //     });
-  //     // }
-  //   });
-  // }
+  removeCheckedNovels() {
+    if (!this.authService.currentUser?.id) {
+      return;
+    }
+    let novelsToDelete = this.novelCheckboxes
+      .filter((ncb) => ncb.getChecked())
+      .map((ncb) => ncb.novel);
+    const observables = novelsToDelete.map((novel) => {
+      if (novel.id && this.authService.currentUser?.id) {
+        if (this.authService.currentUser.id === novel.author.id) {
+          return this.novelService.remove(novel.id);
+        } else {
+          return this.collaboratorService
+            .findByNovelIdAndUserId(novel.id, this.authService.currentUser?.id)
+            .pipe(
+              mergeMap((response: CollaboratorDTO) => {
+                return this.collaboratorService.remove(response.id);
+              })
+            );
+        }
+      }
+      return of(null);
+    });
+
+    forkJoin(observables).subscribe({
+      next: () => {
+        this.getDataFromCurrentPages();
+      },
+    });
+  }
 
   removeTag(tag: Tag): void {
     if (tag.id) {
