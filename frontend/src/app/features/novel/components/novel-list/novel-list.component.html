@@ -75,61 +75,60 @@
     <div class="h-100" style="background-color: rgb(241, 241, 241); padding: 25px 15px">
 
       <div class="d-flex justify-content-between">
-          <h2 class="fw-bold">{{novelsFilterOption}}</h2>
+        <h2 class="fw-bold">{{novelsFilterOption}}</h2>
 
         <!-- ### -->
-        <div class="project-tools">
-          <div class="hidden-xs" *ngIf="showToolbar()">
-            <div role="toolbar" class="btn-toolbar">
-              <div class="btn-group"><button class="btn btn-secondary" aria-label="Download"><i
-                    class="fa fa-cloud-download" aria-hidden="true"></i></button><button class="btn btn-secondary"
-                  aria-label="Archive"><i class="fa fa-inbox" aria-hidden="true"></i></button><button
-                  class="btn btn-secondary" aria-label="Trash"><i class="fa fa-trash" aria-hidden="true"></i></button>
-              </div>
-              <div class="dropdown btn-group"><button title="Tags" aria-label="Tags" id="tags" role="button"
-                  aria-haspopup="true" aria-expanded="false" type="button" class="btn-secondary dropdown-toggle btn"><span
-                    class="material-symbols" aria-hidden="true" style="vertical-align: sub;">Tag</span> <span
-                    class="caret"></span></button>
-                <ul role="menu" class="dropdown-menu-right dropdown-menu" aria-labelledby="tags">
-                  <li class="dropdown-header" role="heading" aria-level="3">Add to tag</li>
-                  <li><button aria-label="Add or remove project from tag AiS_Lab" type="button"
-                      class="tag-dropdown-button btn btn-default"><i class="fa fa-check-square-o tag-checkbox"
-                        aria-hidden="true"></i> <span class="tag-dot" style="background-color: rgb(117, 195, 34);"></span>
-                      AiS_Lab</button></li>
-                  <li><button type="button" class="tag-dropdown-button btn btn-default">Create new tag</button></li>
-                </ul>
-              </div>
-              <div class="dropdown btn-group"><button id="project-tools-more-dropdown" role="button" aria-haspopup="true"
-                  aria-expanded="false" type="button" class="btn-secondary dropdown-toggle btn">More <span
-                    class="caret"></span></button>
-                <ul role="menu" class="dropdown-menu-right dropdown-menu" aria-labelledby="project-tools-more-dropdown">
-                  <li role="presentation" class=""><a role="menuitem" tabindex="-1" href="#">Rename</a></li>
-                  <li role="presentation" class=""><a role="menuitem" tabindex="-1" href="#">Make a copy</a></li>
-                </ul>
-              </div>
+        <div class="project-tools" *ngIf="showToolbar()">
+          <div role="toolbar" class="btn-toolbar">
+            <div class="btn-group"><button class="btn btn-secondary"><i
+                  class="fa fa-cloud-download"></i></button><button class="btn btn-secondary"><i
+                  class="fa fa-inbox"></i></button><button class="btn btn-secondary"><i
+                  class="fa fa-trash"></i></button>
+            </div>
+
+            <div class="dropdown btn-group"><button title="Tags" id="tags" role="button" type="button"
+                class="btn-secondary dropdown-toggle btn"><span class="material-symbols"
+                  style="vertical-align: sub;">Tag</span> <span class="caret"></span></button>
+              <ul role="menu" class="dropdown-menu-right dropdown-menu">
+                <li class="dropdown-header" role="heading" aria-level="3">Add to tag</li>
+                <li *ngFor="let tag of tags">
+                  <button type="button" class="tag-dropdown-button btn btn-default">
+                    <i class="fa fa-check-square-o tag-checkbox"></i>
+                    {{tag.name}}
+                  </button>
+                </li>
+                <li><button type="button" class="tag-dropdown-button btn btn-default">Create new tag</button></li>
+              </ul>
+            </div>
+            <div class="dropdown btn-group"><button id="project-tools-more-dropdown" role="button" type="button"
+                class="btn-secondary dropdown-toggle btn">More <span class="caret"></span></button>
+              <ul role="menu" class="dropdown-menu-right dropdown-menu" aria-labelledby="project-tools-more-dropdown">
+                <li role="presentation" class=""><a role="menuitem" tabindex="-1" href="#">Rename</a></li>
+                <li role="presentation" class=""><a role="menuitem" tabindex="-1" href="#">Make a copy</a></li>
+              </ul>
             </div>
           </div>
         </div>
-
+        <!-- ### -->
       </div>
 
-        <!-- ### -->
 
-      <input placeholder="Search {{searchOption}}..." class="form-control" type="text"
-        [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()" />
+      <input placeholder="Search {{searchOption}}..." class="form-control" type="text" [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()" />
 
       <table class="table">
         <thead>
           <tr>
             <th scope="col table-header" class="align-middle">
-              <input class="form-check-input" type="checkbox" value="" id="checkAll" (change)="allNovelsCheckboxesChanged($event)">
+              <input class="form-check-input" type="checkbox" value="" id="checkAll"
+                (change)="allNovelsCheckboxesChanged($event)">
             </th>
             <th scope="col table-header" class="w-50">
               <button class="btn table-header border-0" (click)="changeSortBy(NovelsSortBy.Title)">
                 Title
                 <i *ngIf="novelsSort.sortBy === NovelsSortBy.Title" class="fa fa-caret-{{
                     novelsSort.direction === SortDirection.Asc ? 'up' : 'down'
-                  }}" aria-hidden="true"></i>
+                  }}"></i>
               </button>
             </th>
             <th scope="col table-header">
@@ -137,7 +136,7 @@
                 Owner
                 <i *ngIf="novelsSort.sortBy === NovelsSortBy.Author" class="fa fa-caret-{{
                     novelsSort.direction === SortDirection.Asc ? 'up' : 'down'
-                  }}" aria-hidden="true"></i>
+                  }}"></i>
               </button>
             </th>
 
@@ -146,7 +145,7 @@
                 Last Modified
                 <i *ngIf="novelsSort.sortBy === NovelsSortBy.UpdatedAt" class="fa fa-caret-{{
                     novelsSort.direction === SortDirection.Asc ? 'up' : 'down'
-                  }}" aria-hidden="true"></i>
+                  }}"></i>
               </button>
             </th>
 
@@ -156,7 +155,8 @@
         <tbody>
           <tr *ngFor="let novelCheckbox of novelCheckboxes; let i = index">
             <td class="align-middle">
-              <input class="form-check-input" type="checkbox" value="" [id]="novelCheckbox.novel.id" (change)="novelCheckbox.toggleCheck()" [checked]="novelCheckbox.getChecked()">
+              <input class="form-check-input" type="checkbox" value="" [id]="novelCheckbox.novel.id"
+                (change)="novelCheckbox.toggleCheck()" [checked]="novelCheckbox.getChecked()">
             </td>
             <!-- <td class="align-middle">{{ i + 1 }}</td> -->
             <td class="align-middle">
@@ -202,8 +202,8 @@
         </button>
         <div>
           Showing {{ novelCheckboxes.length }} out of {{ novelsPage.totalElements }} novels.
-          <button (click)="getDataFromAllPages()" *ngIf="novelCheckboxes.length !== novelsPage.totalElements" type="button"
-            class="btn btn-link text-decoration-none" aria-label="Show all novelCheckboxes"
+          <button (click)="getDataFromAllPages()" *ngIf="novelCheckboxes.length !== novelsPage.totalElements"
+            type="button" class="btn btn-link text-decoration-none" aria-label="Show all novelCheckboxes"
             style="padding: 0px; font-size: 14px">
             Show all
           </button>
