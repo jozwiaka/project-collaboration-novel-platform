@@ -274,36 +274,34 @@ export class NovelListComponent implements OnInit {
     if (!novel.id || !novel.author.id || !this.authService.currentUser?.id) {
       return;
     }
-
+    let observable;
     if (this.authService.currentUser.id === novel.author.id) {
-      this.novelService.remove(novel.id).subscribe({
-        next: () => {
-          this.getDataFromCurrentPages();
-        },
-      });
+      observable = this.novelService.remove(novel.id);
     } else {
-      this.collaboratorService
+      observable = this.collaboratorService
         .findByNovelIdAndUserId(novel.id, this.authService.currentUser?.id)
         .pipe(
           mergeMap((response: CollaboratorDTO) => {
             return this.collaboratorService.remove(response.id);
           })
-        )
-        .subscribe({
-          next: () => {
-            this.getDataFromCurrentPages();
-          },
-        });
+        );
     }
+
+    observable.subscribe({
+      next: () => {
+        this.getDataFromCurrentPages();
+      },
+    });
   }
 
   removeCheckedNovels() {
     if (!this.authService.currentUser?.id) {
       return;
     }
-    let novelsToDelete = this.novelCheckboxes
+    const novelsToDelete = this.novelCheckboxes
       .filter((ncb) => ncb.getChecked())
       .map((ncb) => ncb.novel);
+
     const observables = novelsToDelete.map((novel) => {
       if (novel.id && this.authService.currentUser?.id) {
         if (this.authService.currentUser.id === novel.author.id) {
@@ -320,8 +318,7 @@ export class NovelListComponent implements OnInit {
       }
       return of(null);
     });
-
-    forkJoin(observables).subscribe({
+    forkJoin(observables.filter((obs) => obs !== null)).subscribe({
       next: () => {
         this.getDataFromCurrentPages();
       },
