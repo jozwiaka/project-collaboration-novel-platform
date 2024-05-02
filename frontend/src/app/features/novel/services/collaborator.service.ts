@@ -33,7 +33,7 @@ export class CollaboratorService {
     private novelService: NovelService
   ) {}
 
-  remove(id: number): Observable<void> {
+  remove(id: number | undefined): Observable<void> {
     const url = `${this.baseUrl}/${id}`;
     return this.http.delete<void>(url).pipe(catchError(this.handleError));
   }
