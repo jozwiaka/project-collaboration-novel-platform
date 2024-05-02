@@ -157,6 +157,10 @@ export class NovelListComponent implements OnInit {
     }
   }
 
+  showToolbar(): boolean {
+    return !!this.novelCheckboxes.find((ncb) => ncb.getChecked());
+  }
+
   allNovelsCheckboxesChanged(event: any) {
     if (event.target.checked) {
       this.novelCheckboxes.forEach((ncb) => {
