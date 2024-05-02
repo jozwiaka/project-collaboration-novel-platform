@@ -154,23 +154,23 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let novel of novels; let i = index">
+          <tr *ngFor="let novelCheckbox of novelCheckboxes; let i = index">
             <td class="align-middle">
-              <input class="form-check-input" type="checkbox" value="" [id]="novel.id" (change)="novelCheckboxChanged($event, novel.id)">
+              <input class="form-check-input" type="checkbox" value="" [id]="novelCheckbox.novel.id" (change)="novelCheckbox.toggleCheck()" [checked]="novelCheckbox.getChecked()">
             </td>
             <!-- <td class="align-middle">{{ i + 1 }}</td> -->
             <td class="align-middle">
-              <a [href]="'novel/' + novel.id" class="text-decoration-none">{{
-                novel.title
+              <a [href]="'novel/' + novelCheckbox.novel.id" class="text-decoration-none">{{
+                novelCheckbox.novel.title
                 }}</a>
             </td>
             <td class="align-middle">
-              {{ getOwnerName(novel.author) }}
+              {{ getOwnerName(novelCheckbox.novel.author) }}
             </td>
             <td class="align-middle">
-              <ng-container *ngIf="novel.updatedAt">
-                {{ timeService.calculateElapsedTime(novel.updatedAt) }} ago by
-                {{ getOwnerName(novel.author) }}
+              <ng-container *ngIf="novelCheckbox.novel.updatedAt">
+                {{ timeService.calculateElapsedTime(novelCheckbox.novel.updatedAt) }} ago by
+                {{ getOwnerName(novelCheckbox.novel.author) }}
               </ng-container>
             </td>
             <td class="text-end">
@@ -186,7 +186,7 @@
                 <i class="fa-solid fa-file-pdf"></i>
                 <span class="btn-name">Download PDF</span>
               </button>
-              <button class="btn btn-link action-btn" title="Delete" (click)="removeNovel(novel)">
+              <button class="btn btn-link action-btn" title="Delete" (click)="removeNovel(novelCheckbox.novel)">
                 <i class="fa-solid fa-trash-alt"></i>
                 <span class="btn-name">Delete</span>
               </button>
@@ -201,9 +201,9 @@
           Show {{ getHowManyPagesToShow() }} more
         </button>
         <div>
-          Showing {{ novels.length }} out of {{ novelsPage.totalElements }} novels.
-          <button (click)="getDataFromAllPages()" *ngIf="novels.length !== novelsPage.totalElements" type="button"
-            class="btn btn-link text-decoration-none" aria-label="Show all novels"
+          Showing {{ novelCheckboxes.length }} out of {{ novelsPage.totalElements }} novels.
+          <button (click)="getDataFromAllPages()" *ngIf="novelCheckboxes.length !== novelsPage.totalElements" type="button"
+            class="btn btn-link text-decoration-none" aria-label="Show all novelCheckboxes"
             style="padding: 0px; font-size: 14px">
             Show all
           </button>

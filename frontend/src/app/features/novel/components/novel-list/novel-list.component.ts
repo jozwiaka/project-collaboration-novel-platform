@@ -29,6 +29,31 @@ interface TagMenu {
   show: boolean;
 }
 
+class NovelCheckbox {
+  novel: Novel;
+  private checked: boolean = false;
+
+  constructor(novel: Novel) {
+    this.novel = novel;
+  }
+
+  getChecked(): boolean {
+    return this.checked;
+  }
+
+  toggleCheck() {
+    this.checked = !this.checked;
+  }
+
+  check() {
+    this.checked = true;
+  }
+
+  uncheck() {
+    this.checked = false;
+  }
+}
+
 @Component({
   selector: 'app-novel-list',
   templateUrl: './novel-list.component.html',
@@ -36,13 +61,13 @@ interface TagMenu {
 })
 export class NovelListComponent implements OnInit {
   novelsFilterOption: string = NovelsFilterOption.AllNovels;
-  novels: Novel[] = [];
   novelsPage: Page = {
     size: 0,
     totalElements: 0,
     totalPages: 0,
     number: 0,
   };
+  novelCheckboxes: NovelCheckbox[] = [];
 
   novelsSort: Sort = {
     sortBy: NovelsSortBy.UpdatedAt,
@@ -63,8 +88,6 @@ export class NovelListComponent implements OnInit {
     tagId: 0,
     show: false,
   };
-
-  checkedNovelIds: number[] = [];
 
   constructor(
     private novelService: NovelService,
@@ -134,28 +157,16 @@ export class NovelListComponent implements OnInit {
     }
   }
 
-  novelCheckboxChanged(event: any, novelId: number | undefined) {
-    if (novelId) {
-      if (event.target.checked) {
-        this.checkedNovelIds.push(novelId);
-      } else {
-        this.checkedNovelIds = this.checkedNovelIds.filter(
-          (id) => id !== novelId
-        );
-      }
-    }
-  }
-
   allNovelsCheckboxesChanged(event: any) {
-    // if (novelId) {
-    //   if (event.target.checked) {
-    //     this.checkedNovelIds.push(novelId);
-    //   } else {
-    //     this.checkedNovelIds = this.checkedNovelIds.filter(
-    //       (id) => id !== novelId
-    //     );
-    //   }
-    // }
+    if (event.target.checked) {
+      this.novelCheckboxes.forEach((ncb) => {
+        ncb.check();
+      });
+    } else {
+      this.novelCheckboxes.forEach((ncb) => {
+        ncb.uncheck();
+      });
+    }
   }
 
   createBlankNovel(): void {
@@ -296,7 +307,7 @@ export class NovelListComponent implements OnInit {
   }
 
   getHowManyPagesToShow(): number {
-    const diff = this.novelsPage.totalElements - this.novels.length;
+    const diff = this.novelsPage.totalElements - this.novelCheckboxes.length;
     if (diff < this.novelsPage.size) {
       return diff;
     }
@@ -444,7 +455,7 @@ export class NovelListComponent implements OnInit {
             });
 
             if (!observables.length) {
-              this.novels = [];
+              this.novelCheckboxes = [];
               this.novelsPage = data.page;
             }
 
@@ -457,7 +468,7 @@ export class NovelListComponent implements OnInit {
         )
         .subscribe({
           next: ({ novels, novelsPage }) => {
-            this.novels = novels;
+            this.novelCheckboxes = novels.map((n) => new NovelCheckbox(n));
             this.novelsPage = novelsPage;
           },
           error: (err) => {},
