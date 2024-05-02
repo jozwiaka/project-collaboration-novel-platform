@@ -8,8 +8,8 @@
         width: 200px;
       ">
       <div class="dropdown mb-4">
-        <button id="new-novel-button-sidebar" type="button" class="btn btn-success w-100" (click)="toggleNewNovelDropdown()"
-          style="font-size: 16px">
+        <button id="new-novel-button-sidebar" type="button" class="btn btn-success w-100"
+          (click)="toggleNewNovelDropdown()" style="font-size: 16px">
           New Novel
         </button>
         <ul class="dropdown-menu w-100" [class.show]="showNewNovelDropdown">
@@ -51,9 +51,8 @@
         <li class="tag" *ngFor="let tag of tags" [ngClass]="{ 'bg-dark': tag.id===activeTag?.id }">
           <div class="d-flex justify-content-between align-middle">
             <button type="button" class="btn text-light border-0" style="flex: 1; min-width: 0;text-align: left;word-wrap:break-word;  white-space: pre-line;
-            text-wrap: wrap;" [id]="tag.id"
-              (click)="changeNovelOption(tag.name)" >
-              <span class="name text-light" >
+            text-wrap: wrap;" [id]="tag.id" (click)="changeNovelOption(tag.name)">
+              <span class="name text-light">
                 {{tag.name}}
                 <span class="subdued text-secondary">
                   ({{tag.totalElements}})
@@ -64,8 +63,10 @@
               <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle="" (click)="toggleTagMenu(tag.id)">
               </button>
               <ul class="dropdown-menu" role="menu" [class.show]="tagMenu.tagId===tag.id && tagMenu.show">
-                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="editTag(tag)" style="font-size: 14px;">Edit</a>
-                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="removeTag(tag)" style="font-size: 14px;">Delete</a>
+                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="editTag(tag)"
+                  style="font-size: 14px;">Edit</a>
+                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="removeTag(tag)"
+                  style="font-size: 14px;">Delete</a>
               </ul>
             </div>
           </div>
@@ -83,33 +84,35 @@
         <!-- ### -->
         <div class="project-tools" *ngIf="showToolbar()">
           <div role="toolbar" class="btn-toolbar">
-            <div class="btn-group"><button class="btn btn-secondary"><i
-                  class="fa fa-cloud-download"></i></button><button class="btn btn-secondary"><i
-                  class="fa fa-inbox"></i></button><button class="btn btn-secondary"><i
-                  class="fa fa-trash"></i></button>
+            <div class="btn-group">
+              <button class="btn btn-secondary"><i class="fa fa-cloud-download"></i></button>
+              <button class="btn btn-secondary"><i class="fa fa-inbox"></i></button>
+              <button class="btn btn-secondary" (click)="removeCheckedNovels()"><i class="fa fa-trash"></i></button>
             </div>
 
             <div class="dropdown">
-              <button data-toggle="dropdown" dropdown-toggle="" class="btn-secondary dropdown-toggle btn" (click)="toggleAddToTag()">
+              <button data-toggle="dropdown" dropdown-toggle="" class="btn-secondary dropdown-toggle btn"
+                (click)="toggleAddToTag()">
                 <span>Tags</span>
-                </button>
+              </button>
               <ul role="menu" class="dropdown-menu dropdown-menu-end w-100" [class.show]="showAddToTag">
                 <li class="dropdown-header" role="heading" aria-level="3">
                   <span>
-                  Add to tag
-                </span>
-              </li>
+                    Add to tag
+                  </span>
+                </li>
                 <li *ngFor="let tag of tags" class="w-100">
-                  <button type="button" class="tag-dropdown-button btn btn-default dropdown-item"  style="word-wrap:break-word;  white-space: pre-line;
+                  <button type="button" class="tag-dropdown-button btn btn-default dropdown-item" style="word-wrap:break-word;  white-space: pre-line;
                   text-wrap: wrap;">
-                  <input class="form-check-input" type="checkbox" value="">
+                    <input class="form-check-input" type="checkbox" value="">
                     <span style="padding-left:6px; font-size: 14px;">
                       {{tag.name}}
                     </span>
                   </button>
                 </li>
                 <div class="dropdown-divider"></div>
-                <li><button type="button" class="tag-dropdown-button btn btn-default dropdown-item" style="font-size: 14px;" (click)="createNewTag()">Create new tag</button></li>
+                <li><button type="button" class="tag-dropdown-button btn btn-default dropdown-item"
+                    style="font-size: 14px;" (click)="createNewTag()">Create new tag</button></li>
               </ul>
             </div>
             <div class="dropdown btn-group"><button id="project-tools-more-dropdown" role="button" type="button"

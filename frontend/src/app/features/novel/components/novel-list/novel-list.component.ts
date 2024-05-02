@@ -294,6 +294,31 @@ export class NovelListComponent implements OnInit {
     }
   }
 
+  removeCheckedNovels() {
+    if (!this.authService.currentUser?.id) {
+      return;
+    }
+    this.novelCheckboxes.forEach((ncb) => {});
+
+    // if (this.authService.currentUser.id === novel.author.id) {
+    //   this.novelService.remove(novel.id).subscribe({
+    //     next: () => {
+    //       this.getDataFromCurrentPages();
+    //     },
+    //   });
+    // } else {
+    //   this.collaboratorService
+    //     .findByNovelIdAndUserId(novel.id, this.authService.currentUser?.id)
+    //     .subscribe({
+    //       next: (response: CollaboratorDTO) => {
+    //         if (response.id) {
+    //           this.collaboratorService.remove(response.id).subscribe();
+    //         }
+    //       },
+    //     });
+    // }
+  }
+
   removeTag(tag: Tag): void {
     if (tag.id) {
       this.tagService.remove(tag.id).subscribe({
