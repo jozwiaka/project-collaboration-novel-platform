@@ -64,8 +64,8 @@
               <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle="" (click)="toggleTagMenu(tag.id)">
               </button>
               <ul class="dropdown-menu" role="menu" [class.show]="tagMenu.tagId===tag.id && tagMenu.show">
-                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="editTag(tag)">Edit</a>
-                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="removeTag(tag)">Delete</a>
+                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="editTag(tag)" style="font-size: 14px;">Edit</a>
+                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="removeTag(tag)" style="font-size: 14px;">Delete</a>
               </ul>
             </div>
           </div>
@@ -93,21 +93,22 @@
               <button data-toggle="dropdown" dropdown-toggle="" class="btn-secondary dropdown-toggle btn" (click)="toggleAddToTag()">
                 <span>Tags</span>
                 </button>
-              <ul role="menu" class="dropdown-menu dropdown-menu-end" [class.show]="showAddToTag">
-                <li class="dropdown-header" role="heading" aria-level="3"><span class="dropdown-item">
+              <ul role="menu" class="dropdown-menu dropdown-menu-end w-100" [class.show]="showAddToTag">
+                <li class="dropdown-header" role="heading" aria-level="3"><span>
                   Add to tag
                 </span>
               </li>
-                <li *ngFor="let tag of tags" >
-                  <button type="button" class="tag-dropdown-button btn btn-default dropdown-item" >
+                <li *ngFor="let tag of tags" class="w-100">
+                  <button type="button" class="tag-dropdown-button btn btn-default dropdown-item"  style="word-wrap:break-word;  white-space: pre-line;
+                  text-wrap: wrap;">
                     <i class="fa fa-check-square-o tag-checkbox"></i>
-                    <span style="word-wrap:break-word;  white-space: pre-line;
-                    text-wrap: wrap;">
+                    <span style="font-size: 14px;">
                       {{tag.name}}
                     </span>
                   </button>
                 </li>
-                <li><button type="button" class="tag-dropdown-button btn btn-default dropdown-item">Create new tag</button></li>
+                <div class="dropdown-divider"></div>
+                <li><button type="button" class="tag-dropdown-button btn btn-default dropdown-item" style="font-size: 14px;">Create new tag</button></li>
               </ul>
             </div>
 
