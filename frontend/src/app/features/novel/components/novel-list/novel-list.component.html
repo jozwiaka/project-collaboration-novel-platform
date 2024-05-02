@@ -39,7 +39,7 @@
 
       <hr class="bg-light" />
       <div class="text-secondary m-0 ps-2 pb-2" style="font-size: 16px">
-        Organize Novels
+        ORGANIZE NOVELS
       </div>
 
       <button type="button" class="tag-name btn w-100" style="text-align: left" (click)="createNewTag()">
@@ -48,23 +48,26 @@
       </button>
 
       <ul class="list-unstyled">
-        <li class="tag d-flex" *ngFor="let tag of tags" [ngClass]="{ 'bg-dark': tag.id===activeTag?.id }">
-          <button type="button" class="btn w-100 text-light border-0" style="text-align: left" [id]="tag.id"
-            (click)="changeNovelOption(tag.name)">
-            <span class="name text-light">
-              {{tag.name}}
-              <span class="subdued text-secondary">
-                ({{tag.totalElements}})
+        <li class="tag" *ngFor="let tag of tags" [ngClass]="{ 'bg-dark': tag.id===activeTag?.id }">
+          <div class="d-flex justify-content-between align-middle">
+            <button type="button" class="btn text-light border-0" style="flex: 1; min-width: 0;text-align: left;word-wrap:break-word;  white-space: pre-line;
+            text-wrap: wrap;" [id]="tag.id"
+              (click)="changeNovelOption(tag.name)" >
+              <span class="name text-light" >
+                {{tag.name}}
+                <span class="subdued text-secondary">
+                  ({{tag.totalElements}})
+                </span>
               </span>
-            </span>
-          </button>
-          <div class="tag-menu dropdown">
-            <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle="" (click)="toggleTagMenu(tag.id)">
             </button>
-            <ul class="dropdown-menu" role="menu" [class.show]="tagMenu.tagId===tag.id && tagMenu.show">
-              <a type="button" class="tag-action btn btn-default dropdown-item" (click)="editTag(tag)">Edit</a>
-              <a type="button" class="tag-action btn btn-default dropdown-item" (click)="removeTag(tag)">Delete</a>
-            </ul>
+            <div class="tag-menu dropdown align-middle">
+              <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle="" (click)="toggleTagMenu(tag.id)">
+              </button>
+              <ul class="dropdown-menu" role="menu" [class.show]="tagMenu.tagId===tag.id && tagMenu.show">
+                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="editTag(tag)">Edit</a>
+                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="removeTag(tag)">Delete</a>
+              </ul>
+            </div>
           </div>
         </li>
       </ul>
@@ -90,17 +93,24 @@
               <button data-toggle="dropdown" dropdown-toggle="" class="btn-secondary dropdown-toggle btn" (click)="toggleAddToTag()">
                 <span>Tags</span>
                 </button>
-              <ul role="menu" class=" dropdown-menu" [class.show]="showAddToTag">
-                <li class="dropdown-header" role="heading" aria-level="3" class="dropdown-item">Add to tag</li>
-                <li *ngFor="let tag of tags" clas="dropdown-item">
-                  <button type="button" class="tag-dropdown-button btn btn-default">
+              <ul role="menu" class="dropdown-menu dropdown-menu-end" [class.show]="showAddToTag">
+                <li class="dropdown-header" role="heading" aria-level="3"><span class="dropdown-item">
+                  Add to tag
+                </span>
+              </li>
+                <li *ngFor="let tag of tags" >
+                  <button type="button" class="tag-dropdown-button btn btn-default dropdown-item" >
                     <i class="fa fa-check-square-o tag-checkbox"></i>
-                    {{tag.name}}
+                    <span style="word-wrap:break-word;  white-space: pre-line;
+                    text-wrap: wrap;">
+                      {{tag.name}}
+                    </span>
                   </button>
                 </li>
-                <li class="dropdown-item"><button type="button" class="tag-dropdown-button btn btn-default">Create new tag</button></li>
+                <li><button type="button" class="tag-dropdown-button btn btn-default dropdown-item">Create new tag</button></li>
               </ul>
             </div>
+
             <div class="dropdown btn-group"><button id="project-tools-more-dropdown" role="button" type="button"
                 class="btn-secondary dropdown-toggle btn">More <span class="caret"></span></button>
               <ul role="menu" class="dropdown-menu-right dropdown-menu" aria-labelledby="project-tools-more-dropdown">
