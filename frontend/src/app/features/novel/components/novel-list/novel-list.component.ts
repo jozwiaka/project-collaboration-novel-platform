@@ -372,7 +372,7 @@ export class NovelListComponent implements OnInit {
       } else {
         switch (this.novelsFilterOption) {
           case NovelsFilterOption.AllNovels:
-            this.searchOption = 'in all novels';
+            this.searchOption = `in ${NovelsFilterOption.AllNovels.toLowerCase()}`;
             if (this.searchQuery !== '') {
               serviceMethod =
                 this.novelService.findByCollaboratorsUserIdAndTitleContaining(
@@ -390,7 +390,7 @@ export class NovelListComponent implements OnInit {
             }
             break;
           case NovelsFilterOption.YourNovels:
-            this.searchOption = 'in your novels';
+            this.searchOption = `in ${NovelsFilterOption.YourNovels.toLowerCase()}`;
             if (this.searchQuery !== '') {
               serviceMethod =
                 this.novelService.findByAuthorIdAndTitleContaining(
@@ -408,7 +408,7 @@ export class NovelListComponent implements OnInit {
             }
             break;
           case NovelsFilterOption.SharedWithYou:
-            this.searchOption = 'in shared with you';
+            this.searchOption = `in ${NovelsFilterOption.SharedWithYou.toLowerCase()}`;
             if (this.searchQuery !== '') {
               serviceMethod =
                 this.novelService.findSharedWithUserIdAndTitleContaining(
