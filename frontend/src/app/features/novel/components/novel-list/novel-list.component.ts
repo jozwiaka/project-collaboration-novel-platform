@@ -31,7 +31,7 @@ interface TagMenu {
 
 class NovelCheckbox {
   novel: Novel;
-  private checked: boolean = false;
+  private checked: boolean = true;
 
   constructor(novel: Novel) {
     this.novel = novel;
@@ -79,7 +79,7 @@ export class NovelListComponent implements OnInit {
   NovelsFilterOption = NovelsFilterOption;
   NovelsSortBy = NovelsSortBy;
   SortDirection = SortDirection;
-  dropdownOpen = false;
+  showNewNovelDropdown = false;
 
   searchQuery: string = '';
   activeTag: Tag | undefined;
@@ -88,6 +88,7 @@ export class NovelListComponent implements OnInit {
     tagId: 0,
     show: false,
   };
+  showAddToTag: boolean = false;
 
   constructor(
     private novelService: NovelService,
@@ -141,8 +142,8 @@ export class NovelListComponent implements OnInit {
     this.getDataFromCurrentPages();
   }
 
-  toggleDropdown(): void {
-    this.dropdownOpen = !this.dropdownOpen;
+  toggleNewNovelDropdown(): void {
+    this.showNewNovelDropdown = !this.showNewNovelDropdown;
   }
 
   toggleTagMenu(tagId: number | undefined): void {
@@ -155,6 +156,10 @@ export class NovelListComponent implements OnInit {
       this.tagMenu.tagId = tagId;
       this.tagMenu.show = true;
     }
+  }
+
+  toggleAddToTag() {
+    this.showAddToTag = !this.showAddToTag;
   }
 
   showToolbar(): boolean {
