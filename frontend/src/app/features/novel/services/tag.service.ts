@@ -55,6 +55,21 @@ export class TagService {
       .pipe(catchError(this.handleError));
   }
 
+  findByUserIdAndNovelId(
+    userId: number,
+    novelId: number,
+    sort: Sort
+  ): Observable<TagDTO[]> {
+    const urlStr = `${this.baseUrl}/search/findByUserIdAndNovelTags_Novel_Id`;
+    const url = new URL(urlStr);
+    url.searchParams.set('userId', `${userId}`);
+    url.searchParams.set('novelId', `${userId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+    return this.http
+      .get<TagDTO[]>(url.toString())
+      .pipe(catchError(this.handleError));
+  }
+
   public build(tagData: TagDTO): Observable<Tag> {
     return forkJoin([
       this.userService.findOne(tagData.userId),

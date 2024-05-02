@@ -54,6 +54,31 @@ class NovelCheckbox {
   }
 }
 
+class TagCheckbox {
+  tag: Tag;
+  private checked: boolean = true;
+
+  constructor(tag: Tag) {
+    this.tag = tag;
+  }
+
+  getChecked(): boolean {
+    return this.checked;
+  }
+
+  toggleCheck() {
+    this.checked = !this.checked;
+  }
+
+  check() {
+    this.checked = true;
+  }
+
+  uncheck() {
+    this.checked = false;
+  }
+}
+
 @Component({
   selector: 'app-novel-list',
   templateUrl: './novel-list.component.html',
@@ -83,7 +108,7 @@ export class NovelListComponent implements OnInit {
 
   searchQuery: string = '';
   activeTag: Tag | undefined;
-  tags: Tag[] = [];
+  tagCheckboxes: TagCheckbox[] = [];
   tagMenu: TagMenu = {
     tagId: 0,
     show: false,
@@ -128,7 +153,8 @@ export class NovelListComponent implements OnInit {
         )
         .subscribe({
           next: (tags: Tag[]) => {
-            this.tags = tags.sort((a, b) => a.name.localeCompare(b.name));
+            this.tagCheckboxes = tags.map((tag) => new TagCheckbox(tag));
+            this.sortTagCheckboxes();
           },
         });
     }
@@ -160,6 +186,10 @@ export class NovelListComponent implements OnInit {
 
   toggleAddToTag() {
     this.showAddToTag = !this.showAddToTag;
+  }
+
+  toggleTagCheckbox(tagCheckbox: TagCheckbox) {
+    tagCheckbox.toggleCheck();
   }
 
   showToolbar(): boolean {
@@ -237,8 +267,8 @@ export class NovelListComponent implements OnInit {
         )
         .subscribe({
           next: (tag: Tag) => {
-            this.tags.push(tag);
-            this.tags.sort((a, b) => a.name.localeCompare(b.name));
+            this.tagCheckboxes.push(new TagCheckbox(tag));
+            this.sortTagCheckboxes();
           },
         });
     });
@@ -259,12 +289,12 @@ export class NovelListComponent implements OnInit {
 
       this.tagService.update(tagData).subscribe({
         next: () => {
-          this.tags.forEach((t) => {
-            if (t.id === tagData.id) {
-              t.name = tagData.name;
+          this.tagCheckboxes.forEach((tcb) => {
+            if (tcb.tag.id === tagData.id) {
+              tcb.tag.name = tagData.name;
             }
           });
-          this.tags.sort((a, b) => a.name.localeCompare(b.name));
+          this.sortTagCheckboxes();
         },
       });
     });
@@ -327,7 +357,9 @@ export class NovelListComponent implements OnInit {
     if (tag.id) {
       this.tagService.remove(tag.id).subscribe({
         next: () => {
-          this.tags = this.tags.filter((t) => tag.id !== t.id);
+          this.tagCheckboxes = this.tagCheckboxes.filter(
+            (tcb) => tag.id !== tcb.tag.id
+          );
         },
       });
     }
@@ -398,9 +430,9 @@ export class NovelListComponent implements OnInit {
     if (userData?.id) {
       let serviceMethod;
 
-      this.activeTag = this.tags.find(
-        (tag) => tag.name === this.novelsFilterOption
-      );
+      this.activeTag = this.tagCheckboxes.find(
+        (tcb) => tcb.tag.name === this.novelsFilterOption
+      )?.tag;
 
       if (this.activeTag?.id) {
         this.searchOption = this.activeTag.name;
@@ -512,5 +544,9 @@ export class NovelListComponent implements OnInit {
           error: (err) => {},
         });
     }
+  }
+
+  private sortTagCheckboxes() {
+    this.tagCheckboxes.sort((a, b) => a.tag.name.localeCompare(b.tag.name));
   }
 }
