@@ -209,7 +209,7 @@ export class NovelListComponent implements OnInit {
   }
 
   removeNovelAction(novel: Novel) {
-    this.removeNovel(novel).subscribe({
+    this.removeNovelObservable(novel).subscribe({
       next: () => {
         this.getDataFromCurrentPages();
       },
@@ -225,7 +225,7 @@ export class NovelListComponent implements OnInit {
       if (!novel.id || !this.authService.currentUser?.id) {
         return of(null);
       }
-      return this.removeNovel(novel);
+      return this.removeNovelObservable(novel);
     });
 
     forkJoin(observables.filter((obs) => obs !== null)).subscribe({
@@ -532,7 +532,7 @@ export class NovelListComponent implements OnInit {
     });
   }
 
-  private removeNovel(novel: Novel): Observable<any> {
+  private removeNovelObservable(novel: Novel): Observable<any> {
     if (!novel.id || !novel.author.id || !this.authService.currentUser?.id) {
       return of(null);
     }
