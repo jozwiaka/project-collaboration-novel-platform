@@ -85,6 +85,10 @@ class TagCheckbox {
   styleUrls: ['./novel-list.component.css'],
 })
 export class NovelListComponent implements OnInit {
+  NovelsFilterOption = NovelsFilterOption;
+  NovelsSortBy = NovelsSortBy;
+  SortDirection = SortDirection;
+
   novelsFilterOption: string = NovelsFilterOption.AllNovels;
   novelsPage: Page = {
     size: 0,
@@ -92,27 +96,23 @@ export class NovelListComponent implements OnInit {
     totalPages: 0,
     number: 0,
   };
-  novelCheckboxes: NovelCheckbox[] = [];
-
   novelsSort: Sort = {
     sortBy: NovelsSortBy.UpdatedAt,
     direction: SortDirection.Desc,
   };
 
-  searchOption: string = '';
-
-  NovelsFilterOption = NovelsFilterOption;
-  NovelsSortBy = NovelsSortBy;
-  SortDirection = SortDirection;
-  showNewNovelDropdown = false;
-
-  searchQuery: string = '';
-  activeTag: Tag | undefined;
+  novelCheckboxes: NovelCheckbox[] = [];
   tagCheckboxes: TagCheckbox[] = [];
+
+  searchOption: string = '';
+  searchQuery: string = '';
+
+  activeTag: Tag | undefined;
   tagMenu: TagMenu = {
     tagId: 0,
     show: false,
   };
+
   showAddToTag: boolean = false;
 
   constructor(
@@ -166,10 +166,6 @@ export class NovelListComponent implements OnInit {
 
   onSearchChange(): void {
     this.getDataFromCurrentPages();
-  }
-
-  toggleNewNovelDropdown(): void {
-    this.showNewNovelDropdown = !this.showNewNovelDropdown;
   }
 
   toggleTagMenu(tagId: number | undefined): void {
@@ -274,7 +270,7 @@ export class NovelListComponent implements OnInit {
     });
   }
 
-  editTag(tag: Tag): void {
+  showEditTagDialog(tag: Tag): void {
     const dialogRef = this.dialog.open(EditTagDialogComponent, {
       width: '600px',
       height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
