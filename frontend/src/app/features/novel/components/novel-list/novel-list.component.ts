@@ -18,6 +18,7 @@ import { NewTagDialogComponent } from './dialogs/new-tag-dialog/new-tag-dialog.c
 import { TagDTO, TagsSortBy } from '../../models/tag-api.models';
 import { Tag } from '../../models/tag.model';
 import { EditTagDialogComponent } from './dialogs/edit-tag-dialog/edit-tag-dialog.component';
+import { NovelTagService } from '../../services/novel-tag.service';
 
 enum NovelsFilterOption {
   AllNovels = 'All Novels',
@@ -120,6 +121,7 @@ export class NovelListComponent implements OnInit {
     private authService: AuthService,
     public timeService: TimeService,
     private collaboratorService: CollaboratorService,
+    private novelTagService: NovelTagService,
     private tagService: TagService,
     private router: Router,
     public dialog: MatDialog

@@ -1,59 +1,33 @@
 <app-navbar></app-navbar>
 <div class="d-flex">
   <div>
-    <aside
-      class="text-light p-0 m-0"
-      style="
+    <aside class="text-light p-0 m-0" style="
         background-color: #2c394f;
         min-height: 1000px;
         height: 100%;
         width: 200px;
-      "
-    >
+      ">
       <div class="mb-4">
-        <button
-          id="new-novel-button-sidebar"
-          type="button"
-          class="btn btn-success w-100"
-          (click)="showNewNovelDialog()"
-          style="font-size: 16px"
-        >
+        <button id="new-novel-button-sidebar" type="button" class="btn btn-success w-100" (click)="showNewNovelDialog()"
+          style="font-size: 16px">
           New Novel
-        </button >
+        </button>
       </div>
-      <button
-        type="button"
-        class="btn w-100 text-light border-0"
-        style="text-align: left; font-size: 16px"
-        [ngClass]="{
+      <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px" [ngClass]="{
           'bg-dark': novelsFilterOption === NovelsFilterOption.AllNovels
-        }"
-        (click)="changeNovelOption(NovelsFilterOption.AllNovels)"
-      >
+        }" (click)="changeNovelOption(NovelsFilterOption.AllNovels)">
         {{ NovelsFilterOption.AllNovels }}
       </button>
 
-      <button
-        type="button"
-        class="btn w-100 text-light border-0"
-        style="text-align: left; font-size: 16px"
-        [ngClass]="{
+      <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px" [ngClass]="{
           'bg-dark': novelsFilterOption === NovelsFilterOption.YourNovels
-        }"
-        (click)="changeNovelOption(NovelsFilterOption.YourNovels)"
-      >
+        }" (click)="changeNovelOption(NovelsFilterOption.YourNovels)">
         {{ NovelsFilterOption.YourNovels }}
       </button>
 
-      <button
-        type="button"
-        class="btn w-100 text-light border-0"
-        style="text-align: left; font-size: 16px"
-        [ngClass]="{
+      <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px" [ngClass]="{
           'bg-dark': novelsFilterOption === NovelsFilterOption.SharedWithYou
-        }"
-        (click)="changeNovelOption(NovelsFilterOption.SharedWithYou)"
-      >
+        }" (click)="changeNovelOption(NovelsFilterOption.SharedWithYou)">
         {{ NovelsFilterOption.SharedWithYou }}
       </button>
 
@@ -62,41 +36,23 @@
         ORGANIZE NOVELS
       </div>
 
-      <button
-        type="button"
-        class="tag-name btn w-100"
-        style="text-align: left"
-        (click)="showNewTagDialog()"
-      >
+      <button type="button" class="tag-name btn w-100" style="text-align: left" (click)="showNewTagDialog()">
         <i class="fas fa-plus text-light" style="font-size: 16px"></i>
-        <span
-          class="name text-light"
-          style="padding-left: 0.5em; font-size: 16px"
-          >New Tag</span
-        >
+        <span class="name text-light" style="padding-left: 0.5em; font-size: 16px">New Tag</span>
       </button>
 
       <ul class="list-unstyled">
-        <li
-          class="tag"
-          *ngFor="let tagCheckbox of tagCheckboxes"
-          [ngClass]="{ 'bg-dark': tagCheckbox.tag.id === activeTag?.id }"
-        >
+        <li class="tag" *ngFor="let tagCheckbox of tagCheckboxes"
+          [ngClass]="{ 'bg-dark': tagCheckbox.tag.id === activeTag?.id }">
           <div class="d-flex justify-content-between align-middle">
-            <button
-              type="button"
-              class="btn text-light border-0"
-              style="
+            <button type="button" class="btn text-light border-0" style="
                 flex: 1;
                 min-width: 0;
                 text-align: left;
                 word-wrap: break-word;
                 white-space: pre-line;
                 text-wrap: wrap;
-              "
-              [id]="tagCheckbox.tag.id"
-              (click)="changeNovelOption(tagCheckbox.tag.name)"
-            >
+              " [id]="tagCheckbox.tag.id" (click)="changeNovelOption(tagCheckbox.tag.name)">
               <span class="name text-light">
                 {{ tagCheckbox.tag.name }}
                 <span class="subdued text-secondary">
@@ -105,33 +61,15 @@
               </span>
             </button>
             <div class="tag-menu dropdown align-middle">
-              <button
-                class="dropdown-toggle"
-                data-toggle="dropdown"
-                dropdown-toggle=""
-                (click)="toggleTagMenu(tagCheckbox.tag.id)"
-              ></button>
-              <ul
-                class="dropdown-menu"
-                role="menu"
-                [class.show]="
+              <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle=""
+                (click)="toggleTagMenu(tagCheckbox.tag.id)"></button>
+              <ul class="dropdown-menu" role="menu" [class.show]="
                   tagMenu.tagId === tagCheckbox.tag.id && tagMenu.show
-                "
-              >
-                <a
-                  type="button"
-                  class="tag-action btn btn-default dropdown-item"
-                  (click)="showEditTagDialog(tagCheckbox.tag)"
-                  style="font-size: 14px"
-                  >Edit</a
-                >
-                <a
-                  type="button"
-                  class="tag-action btn btn-default dropdown-item"
-                  (click)="removeTag(tagCheckbox.tag)"
-                  style="font-size: 14px"
-                  >Delete</a
-                >
+                ">
+                <a type="button" class="tag-action btn btn-default dropdown-item"
+                  (click)="showEditTagDialog(tagCheckbox.tag)" style="font-size: 14px">Edit</a>
+                <a type="button" class="tag-action btn btn-default dropdown-item" (click)="removeTag(tagCheckbox.tag)"
+                  style="font-size: 14px">Delete</a>
               </ul>
             </div>
           </div>
@@ -141,10 +79,7 @@
   </div>
 
   <div style="flex: 1">
-    <div
-      class="h-100"
-      style="background-color: rgb(241, 241, 241); padding: 25px 15px"
-    >
+    <div class="h-100" style="background-color: rgb(241, 241, 241); padding: 25px 15px">
       <div class="d-flex justify-content-between">
         <h2 class="fw-bold">{{ novelsFilterOption }}</h2>
 
@@ -164,40 +99,22 @@
             </div>
 
             <div class="dropdown">
-              <button
-                data-toggle="dropdown"
-                dropdown-toggle=""
-                class="btn-secondary dropdown-toggle btn"
-                (click)="toggleAddToTag()"
-              >
+              <button data-toggle="dropdown" dropdown-toggle="" class="btn-secondary dropdown-toggle btn"
+                (click)="toggleAddToTag()">
                 <span>Tags</span>
               </button>
-              <ul
-                role="menu"
-                class="dropdown-menu dropdown-menu-end w-100"
-                [class.show]="showAddToTag"
-              >
+              <ul role="menu" class="dropdown-menu dropdown-menu-end w-100" [class.show]="showAddToTag">
                 <li class="dropdown-header" role="heading" aria-level="3">
                   <span> Add to tag </span>
                 </li>
                 <li *ngFor="let tagCheckbox of tagCheckboxes" class="w-100">
-                  <button
-                    type="button"
-                    class="tag-dropdown-button btn btn-default dropdown-item"
-                    style="
+                  <button type="button" class="tag-dropdown-button btn btn-default dropdown-item" style="
                       word-wrap: break-word;
                       white-space: pre-line;
                       text-wrap: wrap;
-                    "
-                    (click)="toggleTagCheckbox(tagCheckbox)"
-                  >
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      value=""
-                      [id]="tagCheckbox.tag.id"
-                      [checked]="tagCheckbox.getChecked()"
-                    />
+                    " (click)="toggleTagCheckbox(tagCheckbox)">
+                    <input class="form-check-input" type="checkbox" value="" [id]="tagCheckbox.tag.id"
+                      [checked]="tagCheckbox.getChecked()" />
                     <span style="padding-left: 6px; font-size: 14px">
                       {{ tagCheckbox.tag.name }}
                     </span>
@@ -205,31 +122,19 @@
                 </li>
                 <div class="dropdown-divider"></div>
                 <li>
-                  <button
-                    type="button"
-                    class="tag-dropdown-button btn btn-default dropdown-item"
-                    style="font-size: 14px"
-                    (click)="showNewTagDialog()"
-                  >
+                  <button type="button" class="tag-dropdown-button btn btn-default dropdown-item"
+                    style="font-size: 14px" (click)="showNewTagDialog()">
                     Create new tag
                   </button>
                 </li>
               </ul>
             </div>
             <div class="dropdown btn-group">
-              <button
-                id="project-tools-more-dropdown"
-                role="button"
-                type="button"
-                class="btn-secondary dropdown-toggle btn"
-              >
+              <button id="project-tools-more-dropdown" role="button" type="button"
+                class="btn-secondary dropdown-toggle btn">
                 More <span class="caret"></span>
               </button>
-              <ul
-                role="menu"
-                class="dropdown-menu-right dropdown-menu"
-                aria-labelledby="project-tools-more-dropdown"
-              >
+              <ul role="menu" class="dropdown-menu-right dropdown-menu" aria-labelledby="project-tools-more-dropdown">
                 <li role="presentation" class="">
                   <a role="menuitem" tabindex="-1" href="#">Rename</a>
                 </li>
@@ -243,67 +148,39 @@
         <!-- ### -->
       </div>
 
-      <input
-        placeholder="Search {{ searchOption }}..."
-        class="form-control"
-        type="text"
-        [(ngModel)]="searchQuery"
-        (ngModelChange)="onSearchChange()"
-      />
+      <input placeholder="Search {{ searchOption }}..." class="form-control" type="text" [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()" />
 
       <table class="table">
         <thead>
           <tr>
             <th scope="col table-header" class="align-middle">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="checkAll"
-                (change)="allNovelsCheckboxesChangedEvent($event)"
-              />
+              <input class="form-check-input" type="checkbox" value="" id="checkAll"
+                (change)="allNovelsCheckboxesChangedEvent($event)" />
             </th>
             <th scope="col table-header" class="w-50">
-              <button
-                class="btn table-header border-0"
-                (click)="changeSortBy(NovelsSortBy.Title)"
-              >
+              <button class="btn table-header border-0" (click)="changeSortBy(NovelsSortBy.Title)">
                 Title
-                <i
-                  *ngIf="novelsSort.sortBy === NovelsSortBy.Title"
-                  class="fa fa-caret-{{
+                <i *ngIf="novelsSort.sortBy === NovelsSortBy.Title" class="fa fa-caret-{{
                     novelsSort.direction === SortDirection.Asc ? 'up' : 'down'
-                  }}"
-                ></i>
+                  }}"></i>
               </button>
             </th>
             <th scope="col table-header">
-              <button
-                class="btn table-header border-0"
-                (click)="changeSortBy(NovelsSortBy.Author)"
-              >
+              <button class="btn table-header border-0" (click)="changeSortBy(NovelsSortBy.Author)">
                 Owner
-                <i
-                  *ngIf="novelsSort.sortBy === NovelsSortBy.Author"
-                  class="fa fa-caret-{{
+                <i *ngIf="novelsSort.sortBy === NovelsSortBy.Author" class="fa fa-caret-{{
                     novelsSort.direction === SortDirection.Asc ? 'up' : 'down'
-                  }}"
-                ></i>
+                  }}"></i>
               </button>
             </th>
 
             <th scope="col">
-              <button
-                class="btn table-header border-0"
-                (click)="changeSortBy(NovelsSortBy.UpdatedAt)"
-              >
+              <button class="btn table-header border-0" (click)="changeSortBy(NovelsSortBy.UpdatedAt)">
                 Last Modified
-                <i
-                  *ngIf="novelsSort.sortBy === NovelsSortBy.UpdatedAt"
-                  class="fa fa-caret-{{
+                <i *ngIf="novelsSort.sortBy === NovelsSortBy.UpdatedAt" class="fa fa-caret-{{
                     novelsSort.direction === SortDirection.Asc ? 'up' : 'down'
-                  }}"
-                ></i>
+                  }}"></i>
               </button>
             </th>
 
@@ -313,22 +190,13 @@
         <tbody>
           <tr *ngFor="let novelCheckbox of novelCheckboxes; let i = index">
             <td class="align-middle">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                [id]="novelCheckbox.novel.id"
-                (change)="novelCheckbox.toggleCheck()"
-                [checked]="novelCheckbox.getChecked()"
-              />
+              <input class="form-check-input" type="checkbox" value="" [id]="novelCheckbox.novel.id"
+                (change)="novelCheckbox.toggleCheck()" [checked]="novelCheckbox.getChecked()" />
             </td>
             <!-- <td class="align-middle">{{ i + 1 }}</td> -->
             <td class="align-middle">
-              <a
-                [href]="'novel/' + novelCheckbox.novel.id"
-                class="text-decoration-none"
-                >{{ novelCheckbox.novel.title }}</a
-              >
+              <a [href]="'novel/' + novelCheckbox.novel.id" class="text-decoration-none">{{ novelCheckbox.novel.title
+                }}</a>
             </td>
             <td class="align-middle">
               {{ getOwnerName(novelCheckbox.novel.author) }}
@@ -336,9 +204,9 @@
             <td class="align-middle">
               <ng-container *ngIf="novelCheckbox.novel.updatedAt">
                 {{
-                  timeService.calculateElapsedTime(
-                    novelCheckbox.novel.updatedAt
-                  )
+                timeService.calculateElapsedTime(
+                novelCheckbox.novel.updatedAt
+                )
                 }}
                 ago by
                 {{ getOwnerName(novelCheckbox.novel.author) }}
@@ -349,10 +217,7 @@
                 <i class="fa-solid fa-copy"></i>
                 <span class="btn-name">Copy</span>
               </button>
-              <button
-                class="btn btn-link action-btn"
-                title="Download .zip file"
-              >
+              <button class="btn btn-link action-btn" title="Download .zip file">
                 <i class="fa-solid fa-cloud-arrow-down"></i>
                 <span class="btn-name">Download .zip file</span>
               </button>
@@ -360,11 +225,7 @@
                 <i class="fa-solid fa-file-pdf"></i>
                 <span class="btn-name">Download PDF</span>
               </button>
-              <button
-                class="btn btn-link action-btn"
-                title="Delete"
-                (click)="removeNovelAction(novelCheckbox.novel)"
-              >
+              <button class="btn btn-link action-btn" title="Delete" (click)="removeNovelAction(novelCheckbox.novel)">
                 <i class="fa-solid fa-trash-alt"></i>
                 <span class="btn-name">Delete</span>
               </button>
@@ -373,29 +234,17 @@
         </tbody>
       </table>
 
-      <div
-        class="align-middle justify-content-center align-items-center text-center"
-      >
-        <button
-          (click)="getDataFromNextPage()"
-          *ngIf="getHowManyPagesToShow()"
-          type="button"
-          class="btn btn-light btn-outline-dark"
-          style="margin-bottom: 10px; font-size: 14px"
-        >
+      <div class="align-middle justify-content-center align-items-center text-center">
+        <button (click)="getDataFromNextPage()" *ngIf="getHowManyPagesToShow()" type="button"
+          class="btn btn-light btn-outline-dark" style="margin-bottom: 10px; font-size: 14px">
           Show {{ getHowManyPagesToShow() }} more
         </button>
         <div>
           Showing {{ novelCheckboxes.length }} out of
           {{ novelsPage.totalElements }} novels.
-          <button
-            (click)="getDataFromAllPages()"
-            *ngIf="novelCheckboxes.length !== novelsPage.totalElements"
-            type="button"
-            class="btn btn-link text-decoration-none"
-            aria-label="Show all novelCheckboxes"
-            style="padding: 0px; font-size: 14px"
-          >
+          <button (click)="getDataFromAllPages()" *ngIf="novelCheckboxes.length !== novelsPage.totalElements"
+            type="button" class="btn btn-link text-decoration-none" aria-label="Show all novelCheckboxes"
+            style="padding: 0px; font-size: 14px">
             Show all
           </button>
         </div>
