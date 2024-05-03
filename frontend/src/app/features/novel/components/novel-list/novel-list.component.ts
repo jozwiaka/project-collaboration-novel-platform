@@ -208,7 +208,7 @@ export class NovelListComponent implements OnInit {
     }
   }
 
-  createBlankNovel(): void {
+  showNewNovelDialog(): void {
     const dialogRef = this.dialog.open(NewNovelDialogComponent, {
       width: '600px',
       height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
@@ -244,7 +244,7 @@ export class NovelListComponent implements OnInit {
     });
   }
 
-  createNewTag(): void {
+  showNewTagDialog(): void {
     const dialogRef = this.dialog.open(NewTagDialogComponent, {
       width: '600px',
       height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
