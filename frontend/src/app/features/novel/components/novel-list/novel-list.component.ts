@@ -56,7 +56,7 @@ class NovelCheckbox {
 
 class TagCheckbox {
   tag: Tag;
-  private checked: boolean = true;
+  private checked: boolean = false;
 
   constructor(tag: Tag) {
     this.tag = tag;
