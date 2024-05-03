@@ -14,10 +14,7 @@ export class NewNovelDialogComponent {
   novelName: string = '';
   errorMessage: string = '';
 
-  constructor(
-    public dialogRef: MatDialogRef<NewNovelDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  constructor(public dialogRef: MatDialogRef<NewNovelDialogComponent>) {}
 
   onCancel(): void {
     this.dialogRef.close();

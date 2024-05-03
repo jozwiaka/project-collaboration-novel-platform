@@ -177,36 +177,11 @@ export class NovelListComponent implements OnInit {
   showNewNovelDialog(): void {
     const dialogRef = this.dialog.open(NewNovelDialogComponent, {
       width: '600px',
-      height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
-      data: {},
+      height: 'auto',
     });
 
     dialogRef.afterClosed().subscribe((novelTitle) => {
-      if (!this.authService.currentUser?.id || !novelTitle) {
-        return;
-      }
-      let novelData: NovelDTO = {
-        title: novelTitle,
-        authorId: this.authService.currentUser.id,
-      };
-      for (let i = 0; i < 1; i++) {
-        this.novelService.create(novelData).subscribe({
-          next: (response: NovelDTO) => {
-            if (this.authService?.currentUser?.id && response.id) {
-              let collaboratorData: CollaboratorDTO = {
-                userId: this.authService.currentUser.id,
-                novelId: response.id,
-                readOnly: false,
-              };
-              this.collaboratorService.create(collaboratorData).subscribe({
-                next: () => {
-                  this.router.navigateByUrl(`novel/${response.id}`);
-                },
-              });
-            }
-          },
-        });
-      }
+      this.createNovel(novelTitle);
     });
   }
 
@@ -225,6 +200,7 @@ export class NovelListComponent implements OnInit {
     const dialogRef = this.dialog.open(EditTagDialogComponent, {
       width: '600px',
       height: 'auto',
+      data: tag.name,
     });
 
     dialogRef.afterClosed().subscribe((newTagName) => {
@@ -482,8 +458,36 @@ export class NovelListComponent implements OnInit {
     this.tagCheckboxes.sort((a, b) => a.tag.name.localeCompare(b.tag.name));
   }
 
+  private createNovel(novelTitle: string) {
+    if (!this.authService.currentUser?.id || !novelTitle) {
+      return;
+    }
+    let novelData: NovelDTO = {
+      title: novelTitle,
+      authorId: this.authService.currentUser.id,
+    };
+    for (let i = 0; i < 1; i++) {
+      this.novelService.create(novelData).subscribe({
+        next: (response: NovelDTO) => {
+          if (this.authService?.currentUser?.id && response.id) {
+            let collaboratorData: CollaboratorDTO = {
+              userId: this.authService.currentUser.id,
+              novelId: response.id,
+              readOnly: false,
+            };
+            this.collaboratorService.create(collaboratorData).subscribe({
+              next: () => {
+                this.router.navigateByUrl(`novel/${response.id}`);
+              },
+            });
+          }
+        },
+      });
+    }
+  }
+
   private createTag(tagName: string) {
-    if (!this.authService.currentUser?.id) {
+    if (!this.authService.currentUser?.id || !tagName) {
       return;
     }
     let tagData: TagDTO = {
@@ -506,7 +510,11 @@ export class NovelListComponent implements OnInit {
   }
 
   private updateTag(tag: Tag, newTagName: string) {
-    if (!this.authService.currentUser?.id || newTagName === tag.name) {
+    if (
+      !this.authService.currentUser?.id ||
+      newTagName === tag.name ||
+      !newTagName
+    ) {
       return;
     }
     let tagData: TagDTO = tag.getData();

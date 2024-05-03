@@ -15,8 +15,11 @@ export class EditTagDialogComponent {
   errorMessage: string = '';
 
   constructor(
-    public dialogRef: MatDialogRef<EditTagDialogComponent> // @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+    public dialogRef: MatDialogRef<EditTagDialogComponent>, // @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: string
+  ) {
+    this.tagName = data;
+  }
 
   onCancel(): void {
     this.dialogRef.close();
