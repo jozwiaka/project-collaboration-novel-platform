@@ -127,37 +127,7 @@ export class NovelListComponent implements OnInit {
 
   ngOnInit(): void {
     this.changeNovelOption(NovelsFilterOption.AllNovels);
-    this.fetchInitialData();
-  }
-
-  fetchInitialData() {
-    this.fetchTags();
-  }
-
-  fetchTags() {
-    if (this.authService.currentUser?.id) {
-      const tagsSort: Sort = {
-        sortBy: TagsSortBy.Name,
-        direction: SortDirection.Desc,
-      };
-      this.tagService
-        .findByUserId(this.authService.currentUser?.id, tagsSort)
-        .pipe(
-          mergeMap((response: TagDTO[]) => {
-            return forkJoin(
-              response.map((tagData) => {
-                return this.tagService.build(tagData);
-              })
-            );
-          })
-        )
-        .subscribe({
-          next: (tags: Tag[]) => {
-            this.tagCheckboxes = tags.map((tag) => new TagCheckbox(tag));
-            this.sortTagCheckboxes();
-          },
-        });
-    }
+    this.fetchAuthUserTags();
   }
 
   navigateToUserSettings(): void {
@@ -359,6 +329,32 @@ export class NovelListComponent implements OnInit {
 
   getDataFromAllPages() {
     this.getDataFromPages(this.novelsPage.totalPages);
+  }
+
+  private fetchAuthUserTags() {
+    if (this.authService.currentUser?.id) {
+      const tagsSort: Sort = {
+        sortBy: TagsSortBy.Name,
+        direction: SortDirection.Desc,
+      };
+      this.tagService
+        .findByUserId(this.authService.currentUser?.id, tagsSort)
+        .pipe(
+          mergeMap((response: TagDTO[]) => {
+            return forkJoin(
+              response.map((tagData) => {
+                return this.tagService.build(tagData);
+              })
+            );
+          })
+        )
+        .subscribe({
+          next: (tags: Tag[]) => {
+            this.tagCheckboxes = tags.map((tag) => new TagCheckbox(tag));
+            this.sortTagCheckboxes();
+          },
+        });
+    }
   }
 
   private getDataFromPages(pages: number) {
