@@ -262,7 +262,7 @@ export class NovelListComponent implements OnInit {
     });
   }
 
-  onRemoveNovel(novel: Novel) {
+  removeNovelAction(novel: Novel) {
     this.removeNovel(novel).subscribe({
       next: () => {
         this.getDataFromCurrentPages();
@@ -279,7 +279,6 @@ export class NovelListComponent implements OnInit {
       if (!novel.id || !this.authService.currentUser?.id) {
         return of(null);
       }
-
       return this.removeNovel(novel);
     });
 
