@@ -260,7 +260,7 @@
                 type="checkbox"
                 value=""
                 id="checkAll"
-                (change)="allNovelsCheckboxesChanged($event)"
+                (change)="allNovelsCheckboxesChangedEvent($event)"
               />
             </th>
             <th scope="col table-header" class="w-50">
@@ -363,7 +363,7 @@
               <button
                 class="btn btn-link action-btn"
                 title="Delete"
-                (click)="removeNovel(novelCheckbox.novel)"
+                (click)="onRemoveNovel(novelCheckbox.novel)"
               >
                 <i class="fa-solid fa-trash-alt"></i>
                 <span class="btn-name">Delete</span>

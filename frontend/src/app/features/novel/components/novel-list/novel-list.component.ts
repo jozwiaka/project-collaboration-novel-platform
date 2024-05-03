@@ -192,7 +192,7 @@ export class NovelListComponent implements OnInit {
     return !!this.novelCheckboxes.find((ncb) => ncb.getChecked());
   }
 
-  allNovelsCheckboxesChanged(event: any) {
+  allNovelsCheckboxesChangedEvent(event: any) {
     if (event.target.checked) {
       this.novelCheckboxes.forEach((ncb) => {
         ncb.check();
@@ -246,73 +246,24 @@ export class NovelListComponent implements OnInit {
       height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
     });
 
-    dialogRef.afterClosed().subscribe((tagTitle) => {
-      if (!this.authService.currentUser?.id || !tagTitle) {
-        return;
-      }
-      let tagData: TagDTO = {
-        name: tagTitle,
-        userId: this.authService.currentUser.id,
-      };
-      this.tagService
-        .create(tagData)
-        .pipe(
-          mergeMap((response: TagDTO) => {
-            return this.tagService.build(response);
-          })
-        )
-        .subscribe({
-          next: (tag: Tag) => {
-            this.tagCheckboxes.push(new TagCheckbox(tag));
-            this.sortTagCheckboxes();
-          },
-        });
+    dialogRef.afterClosed().subscribe((tagName) => {
+      this.createTag(tagName);
     });
   }
 
   showEditTagDialog(tag: Tag): void {
     const dialogRef = this.dialog.open(EditTagDialogComponent, {
       width: '600px',
-      height: 'auto', // Set the height to auto to allow the dialog to adjust based on content
+      height: 'auto',
     });
 
-    dialogRef.afterClosed().subscribe((tagTitle) => {
-      if (!this.authService.currentUser?.id || !tagTitle) {
-        return;
-      }
-      let tagData: TagDTO = tag.getData();
-      tagData.name = tagTitle;
-
-      this.tagService.update(tagData).subscribe({
-        next: () => {
-          this.tagCheckboxes.forEach((tcb) => {
-            if (tcb.tag.id === tagData.id) {
-              tcb.tag.name = tagData.name;
-            }
-          });
-          this.sortTagCheckboxes();
-        },
-      });
+    dialogRef.afterClosed().subscribe((newTagName) => {
+      this.updateTag(tag, newTagName);
     });
   }
 
-  removeNovel(novel: Novel): void {
-    if (!novel.id || !novel.author.id || !this.authService.currentUser?.id) {
-      return;
-    }
-
-    const observable =
-      this.authService.currentUser.id === novel.author.id
-        ? this.novelService.remove(novel.id)
-        : this.collaboratorService
-            .findByNovelIdAndUserId(novel.id, this.authService.currentUser.id)
-            .pipe(
-              switchMap((response: CollaboratorDTO) =>
-                this.collaboratorService.remove(response.id)
-              )
-            );
-
-    observable.subscribe({
+  onRemoveNovel(novel: Novel) {
+    this.removeNovel(novel).subscribe({
       next: () => {
         this.getDataFromCurrentPages();
       },
@@ -329,17 +280,7 @@ export class NovelListComponent implements OnInit {
         return of(null);
       }
 
-      if (this.authService.currentUser.id === novel.author.id) {
-        return this.novelService.remove(novel.id);
-      } else {
-        return this.collaboratorService
-          .findByNovelIdAndUserId(novel.id, this.authService.currentUser.id)
-          .pipe(
-            mergeMap((response: CollaboratorDTO) =>
-              this.collaboratorService.remove(response.id)
-            )
-          );
-      }
+      return this.removeNovel(novel);
     });
 
     forkJoin(observables.filter((obs) => obs !== null)).subscribe({
@@ -544,5 +485,63 @@ export class NovelListComponent implements OnInit {
 
   private sortTagCheckboxes() {
     this.tagCheckboxes.sort((a, b) => a.tag.name.localeCompare(b.tag.name));
+  }
+
+  private createTag(tagName: string) {
+    if (!this.authService.currentUser?.id) {
+      return;
+    }
+    let tagData: TagDTO = {
+      name: tagName,
+      userId: this.authService.currentUser.id,
+    };
+    this.tagService
+      .create(tagData)
+      .pipe(
+        mergeMap((response: TagDTO) => {
+          return this.tagService.build(response);
+        })
+      )
+      .subscribe({
+        next: (tag: Tag) => {
+          this.tagCheckboxes.push(new TagCheckbox(tag));
+          this.sortTagCheckboxes();
+        },
+      });
+  }
+
+  private updateTag(tag: Tag, newTagName: string) {
+    if (!this.authService.currentUser?.id || newTagName === tag.name) {
+      return;
+    }
+    let tagData: TagDTO = tag.getData();
+    tagData.name = newTagName;
+
+    this.tagService.update(tagData).subscribe({
+      next: () => {
+        this.tagCheckboxes.forEach((tcb) => {
+          if (tcb.tag.id === tagData.id) {
+            tcb.tag.name = tagData.name;
+          }
+        });
+        this.sortTagCheckboxes();
+      },
+    });
+  }
+
+  private removeNovel(novel: Novel): Observable<any> {
+    if (!novel.id || !novel.author.id || !this.authService.currentUser?.id) {
+      return of(null);
+    }
+
+    return this.authService.currentUser.id === novel.author.id
+      ? this.novelService.remove(novel.id)
+      : this.collaboratorService
+          .findByNovelIdAndUserId(novel.id, this.authService.currentUser.id)
+          .pipe(
+            switchMap((response: CollaboratorDTO) =>
+              this.collaboratorService.remove(response.id)
+            )
+          );
   }
 }
