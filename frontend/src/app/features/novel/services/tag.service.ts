@@ -1,4 +1,4 @@
-import { Sort, SortDirection } from './../../../shared/models/api.models';
+import { Sort, SortDirection } from '../../../core/models/api.models';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
@@ -45,29 +45,57 @@ export class TagService {
     return this.http.delete<void>(url).pipe(catchError(this.handleError));
   }
 
-  findByUserId(userId: number, sort: Sort): Observable<TagDTO[]> {
+  findByUserId(
+    userId: number,
+    totalNumberOfPages: number,
+    sort: Sort
+  ): Observable<TagsResponse> {
     const urlStr = `${this.baseUrl}/search/findByUserId`;
     const url = new URL(urlStr);
     url.searchParams.set('userId', `${userId}`);
     url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
-    return this.http
-      .get<TagDTO[]>(url.toString())
-      .pipe(catchError(this.handleError));
+    return this.find(url, totalNumberOfPages);
   }
 
   findByUserIdAndNovelId(
     userId: number,
     novelId: number,
+    totalNumberOfPages: number,
     sort: Sort
-  ): Observable<TagDTO[]> {
+  ): Observable<TagsResponse> {
     const urlStr = `${this.baseUrl}/search/findByUserIdAndNovelTags_Novel_Id`;
     const url = new URL(urlStr);
     url.searchParams.set('userId', `${userId}`);
     url.searchParams.set('novelId', `${novelId}`);
     url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
-    return this.http
-      .get<TagDTO[]>(url.toString())
-      .pipe(catchError(this.handleError));
+    return this.find(url, totalNumberOfPages);
+  }
+
+  private find(url: URL, totalNumberOfPages: number): Observable<TagsResponse> {
+    const requests: Observable<TagsResponse>[] = [];
+    for (let pageNumber = 0; pageNumber < totalNumberOfPages; pageNumber++) {
+      url.searchParams.set('page', `${pageNumber}`);
+      requests.push(
+        this.http
+          .get<TagsResponse>(url.toString())
+          .pipe(catchError(this.handleError))
+      );
+    }
+    return forkJoin(requests).pipe(
+      map((responses: TagsResponse[]) => {
+        const latestPage =
+          responses.length > 0
+            ? responses[responses.length - 1].page
+            : { size: 0, totalElements: 0, totalPages: 0, number: 0 };
+        const allTags: TagDTO[] = responses.reduce(
+          (acc: TagDTO[], curr: TagsResponse) => {
+            return acc.concat(curr._embedded.tags);
+          },
+          []
+        );
+        return { _embedded: { tags: allTags }, page: latestPage };
+      })
+    );
   }
 
   public build(tagData: TagDTO): Observable<Tag> {

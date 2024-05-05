@@ -9,7 +9,7 @@ import { User } from 'src/app/core/models/user.model';
 import { NovelService } from './novel.service';
 import { UserDTO } from 'src/app/core/models/user-api.models';
 import { Novel } from '../models/novel.model';
-import { Sort } from 'src/app/shared/models/api.models';
+import { Sort } from 'src/app/core/models/api.models';
 
 @Injectable({
   providedIn: 'root',

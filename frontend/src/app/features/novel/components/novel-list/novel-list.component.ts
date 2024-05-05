@@ -7,7 +7,7 @@ import { mergeMap, forkJoin, map, switchMap, Observable, of } from 'rxjs';
 import { UserDTO } from 'src/app/core/models/user-api.models';
 import { CollaboratorDTO } from 'src/app/features/novel/models/collaborator-api.models';
 import { Novel } from 'src/app/features/novel/models/novel.model';
-import { Page, Sort, SortDirection } from 'src/app/shared/models/api.models';
+import { Page, Sort, SortDirection } from 'src/app/core/models/api.models';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NovelService } from 'src/app/features/novel/services/novel.service';
 import { TimeService } from 'src/app/core/services/time.service';
@@ -313,14 +313,14 @@ export class NovelListComponent implements OnInit {
     if (this.authService.currentUser?.id) {
       const tagsSort: Sort = {
         sortBy: TagsSortBy.Name,
-        direction: SortDirection.Desc,
+        direction: SortDirection.Asc,
       };
       this.tagService
-        .findByUserId(this.authService.currentUser?.id, tagsSort)
+        .findByUserId(this.authService.currentUser?.id, 1, tagsSort)
         .pipe(
-          mergeMap((response: TagDTO[]) => {
+          mergeMap((response: TagsResponse) => {
             return forkJoin(
-              response.map((tagData) => {
+              response._embedded.tags.map((tagData) => {
                 return this.tagService.build(tagData);
               })
             );
@@ -457,7 +457,7 @@ export class NovelListComponent implements OnInit {
   }
 
   private sortTagCheckboxes() {
-    // this.tagCheckboxes.sort((a, b) => a.tag.name.localeCompare(b.tag.name));
+    this.tagCheckboxes.sort((a, b) => a.tag.name.localeCompare(b.tag.name));
   }
 
   private createNovel(novelTitle: string) {

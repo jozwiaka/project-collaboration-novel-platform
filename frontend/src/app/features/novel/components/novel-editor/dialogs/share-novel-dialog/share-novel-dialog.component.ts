@@ -15,7 +15,7 @@ import {
   UsersSortBy,
 } from 'src/app/core/models/user-api.models';
 import { Novel } from '../../../../models/novel.model';
-import { Page, Sort, SortDirection } from 'src/app/shared/models/api.models';
+import { Page, Sort, SortDirection } from 'src/app/core/models/api.models';
 import { Collaborator } from '../../../../models/collaborator.model';
 import { map, mergeMap, forkJoin } from 'rxjs';
 

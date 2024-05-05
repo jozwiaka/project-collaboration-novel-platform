@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, forkJoin, map, throwError } from 'rxjs';
 import { UserDTO, UsersResponse } from '../models/user-api.models';
-import { Page, Sort } from '../../shared/models/api.models';
+import { Page, Sort } from '../models/api.models';
 
 @Injectable({
   providedIn: 'root',

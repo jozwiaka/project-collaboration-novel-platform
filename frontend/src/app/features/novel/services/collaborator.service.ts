@@ -13,7 +13,7 @@ import {
   CollaboratorDTO,
   CollaboratorsResponse,
 } from '../models/collaborator-api.models';
-import { Sort } from 'src/app/shared/models/api.models';
+import { Sort } from 'src/app/core/models/api.models';
 import { User } from 'src/app/core/models/user.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { Collaborator } from '../models/collaborator.model';

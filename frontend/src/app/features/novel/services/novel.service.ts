@@ -6,7 +6,7 @@ import { NovelDTO, NovelsResponse } from '../models/novel-api.models';
 import { UserService } from 'src/app/core/services/user.service';
 import { Novel } from '../models/novel.model';
 import { User } from 'src/app/core/models/user.model';
-import { Sort } from 'src/app/shared/models/api.models';
+import { Sort } from 'src/app/core/models/api.models';
 
 @Injectable({
   providedIn: 'root',

@@ -33,7 +33,7 @@ import {
 import { CollaborationService } from '../../services/collaboration.service';
 import { MessageService } from '../../services/message.service';
 import { MessageDTO, MessagesSortBy } from '../../models/message-api.models';
-import { Page, Sort, SortDirection } from 'src/app/shared/models/api.models';
+import { Page, Sort, SortDirection } from 'src/app/core/models/api.models';
 import { TimeService } from 'src/app/core/services/time.service';
 import { Collaborator } from '../../models/collaborator.model';
 import { CollaboratorService } from '../../services/collaborator.service';
