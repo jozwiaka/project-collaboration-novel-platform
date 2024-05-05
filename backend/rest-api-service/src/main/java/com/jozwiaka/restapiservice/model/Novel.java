@@ -39,6 +39,10 @@ public class Novel {
     @ManyToMany(mappedBy = "novel")
     private List<NovelTag> novelTags;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "novel_id")
+    private List<Tag> tags;
+
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
