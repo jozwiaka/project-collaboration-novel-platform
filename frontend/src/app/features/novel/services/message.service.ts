@@ -40,31 +40,22 @@ export class MessageService {
     return this.http.delete<void>(url).pipe(catchError(this.handleError));
   }
 
-  findAll(
-    totalNumberOfPages: number,
-    sort: Sort
-  ): Observable<MessagesResponse> {
-    const url = `${this.baseUrl}`;
-    return this.find(url, totalNumberOfPages, sort);
-  }
-
   findByNovelId(
     novelId: number,
     totalNumberOfPages: number,
     sort: Sort
   ): Observable<MessagesResponse> {
-    const url = `${this.baseUrl}/search/findByNovelId?novelId=${novelId}`;
-    return this.find(url, totalNumberOfPages, sort);
+    const url = new URL(`${this.baseUrl}/search/findByNovelId`);
+    url.searchParams.set('novelId', `${novelId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+
+    return this.find(url, totalNumberOfPages);
   }
 
   private find(
-    urlStr: string,
-    totalNumberOfPages: number,
-    sort: Sort
+    url: URL,
+    totalNumberOfPages: number
   ): Observable<MessagesResponse> {
-    const url = new URL(urlStr);
-    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
-
     const requests: Observable<MessagesResponse>[] = [];
     for (let pageNumber = 0; pageNumber < totalNumberOfPages; pageNumber++) {
       url.searchParams.set('page', `${pageNumber}`);

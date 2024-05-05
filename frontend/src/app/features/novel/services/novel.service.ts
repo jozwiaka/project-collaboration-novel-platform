@@ -40,18 +40,15 @@ export class NovelService {
     return this.http.delete<void>(url).pipe(catchError(this.handleError));
   }
 
-  findAll(totalNumberOfPages: number, sort: Sort): Observable<NovelsResponse> {
-    const url = `${this.baseUrl}`;
-    return this.find(url, totalNumberOfPages, sort);
-  }
-
   findByAuthorId(
     authorId: number,
     totalNumberOfPages: number,
     sort: Sort
   ): Observable<NovelsResponse> {
-    const url = `${this.baseUrl}/search/findByAuthorId?authorId=${authorId}`;
-    return this.find(url, totalNumberOfPages, sort);
+    const url = new URL(`${this.baseUrl}/search/findByAuthorId`);
+    url.searchParams.set('authorId', `${authorId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+    return this.find(url, totalNumberOfPages);
   }
 
   findSharedWithUserId(
@@ -59,8 +56,10 @@ export class NovelService {
     totalNumberOfPages: number,
     sort: Sort
   ): Observable<NovelsResponse> {
-    const url = `${this.baseUrl}/search/findSharedWithUserId?userId=${userId}`;
-    return this.find(url, totalNumberOfPages, sort);
+    const url = new URL(`${this.baseUrl}/search/findSharedWithUserId`);
+    url.searchParams.set('userId', `${userId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+    return this.find(url, totalNumberOfPages);
   }
 
   findByCollaboratorsUserId(
@@ -68,8 +67,10 @@ export class NovelService {
     totalNumberOfPages: number,
     sort: Sort
   ): Observable<NovelsResponse> {
-    const url = `${this.baseUrl}/search/findByCollaborators_User_Id?userId=${userId}`;
-    return this.find(url, totalNumberOfPages, sort);
+    const url = new URL(`${this.baseUrl}/search/findByCollaborators_User_Id`);
+    url.searchParams.set('userId', `${userId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+    return this.find(url, totalNumberOfPages);
   }
 
   findByTagId(
@@ -77,8 +78,10 @@ export class NovelService {
     totalNumberOfPages: number,
     sort: Sort
   ): Observable<NovelsResponse> {
-    const url = `${this.baseUrl}/search/findByNovelTags_Tag_Id?tagId=${tagId}`;
-    return this.find(url, totalNumberOfPages, sort);
+    const url = new URL(`${this.baseUrl}/search/findByNovelTags_Tag_Id`);
+    url.searchParams.set('tagId', `${tagId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+    return this.find(url, totalNumberOfPages);
   }
 
   findByAuthorIdAndTitleContaining(
@@ -87,8 +90,13 @@ export class NovelService {
     sort: Sort,
     title: string
   ): Observable<NovelsResponse> {
-    const url = `${this.baseUrl}/search/findByAuthorIdAndTitleContainingIgnoreCase?authorId=${authorId}&title=${title}`;
-    return this.find(url, totalNumberOfPages, sort);
+    const url = new URL(
+      `${this.baseUrl}/search/findByAuthorIdAndTitleContainingIgnoreCase`
+    );
+    url.searchParams.set('authorId', `${authorId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+    url.searchParams.set('title', `${title}`);
+    return this.find(url, totalNumberOfPages);
   }
 
   findSharedWithUserIdAndTitleContaining(
@@ -97,8 +105,13 @@ export class NovelService {
     sort: Sort,
     title: string
   ): Observable<NovelsResponse> {
-    const url = `${this.baseUrl}/search/findSharedWithUserIdAndTitleContainingIgnoreCase?userId=${userId}&title=${title}`;
-    return this.find(url, totalNumberOfPages, sort);
+    const url = new URL(
+      `${this.baseUrl}/search/findSharedWithUserIdAndTitleContainingIgnoreCase`
+    );
+    url.searchParams.set('userId', `${userId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+    url.searchParams.set('title', `${title}`);
+    return this.find(url, totalNumberOfPages);
   }
 
   findByCollaboratorsUserIdAndTitleContaining(
@@ -107,8 +120,13 @@ export class NovelService {
     sort: Sort,
     title: string
   ): Observable<NovelsResponse> {
-    const url = `${this.baseUrl}/search/findByCollaborators_User_IdAndTitleContainingIgnoreCase?userId=${userId}&title=${title}`;
-    return this.find(url, totalNumberOfPages, sort);
+    const url = new URL(
+      `${this.baseUrl}/search/findByCollaborators_User_IdAndTitleContainingIgnoreCase`
+    );
+    url.searchParams.set('userId', `${userId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+    url.searchParams.set('title', `${title}`);
+    return this.find(url, totalNumberOfPages);
   }
 
   findByTagIdAndTitleContaining(
@@ -117,18 +135,19 @@ export class NovelService {
     sort: Sort,
     title: string
   ): Observable<NovelsResponse> {
-    const url = `${this.baseUrl}/search/findByNovelTags_Tag_IdAndTitleContainingIgnoreCase?tagId=${tagId}&title=${title}`;
-    return this.find(url, totalNumberOfPages, sort);
+    const url = new URL(
+      `${this.baseUrl}/search/findByNovelTags_Tag_IdAndTitleContainingIgnoreCase`
+    );
+    url.searchParams.set('tagId', `${tagId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+    url.searchParams.set('title', `${title}`);
+    return this.find(url, totalNumberOfPages);
   }
 
   private find(
-    urlStr: string,
-    totalNumberOfPages: number,
-    sort: Sort
+    url: URL,
+    totalNumberOfPages: number
   ): Observable<NovelsResponse> {
-    const url = new URL(urlStr);
-    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
-
     const requests: Observable<NovelsResponse>[] = [];
     for (let pageNumber = 0; pageNumber < totalNumberOfPages; pageNumber++) {
       url.searchParams.set('page', `${pageNumber}`);

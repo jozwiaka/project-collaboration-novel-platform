@@ -63,8 +63,9 @@ export class TagService {
     totalNumberOfPages: number,
     sort: Sort
   ): Observable<TagsResponse> {
-    const urlStr = `${this.baseUrl}/search/findByUserIdAndNovelTags_Novel_Id`;
-    const url = new URL(urlStr);
+    const url = new URL(
+      `${this.baseUrl}/search/findByUserIdAndNovelTags_Novel_Id`
+    );
     url.searchParams.set('userId', `${userId}`);
     url.searchParams.set('novelId', `${novelId}`);
     url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);

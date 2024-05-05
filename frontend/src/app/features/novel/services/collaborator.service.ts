@@ -56,8 +56,10 @@ export class CollaboratorService {
     totalNumberOfPages: number,
     sort: Sort
   ): Observable<CollaboratorsResponse> {
-    const url = `${this.baseUrl}/search/findByNovelId?novelId=${novelId}`;
-    return this.find(url, totalNumberOfPages, sort);
+    const url = new URL(`${this.baseUrl}/search/findByNovelId`);
+    url.searchParams.set('novelId', `${novelId}`);
+    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
+    return this.find(url, totalNumberOfPages);
   }
 
   findByNovelIdAndUserId(
@@ -71,13 +73,9 @@ export class CollaboratorService {
   }
 
   private find(
-    urlStr: string,
-    totalNumberOfPages: number,
-    sort: Sort
+    url: URL,
+    totalNumberOfPages: number
   ): Observable<CollaboratorsResponse> {
-    const url = new URL(urlStr);
-    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
-
     const requests: Observable<CollaboratorsResponse>[] = [];
     for (let pageNumber = 0; pageNumber < totalNumberOfPages; pageNumber++) {
       url.searchParams.set('page', `${pageNumber}`);
