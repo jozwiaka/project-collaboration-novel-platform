@@ -63,7 +63,7 @@ export class TagService {
     const urlStr = `${this.baseUrl}/search/findByUserIdAndNovelTags_Novel_Id`;
     const url = new URL(urlStr);
     url.searchParams.set('userId', `${userId}`);
-    url.searchParams.set('novelId', `${userId}`);
+    url.searchParams.set('novelId', `${novelId}`);
     url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
     return this.http
       .get<TagDTO[]>(url.toString())
