@@ -457,7 +457,7 @@ export class NovelListComponent implements OnInit {
   }
 
   private sortTagCheckboxes() {
-    this.tagCheckboxes.sort((a, b) => a.tag.name.localeCompare(b.tag.name));
+    // this.tagCheckboxes.sort((a, b) => a.tag.name.localeCompare(b.tag.name));
   }
 
   private createNovel(novelTitle: string) {

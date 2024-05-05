@@ -1,4 +1,4 @@
-package com.jozwiaka.restapiservice.respository;
+package com.jozwiaka.restapiservice.repository;
 
 import com.jozwiaka.restapiservice.model.Novel;
 import org.springframework.data.domain.Page;

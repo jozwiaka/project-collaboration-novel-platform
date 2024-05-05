@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 public class NovelService {
 
     @Autowired
-    private com.jozwiaka.restapiservice.respository.NovelRepository novelRepository;
+    private com.jozwiaka.restapiservice.repository.NovelRepository novelRepository;
 
     @Autowired
-    private com.jozwiaka.restapiservice.respository.TagRepository tagRepository;
+    private com.jozwiaka.restapiservice.repository.TagRepository tagRepository;
 
     @Autowired
-    private com.jozwiaka.restapiservice.respository.NovelTagRepository novelTagRepository;
+    private com.jozwiaka.restapiservice.repository.NovelTagRepository novelTagRepository;
 
     public Tag addTagToNovel(Integer novelId, Tag tag) {
         Novel novel = novelRepository.findById(novelId).orElse(null);
