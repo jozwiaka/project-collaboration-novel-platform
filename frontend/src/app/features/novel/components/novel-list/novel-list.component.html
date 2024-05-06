@@ -191,7 +191,7 @@
           <tr *ngFor="let novelCheckbox of novelCheckboxes; let i = index">
             <td class="align-middle">
               <input class="form-check-input" type="checkbox" value="" [id]="novelCheckbox.novel.id"
-                (change)="novelCheckbox.toggleCheck()" [checked]="novelCheckbox.getChecked()" />
+                (change)="toggleNovelCheckbox(novelCheckbox)" [checked]="novelCheckbox.getChecked()" />
             </td>
             <!-- <td class="align-middle">{{ i + 1 }}</td> -->
             <td class="align-middle">

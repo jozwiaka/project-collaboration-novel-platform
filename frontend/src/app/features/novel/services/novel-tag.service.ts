@@ -7,7 +7,7 @@ import { NovelTagDTO } from '../models/novel-tag-api';
   providedIn: 'root',
 })
 export class NovelTagService {
-  private baseUrl = 'http://localhost:8080/api/novelTags';
+  private baseUrl = 'http://localhost:8080/api/novel-tags';
 
   constructor(private http: HttpClient) {}
 
@@ -15,6 +15,14 @@ export class NovelTagService {
     return this.http
       .post<NovelTagDTO>(this.baseUrl, novelTagData)
       .pipe(catchError(this.handleError));
+  }
+
+  findByNovelIdAndTagId(
+    novelId: number,
+    tagId: number
+  ): Observable<NovelTagDTO> {
+    const url = `${this.baseUrl}/search/findByNovelIdAndTagId?novelId=${novelId}&tagId=${tagId}`;
+    return this.http.get<NovelTagDTO>(url).pipe(catchError(this.handleError));
   }
 
   remove(id: number | undefined): Observable<void> {

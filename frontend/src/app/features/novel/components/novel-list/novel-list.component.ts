@@ -19,66 +19,11 @@ import { TagDTO, TagsSortBy } from '../../models/tag-api.models';
 import { Tag } from '../../models/tag.model';
 import { EditTagDialogComponent } from './dialogs/edit-tag-dialog/edit-tag-dialog.component';
 import { NovelTagService } from '../../services/novel-tag.service';
-
-enum NovelsFilterOption {
-  AllNovels = 'All Novels',
-  YourNovels = 'Your Novels',
-  SharedWithYou = 'Shared with you',
-}
-interface TagMenu {
-  tagId: number;
-  show: boolean;
-}
-
-class NovelCheckbox {
-  novel: Novel;
-  private checked: boolean = true;
-
-  constructor(novel: Novel) {
-    this.novel = novel;
-  }
-
-  getChecked(): boolean {
-    return this.checked;
-  }
-
-  toggleCheck() {
-    this.checked = !this.checked;
-  }
-
-  check() {
-    this.checked = true;
-  }
-
-  uncheck() {
-    this.checked = false;
-  }
-}
-
-class TagCheckbox {
-  tag: Tag;
-  private checked: boolean = false;
-
-  constructor(tag: Tag) {
-    this.tag = tag;
-  }
-
-  getChecked(): boolean {
-    return this.checked;
-  }
-
-  toggleCheck() {
-    this.checked = !this.checked;
-  }
-
-  check() {
-    this.checked = true;
-  }
-
-  uncheck() {
-    this.checked = false;
-  }
-}
+import { NovelTagDTO } from '../../models/novel-tag-api';
+import { NovelCheckbox } from './models/novel-checkbox.model';
+import { NovelsFilterOption } from './models/novels-filter-option.model';
+import { TagCheckbox } from './models/tag-checkbox.model';
+import { TagMenu } from './models/tag-menu.model';
 
 @Component({
   selector: 'app-novel-list',
@@ -154,10 +99,67 @@ export class NovelListComponent implements OnInit {
 
   toggleAddToTag() {
     this.showAddToTag = !this.showAddToTag;
+    if (this.showAddToTag) {
+      this.updateTagCheckboxes();
+    }
   }
 
   toggleTagCheckbox(tagCheckbox: TagCheckbox) {
     tagCheckbox.toggleCheck();
+    const checkedNovels = this.novelCheckboxes.filter((ncb) =>
+      ncb.getChecked()
+    );
+    if (tagCheckbox.getChecked()) {
+      forkJoin(
+        checkedNovels.map((ncb) => {
+          if (tagCheckbox.tag.id && ncb.novel.id) {
+            return this.novelTagService.create({
+              tagId: tagCheckbox.tag.id,
+              novelId: ncb.novel.id,
+            });
+          }
+          return of(null);
+        })
+      ).subscribe({
+        next: () => {
+          tagCheckbox.tag.novels.push(...checkedNovels.map((ncb) => ncb.novel));
+        },
+      });
+    } else {
+      // this.novelTagService
+      //   .findByNovelIdAndTagId(ncb.novel.id, tagCheckbox.tag.id)
+      //   .subscribe({
+      //     next: (novelTagData: NovelTagDTO) => {
+      //       console.log(novelTagData);
+      //       this.novelTagService.remove(novelTagData.id).subscribe();
+      //     },
+      //   });
+      forkJoin(
+        checkedNovels.map((ncb) => {
+          if (tagCheckbox.tag.id && ncb.novel.id) {
+            return this.novelTagService
+              .findByNovelIdAndTagId(ncb.novel.id, tagCheckbox.tag.id)
+              .pipe(
+                mergeMap((novelTagData: NovelTagDTO) => {
+                  return this.novelTagService.remove(novelTagData.id);
+                })
+              );
+          }
+          return of(null);
+        })
+      ).subscribe({
+        next: () => {
+          tagCheckbox.tag.novels = tagCheckbox.tag.novels.filter((novel) =>
+            checkedNovels.find((ncb) => ncb.novel.id === novel.id)
+          );
+        },
+      });
+    }
+  }
+
+  toggleNovelCheckbox(novelCheckbox: NovelCheckbox) {
+    novelCheckbox.toggleCheck();
+    this.updateTagCheckboxes();
   }
 
   showToolbar(): boolean {
@@ -307,6 +309,16 @@ export class NovelListComponent implements OnInit {
 
   getDataFromAllPages() {
     this.getDataFromPages(this.novelsPage.totalPages);
+  }
+
+  private updateTagCheckboxes() {
+    this.tagCheckboxes.forEach((tagcb) => {
+      this.novelCheckboxes.forEach((ncb) => {
+        !!tagcb.tag.novels.find((novel) => novel.id !== ncb.novel.id)
+          ? tagcb.check()
+          : tagcb.uncheck();
+      });
+    });
   }
 
   private fetchAuthUserTags() {

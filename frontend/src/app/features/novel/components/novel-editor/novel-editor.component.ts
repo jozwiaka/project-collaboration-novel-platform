@@ -46,16 +46,8 @@ import {
   CollaborationMessageResponse,
   CollaborationMessageTypeResponse,
 } from '../../models/collaboration-api.models';
-
-interface MessageData {
-  messages: Message[];
-  page: Page;
-}
-
-interface SuggestionOptions {
-  suggestionLength: number;
-  inputLength: number;
-}
+import { SuggestionOptions } from './models/suggestion-options.model';
+import { MessageData } from './models/message-data.model';
 
 @Component({
   selector: 'app-novel-editor',
@@ -281,7 +273,6 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
     if (!this.novel || this.novel?.content === this.editor.getText()) {
       return;
     }
-    console.log('save');
     const oldContent = this.novel.content;
     this.novel.content = this.editor.getText();
     this.novelService.update(this.novel.getData()).subscribe(() => {
