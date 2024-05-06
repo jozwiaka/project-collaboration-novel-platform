@@ -32,54 +32,6 @@ export class UserService {
     return this.http.delete<void>(url);
   }
 
-  findAll(totalNumberOfPages: number, sort: Sort): Observable<UsersResponse> {
-    const url = `${this.baseUrl}`;
-    return this.find(url, totalNumberOfPages, sort);
-  }
-
-  findByCollaboratorsNovelId(
-    novelId: number,
-    totalNumberOfPages: number,
-    sort: Sort
-  ): Observable<UsersResponse> {
-    const url = `${this.baseUrl}/search/findByCollaborators_Novel_Id?novelId=${novelId}`;
-    return this.find(url, totalNumberOfPages, sort);
-  }
-
-  private find(
-    urlStr: string,
-    totalNumberOfPages: number,
-    sort: Sort
-  ): Observable<UsersResponse> {
-    const url = new URL(urlStr);
-    url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
-
-    const requests: Observable<UsersResponse>[] = [];
-    for (let pageNumber = 0; pageNumber < totalNumberOfPages; pageNumber++) {
-      url.searchParams.set('page', `${pageNumber}`);
-      requests.push(
-        this.http
-          .get<UsersResponse>(url.toString())
-          .pipe(catchError(this.handleError))
-      );
-    }
-    return forkJoin(requests).pipe(
-      map((responses: UsersResponse[]) => {
-        const latestPage =
-          responses.length > 0
-            ? responses[responses.length - 1].page
-            : { size: 0, totalElements: 0, totalPages: 0, number: 0 };
-        const allUsers: UserDTO[] = responses.reduce(
-          (acc: UserDTO[], curr: UsersResponse) => {
-            return acc.concat(curr._embedded.users);
-          },
-          []
-        );
-        return { _embedded: { users: allUsers }, page: latestPage };
-      })
-    );
-  }
-
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An error occurred';
     if (error.error instanceof ErrorEvent) {

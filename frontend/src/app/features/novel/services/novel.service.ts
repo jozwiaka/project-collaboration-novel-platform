@@ -178,7 +178,7 @@ export class NovelService {
     return this.userService.findOne(novelData.authorId).pipe(
       mergeMap((authorData) => {
         const author = new User(authorData);
-        const novel = new Novel(novelData, author, []);
+        const novel = new Novel(novelData, author);
         return of(novel);
       })
     );

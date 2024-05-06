@@ -5,21 +5,21 @@ import { TagDTO } from './tag-api.models';
 export class Tag {
   id?: number;
   name: string;
-  user: User;
-  totalElements: number;
+  novels: Novel[];
+  private userId;
 
-  constructor(tagData: TagDTO, user: User, totalElements: number) {
+  constructor(tagData: TagDTO, novels: Novel[]) {
     this.id = tagData.id;
     this.name = tagData.name;
-    this.user = user;
-    this.totalElements = totalElements;
+    this.novels = novels;
+    this.userId = tagData.userId;
   }
 
   getData(): TagDTO {
     return {
       id: this.id,
       name: this.name,
-      userId: this.user.id ? this.user.id : 0,
+      userId: this.userId,
     };
   }
 }

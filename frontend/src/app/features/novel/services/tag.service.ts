@@ -10,6 +10,7 @@ import { UserDTO } from 'src/app/core/models/user-api.models';
 import { User } from 'src/app/core/models/user.model';
 import { Tag } from '../models/tag.model';
 import { NovelDTO, NovelsResponse } from '../models/novel-api.models';
+import { Novel } from '../models/novel.model';
 
 @Injectable({
   providedIn: 'root',
@@ -101,15 +102,26 @@ export class TagService {
 
   public build(tagData: TagDTO): Observable<Tag> {
     return forkJoin([
-      this.userService.findOne(tagData.userId),
-      this.novelService.findByTagId(tagData.id ? tagData.id : 0, 1, {
-        sortBy: '',
-        direction: SortDirection.Desc,
-      }),
+      this.novelService
+        .findByTagId(tagData.id ? tagData.id : 0, 1, {
+          sortBy: '',
+          direction: SortDirection.Desc,
+        })
+        .pipe(
+          mergeMap((novelsResponse: NovelsResponse) => {
+            if (!novelsResponse._embedded.novels.length) {
+              return of([]);
+            }
+            return forkJoin(
+              novelsResponse._embedded.novels.map((novelData) =>
+                this.novelService.build(novelData)
+              )
+            );
+          })
+        ),
     ]).pipe(
-      mergeMap(([userData, novelsResponse]: [UserDTO, NovelsResponse]) => {
-        const user = new User(userData);
-        const tag = new Tag(tagData, user, novelsResponse.page.totalElements);
+      mergeMap(([novels]: [Novel[]]) => {
+        const tag = new Tag(tagData, novels);
         return of(tag);
       })
     );

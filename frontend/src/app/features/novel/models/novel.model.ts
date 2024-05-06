@@ -10,16 +10,14 @@ export class Novel {
   content: string;
   createdAt?: string;
   updatedAt?: string;
-  tags: Tag[];
 
-  constructor(novelData: NovelDTO, author: User, tags: Tag[]) {
+  constructor(novelData: NovelDTO, author: User) {
     this.id = novelData.id;
     this.title = novelData.title;
     this.content = novelData.content ? novelData.content : '';
     this.author = author;
     this.createdAt = novelData.createdAt;
     this.updatedAt = novelData.updatedAt;
-    this.tags = tags;
   }
 
   getData(): NovelDTO {
