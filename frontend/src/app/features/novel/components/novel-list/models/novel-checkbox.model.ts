@@ -2,7 +2,7 @@ import { Novel } from '../../../models/novel.model';
 
 export class NovelCheckbox {
   novel: Novel;
-  private checked: boolean = true;
+  private checked: boolean = false;
 
   constructor(novel: Novel) {
     this.novel = novel;
