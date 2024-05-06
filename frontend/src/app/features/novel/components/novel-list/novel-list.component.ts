@@ -106,33 +106,30 @@ export class NovelListComponent implements OnInit {
 
   toggleTagCheckbox(tagCheckbox: TagCheckbox) {
     tagCheckbox.toggleCheck();
-    const checkedNovels = this.novelCheckboxes.filter((ncb) =>
-      ncb.getChecked()
-    );
+    const checkedNovels = this.getCheckedNovels();
+
     tagCheckbox.getChecked()
       ? forkJoin(
-          checkedNovels.map((ncb) => {
-            if (tagCheckbox.tag.id && ncb.novel.id) {
+          checkedNovels.map((novel) => {
+            if (tagCheckbox.tag.id && novel.id) {
               return this.novelTagService.create({
                 tagId: tagCheckbox.tag.id,
-                novelId: ncb.novel.id,
+                novelId: novel.id,
               });
             }
             return of(null);
           })
         ).subscribe({
           next: () => {
-            tagCheckbox.tag.novels.push(
-              ...checkedNovels.map((ncb) => ncb.novel)
-            );
+            tagCheckbox.tag.novels.push(...checkedNovels.map((novel) => novel));
             this.getDataFromCurrentPages();
           },
         })
       : forkJoin(
-          checkedNovels.map((ncb) => {
-            if (tagCheckbox.tag.id && ncb.novel.id) {
+          checkedNovels.map((novel) => {
+            if (tagCheckbox.tag.id && novel.id) {
               return this.novelTagService
-                .findByNovelIdAndTagId(ncb.novel.id, tagCheckbox.tag.id)
+                .findByNovelIdAndTagId(novel.id, tagCheckbox.tag.id)
                 .pipe(
                   mergeMap((novelTagData: NovelTagDTO) => {
                     return this.novelTagService.remove(novelTagData.id);
@@ -145,7 +142,9 @@ export class NovelListComponent implements OnInit {
           next: () => {
             tagCheckbox.tag.novels = tagCheckbox.tag.novels.filter(
               (novel) =>
-                !!!checkedNovels.find((ncb) => ncb.novel.id !== novel.id)
+                !!!checkedNovels.find(
+                  (checkedNovel) => checkedNovel.id !== novel.id
+                )
             );
             this.getDataFromCurrentPages();
           },
@@ -307,12 +306,18 @@ export class NovelListComponent implements OnInit {
   }
 
   private updateTagCheckboxes() {
-    this.tagCheckboxes.forEach((tagcb) => {
-      this.novelCheckboxes.forEach((ncb) => {
-        !!tagcb.tag.novels.find((novel) => novel.id !== ncb.novel.id)
-          ? tagcb.check()
-          : tagcb.uncheck();
+    const checkedNovels = this.getCheckedNovels();
+
+    this.tagCheckboxes.forEach((tcb) => {
+      tcb.uncheck();
+
+      const novelFound = checkedNovels.find((checkedNovel) => {
+        return tcb.tag.novels.find((novel) => novel.id === checkedNovel.id);
       });
+
+      if (novelFound) {
+        tcb.check();
+      }
     });
   }
 
@@ -555,5 +560,11 @@ export class NovelListComponent implements OnInit {
               this.collaboratorService.remove(response.id)
             )
           );
+  }
+
+  private getCheckedNovels(): Novel[] {
+    return this.novelCheckboxes
+      .filter((ncb) => ncb.getChecked())
+      .map((ncb) => ncb.novel);
   }
 }
