@@ -114,6 +114,7 @@ export class NovelListComponent implements OnInit {
           (tagNovel) => tagNovel.id === checkedNovel.id
         )
     );
+
     tagCheckbox.getChecked()
       ? forkJoin(
           checkedNovelsToAdd.map((novel) => {
@@ -160,7 +161,21 @@ export class NovelListComponent implements OnInit {
                   (checkedNovel) => checkedNovel.id === novel.id
                 )
             );
-            console.log(tagCheckbox.tag.novels.length);
+
+            this.novelCheckboxes.forEach((novelCheckbox) => {
+              if (
+                checkedNovels.find(
+                  (checkedNovel) => checkedNovel.id === novelCheckbox.novel.id
+                )
+              ) {
+                novelCheckbox.uncheck();
+              }
+            });
+
+            this.getCheckedNovels().length === this.novelCheckboxes.length
+              ? (this.checkAllNovelCheckboxes = true)
+              : (this.checkAllNovelCheckboxes = false);
+
             this.getNovelsFromCurrentPages();
           },
         });
@@ -291,6 +306,8 @@ export class NovelListComponent implements OnInit {
 
   changeNovelsFilterOption(newNovelsFilterOption: string): void {
     this.checkAllNovelCheckboxes = false;
+    this.novelCheckboxes.forEach((novelCheckbox) => novelCheckbox.uncheck());
+
     this.resetOptions();
     this.novelsFilterOption = newNovelsFilterOption;
     this.getNovelsFromPages(1);
@@ -476,7 +493,21 @@ export class NovelListComponent implements OnInit {
         )
         .subscribe({
           next: ({ novels, novelsPage }) => {
+            const prevNovelCheckboxes = this.novelCheckboxes;
             this.novelCheckboxes = novels.map((n) => new NovelCheckbox(n));
+
+            this.novelCheckboxes.forEach((novelCheckbox) => {
+              const prevNovelCheckbox = prevNovelCheckboxes.find(
+                (prevNovelCheckbox) =>
+                  prevNovelCheckbox.novel.id === novelCheckbox.novel.id
+              );
+              if (prevNovelCheckbox) {
+                prevNovelCheckbox.getChecked()
+                  ? novelCheckbox.check()
+                  : novelCheckbox.uncheck();
+              }
+            });
+
             this.novelsPage = novelsPage;
           },
           error: (err) => {},
