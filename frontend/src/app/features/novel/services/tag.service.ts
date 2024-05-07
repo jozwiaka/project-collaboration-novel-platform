@@ -11,6 +11,7 @@ import { User } from 'src/app/core/models/user.model';
 import { Tag } from '../models/tag.model';
 import { NovelDTO, NovelsResponse } from '../models/novel-api.models';
 import { Novel } from '../models/novel.model';
+import { ColorService } from 'src/app/core/services/color.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,8 @@ export class TagService {
   constructor(
     private http: HttpClient,
     private userService: UserService,
-    private novelService: NovelService
+    private novelService: NovelService,
+    private colorService: ColorService
   ) {}
 
   findOne(id: number): Observable<TagDTO> {
@@ -121,7 +123,11 @@ export class TagService {
         ),
     ]).pipe(
       mergeMap(([novels]: [Novel[]]) => {
-        const tag = new Tag(tagData, novels);
+        const tag = new Tag(
+          tagData,
+          novels,
+          this.colorService.getRandomColor()
+        );
         return of(tag);
       })
     );

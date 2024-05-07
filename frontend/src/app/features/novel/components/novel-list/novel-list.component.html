@@ -54,6 +54,7 @@
                 text-wrap: wrap;
               " [id]="tagCheckbox.tag.id" (click)="changeNovelsFilterOption(tagCheckbox.tag.name)">
               <span class="name text-light">
+                <i class="fa-solid fa-tag" style="padding-right:5px" [style.color]="tagCheckbox.tag.color"></i>
                 {{ tagCheckbox.tag.name }}
                 <span class="subdued text-secondary">
                   ({{ tagCheckbox.tag.novels.length }})
@@ -193,10 +194,15 @@
               <input class="form-check-input" type="checkbox" value="" [id]="novelCheckbox.novel.id"
                 (change)="toggleNovelCheckbox(novelCheckbox)" [checked]="novelCheckbox.getChecked()" />
             </td>
-            <!-- <td class="align-middle">{{ i + 1 }}</td> -->
             <td class="align-middle">
               <a [href]="'novel/' + novelCheckbox.novel.id" class="text-decoration-none">{{ novelCheckbox.novel.title
                 }}</a>
+
+              <div *ngFor="let tag of getNovelTags(novelCheckbox.novel); let i = index" class="tag-label"><button
+                  class="label label-default tag-label-name" aria-label="Select tag CV"><span
+                    [style.color]="tag.color"><i class="fa fa-circle" aria-hidden="true"></i></span>
+                  {{tag.name}}</button><button class="label label-default tag-label-remove"
+                  aria-label="Remove tag CV"><span aria-hidden="true">×</span></button></div>
             </td>
             <td class="align-middle">
               {{ getOwnerName(novelCheckbox.novel.author) }}

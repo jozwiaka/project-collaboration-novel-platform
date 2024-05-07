@@ -78,6 +78,14 @@ export class NovelListComponent implements OnInit {
     this.fetchAuthUserTags();
   }
 
+  getNovelTags(novel: Novel): Tag[] {
+    return this.tagCheckboxes
+      .map((tagCheckbox) => {
+        return tagCheckbox.tag;
+      })
+      .filter((tag) => tag.novels.find((n) => n.id === novel.id));
+  }
+
   navigateToUserSettings(): void {
     this.router.navigate(['/user/settings']);
   }
