@@ -83,7 +83,7 @@ export class NovelListComponent implements OnInit {
   }
 
   onSearchChange(): void {
-    this.getDataFromCurrentPages();
+    this.getNovelsFromCurrentPages();
   }
 
   toggleTagMenu(tagId: number | undefined): void {
@@ -136,7 +136,7 @@ export class NovelListComponent implements OnInit {
             tagCheckbox.tag.novels.push(
               ...checkedNovelsToAdd.map((novel) => novel)
             );
-            this.getDataFromCurrentPages();
+            this.getNovelsFromCurrentPages();
           },
         })
       : forkJoin(
@@ -161,7 +161,7 @@ export class NovelListComponent implements OnInit {
                 )
             );
             console.log(tagCheckbox.tag.novels.length);
-            this.getDataFromCurrentPages();
+            this.getNovelsFromCurrentPages();
           },
         });
   }
@@ -226,7 +226,7 @@ export class NovelListComponent implements OnInit {
   removeNovelAction(novel: Novel) {
     this.removeNovelObservable(novel).subscribe({
       next: () => {
-        this.getDataFromCurrentPages();
+        this.getNovelsFromCurrentPages();
       },
     });
   }
@@ -245,7 +245,7 @@ export class NovelListComponent implements OnInit {
 
     forkJoin(observables.filter((obs) => obs !== null)).subscribe({
       next: () => {
-        this.getDataFromCurrentPages();
+        this.getNovelsFromCurrentPages();
       },
     });
   }
@@ -293,7 +293,7 @@ export class NovelListComponent implements OnInit {
     this.checkAllNovelCheckboxes = false;
     this.resetOptions();
     this.novelsFilterOption = newNovelsFilterOption;
-    this.getDataFromPages(1);
+    this.getNovelsFromPages(1);
   }
 
   changeSortBy(newSortBy: NovelsSortBy): void {
@@ -307,20 +307,20 @@ export class NovelListComponent implements OnInit {
       this.novelsSort.sortBy = newSortBy;
       this.novelsSort.direction = SortDirection.Desc;
     }
-    this.getDataFromCurrentPages();
+    this.getNovelsFromCurrentPages();
   }
 
-  getDataFromCurrentPages() {
-    this.getDataFromPages(this.novelsPage.number + 1);
+  getNovelsFromCurrentPages() {
+    this.getNovelsFromPages(this.novelsPage.number + 1);
   }
 
-  getDataFromNextPage() {
+  getNovelsFromNextPage() {
     this.novelsPage.number++;
-    this.getDataFromPages(this.novelsPage.number + 1);
+    this.getNovelsFromPages(this.novelsPage.number + 1);
   }
 
-  getDataFromAllPages() {
-    this.getDataFromPages(this.novelsPage.totalPages);
+  getNovelsFromAllPages() {
+    this.getNovelsFromPages(this.novelsPage.totalPages);
   }
 
   private updateTagCheckboxes() {
@@ -363,7 +363,7 @@ export class NovelListComponent implements OnInit {
     }
   }
 
-  private getDataFromPages(pages: number) {
+  private getNovelsFromPages(pages: number) {
     let userData = this.authService.currentUser;
     if (userData?.id) {
       let serviceMethod;

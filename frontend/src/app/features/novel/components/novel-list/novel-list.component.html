@@ -235,14 +235,14 @@
       </table>
 
       <div class="align-middle justify-content-center align-items-center text-center">
-        <button (click)="getDataFromNextPage()" *ngIf="getHowManyPagesToShow()" type="button"
+        <button (click)="getNovelsFromNextPage()" *ngIf="getHowManyPagesToShow()" type="button"
           class="btn btn-light btn-outline-dark" style="margin-bottom: 10px; font-size: 14px">
           Show {{ getHowManyPagesToShow() }} more
         </button>
         <div>
           Showing {{ novelCheckboxes.length }} out of
           {{ novelsPage.totalElements }} novels.
-          <button (click)="getDataFromAllPages()" *ngIf="novelCheckboxes.length !== novelsPage.totalElements"
+          <button (click)="getNovelsFromAllPages()" *ngIf="novelCheckboxes.length !== novelsPage.totalElements"
             type="button" class="btn btn-link text-decoration-none" aria-label="Show all novelCheckboxes"
             style="padding: 0px; font-size: 14px">
             Show all
