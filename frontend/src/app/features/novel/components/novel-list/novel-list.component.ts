@@ -49,6 +49,7 @@ export class NovelListComponent implements OnInit {
 
   novelCheckboxes: NovelCheckbox[] = [];
   tagCheckboxes: TagCheckbox[] = [];
+  checkAllNovelCheckboxes = false;
 
   searchOption: string = '';
   searchQuery: string = '';
@@ -73,7 +74,7 @@ export class NovelListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.changeNovelOption(NovelsFilterOption.AllNovels);
+    this.changeNovelsFilterOption(NovelsFilterOption.AllNovels);
     this.fetchAuthUserTags();
   }
 
@@ -107,10 +108,16 @@ export class NovelListComponent implements OnInit {
   toggleTagCheckbox(tagCheckbox: TagCheckbox) {
     tagCheckbox.toggleCheck();
     const checkedNovels = this.getCheckedNovels();
+    const checkedNovelsToAdd = checkedNovels.filter(
+      (checkedNovel) =>
+        !tagCheckbox.tag.novels.find(
+          (tagNovel) => tagNovel.id === checkedNovel.id
+        )
+    );
 
     tagCheckbox.getChecked()
       ? forkJoin(
-          checkedNovels.map((novel) => {
+          checkedNovelsToAdd.map((novel) => {
             if (
               !tagCheckbox.tag.novels.find(
                 (tagNovel) => tagNovel.id === novel.id
@@ -127,7 +134,9 @@ export class NovelListComponent implements OnInit {
           })
         ).subscribe({
           next: () => {
-            tagCheckbox.tag.novels.push(...checkedNovels.map((novel) => novel));
+            tagCheckbox.tag.novels.push(
+              ...checkedNovelsToAdd.map((novel) => novel)
+            );
             this.getDataFromCurrentPages();
           },
         })
@@ -148,10 +157,11 @@ export class NovelListComponent implements OnInit {
           next: () => {
             tagCheckbox.tag.novels = tagCheckbox.tag.novels.filter(
               (novel) =>
-                !!!checkedNovels.find(
-                  (checkedNovel) => checkedNovel.id !== novel.id
+                !checkedNovels.find(
+                  (checkedNovel) => checkedNovel.id === novel.id
                 )
             );
+            console.log(tagCheckbox.tag.novels.length);
             this.getDataFromCurrentPages();
           },
         });
@@ -166,16 +176,15 @@ export class NovelListComponent implements OnInit {
     return !!this.novelCheckboxes.find((ncb) => ncb.getChecked());
   }
 
-  allNovelsCheckboxesChangedEvent(event: any) {
-    if (event.target.checked) {
-      this.novelCheckboxes.forEach((ncb) => {
-        ncb.check();
-      });
-    } else {
-      this.novelCheckboxes.forEach((ncb) => {
-        ncb.uncheck();
-      });
-    }
+  allNovelsCheckboxesChangedEvent() {
+    this.checkAllNovelCheckboxes = !this.checkAllNovelCheckboxes;
+    this.checkAllNovelCheckboxes
+      ? this.novelCheckboxes.forEach((ncb) => {
+          ncb.check();
+        })
+      : this.novelCheckboxes.forEach((ncb) => {
+          ncb.uncheck();
+        });
   }
 
   showNewNovelDialog(): void {
@@ -278,7 +287,8 @@ export class NovelListComponent implements OnInit {
     };
   }
 
-  changeNovelOption(newNovelsFilterOption: string): void {
+  changeNovelsFilterOption(newNovelsFilterOption: string): void {
+    this.checkAllNovelCheckboxes = false;
     this.resetOptions();
     this.novelsFilterOption = newNovelsFilterOption;
     this.getDataFromPages(1);

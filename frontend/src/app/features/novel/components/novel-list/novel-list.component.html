@@ -15,19 +15,19 @@
       </div>
       <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px" [ngClass]="{
           'bg-dark': novelsFilterOption === NovelsFilterOption.AllNovels
-        }" (click)="changeNovelOption(NovelsFilterOption.AllNovels)">
+        }" (click)="changeNovelsFilterOption(NovelsFilterOption.AllNovels)">
         {{ NovelsFilterOption.AllNovels }}
       </button>
 
       <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px" [ngClass]="{
           'bg-dark': novelsFilterOption === NovelsFilterOption.YourNovels
-        }" (click)="changeNovelOption(NovelsFilterOption.YourNovels)">
+        }" (click)="changeNovelsFilterOption(NovelsFilterOption.YourNovels)">
         {{ NovelsFilterOption.YourNovels }}
       </button>
 
       <button type="button" class="btn w-100 text-light border-0" style="text-align: left; font-size: 16px" [ngClass]="{
           'bg-dark': novelsFilterOption === NovelsFilterOption.SharedWithYou
-        }" (click)="changeNovelOption(NovelsFilterOption.SharedWithYou)">
+        }" (click)="changeNovelsFilterOption(NovelsFilterOption.SharedWithYou)">
         {{ NovelsFilterOption.SharedWithYou }}
       </button>
 
@@ -52,7 +52,7 @@
                 word-wrap: break-word;
                 white-space: pre-line;
                 text-wrap: wrap;
-              " [id]="tagCheckbox.tag.id" (click)="changeNovelOption(tagCheckbox.tag.name)">
+              " [id]="tagCheckbox.tag.id" (click)="changeNovelsFilterOption(tagCheckbox.tag.name)">
               <span class="name text-light">
                 {{ tagCheckbox.tag.name }}
                 <span class="subdued text-secondary">
@@ -156,7 +156,7 @@
           <tr>
             <th scope="col table-header" class="align-middle">
               <input class="form-check-input" type="checkbox" value="" id="checkAll"
-                (change)="allNovelsCheckboxesChangedEvent($event)" />
+                (change)="allNovelsCheckboxesChangedEvent()" [checked]="checkAllNovelCheckboxes" />
             </th>
             <th scope="col table-header" class="w-50">
               <button class="btn table-header border-0" (click)="changeSortBy(NovelsSortBy.Title)">
