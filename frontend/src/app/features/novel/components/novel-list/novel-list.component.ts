@@ -111,11 +111,17 @@ export class NovelListComponent implements OnInit {
     tagCheckbox.getChecked()
       ? forkJoin(
           checkedNovels.map((novel) => {
-            if (tagCheckbox.tag.id && novel.id) {
-              return this.novelTagService.create({
-                tagId: tagCheckbox.tag.id,
-                novelId: novel.id,
-              });
+            if (
+              !tagCheckbox.tag.novels.find(
+                (tagNovel) => tagNovel.id === novel.id
+              )
+            ) {
+              if (tagCheckbox.tag.id && novel.id) {
+                return this.novelTagService.create({
+                  tagId: tagCheckbox.tag.id,
+                  novelId: novel.id,
+                });
+              }
             }
             return of(null);
           })
@@ -309,15 +315,13 @@ export class NovelListComponent implements OnInit {
     const checkedNovels = this.getCheckedNovels();
 
     this.tagCheckboxes.forEach((tcb) => {
-      tcb.uncheck();
-
-      const novelFound = checkedNovels.find((checkedNovel) => {
-        return tcb.tag.novels.find((novel) => novel.id === checkedNovel.id);
+      let foundNovels = 0;
+      checkedNovels.forEach((checkedNovel) => {
+        if (tcb.tag.novels.find((novel) => novel.id === checkedNovel.id)) {
+          foundNovels++;
+        }
       });
-
-      if (novelFound) {
-        tcb.check();
-      }
+      foundNovels === checkedNovels.length ? tcb.check() : tcb.uncheck();
     });
   }
 
