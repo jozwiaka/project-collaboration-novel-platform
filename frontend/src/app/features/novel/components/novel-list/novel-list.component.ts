@@ -106,69 +106,71 @@ export class NovelListComponent implements OnInit {
   }
 
   toggleTagCheckbox(tagCheckbox: TagCheckbox) {
-    tagCheckbox.toggleCheck();
-    const checkedNovels = this.getCheckedNovels();
-    const checkedNovelsToAdd = checkedNovels.filter(
-      (checkedNovel) =>
-        !tagCheckbox.tag.novels.find(
-          (tagNovel) => tagNovel.id === checkedNovel.id
-        )
-    );
-
-    tagCheckbox.getChecked()
-      ? forkJoin(
-          checkedNovelsToAdd.map((novel) => {
-            if (
-              !tagCheckbox.tag.novels.find(
-                (tagNovel) => tagNovel.id === novel.id
-              )
-            ) {
-              if (tagCheckbox.tag.id && novel.id) {
-                return this.novelTagService.create({
-                  tagId: tagCheckbox.tag.id,
-                  novelId: novel.id,
-                });
-              }
-            }
-            return of(null);
-          })
-        ).subscribe({
-          next: () => {
-            tagCheckbox.tag.novels.push(
-              ...checkedNovelsToAdd.map((novel) => novel)
-            );
-            this.getDataFromCurrentPages();
-          },
-        })
-      : forkJoin(
-          checkedNovels.map((novel) => {
-            if (tagCheckbox.tag.id && novel.id) {
-              return this.novelTagService
-                .findByNovelIdAndTagId(novel.id, tagCheckbox.tag.id)
-                .pipe(
-                  mergeMap((novelTagData: NovelTagDTO) => {
-                    return this.novelTagService.remove(novelTagData.id);
-                  })
-                );
-            }
-            return of(null);
-          })
-        ).subscribe({
-          next: () => {
-            tagCheckbox.tag.novels = tagCheckbox.tag.novels.filter(
-              (novel) =>
-                !checkedNovels.find(
-                  (checkedNovel) => checkedNovel.id === novel.id
-                )
-            );
-            console.log(tagCheckbox.tag.novels.length);
-            this.getDataFromCurrentPages();
-          },
-        });
+    // tagCheckbox.toggleCheck();
+    // const checkedNovels = this.getCheckedNovels();
+    // const checkedNovelsToAdd = checkedNovels.filter(
+    //   (checkedNovel) =>
+    //     !tagCheckbox.tag.novels.find(
+    //       (tagNovel) => tagNovel.id === checkedNovel.id
+    //     )
+    // );
+    // tagCheckbox.getChecked()
+    //   ? forkJoin(
+    //       checkedNovelsToAdd.map((novel) => {
+    //         if (
+    //           !tagCheckbox.tag.novels.find(
+    //             (tagNovel) => tagNovel.id === novel.id
+    //           )
+    //         ) {
+    //           if (tagCheckbox.tag.id && novel.id) {
+    //             return this.novelTagService.create({
+    //               tagId: tagCheckbox.tag.id,
+    //               novelId: novel.id,
+    //             });
+    //           }
+    //         }
+    //         return of(null);
+    //       })
+    //     ).subscribe({
+    //       next: () => {
+    //         tagCheckbox.tag.novels.push(
+    //           ...checkedNovelsToAdd.map((novel) => novel)
+    //         );
+    //         this.getDataFromCurrentPages();
+    //       },
+    //     })
+    //   : forkJoin(
+    //       checkedNovels.map((novel) => {
+    //         if (tagCheckbox.tag.id && novel.id) {
+    //           return this.novelTagService
+    //             .findByNovelIdAndTagId(novel.id, tagCheckbox.tag.id)
+    //             .pipe(
+    //               mergeMap((novelTagData: NovelTagDTO) => {
+    //                 return this.novelTagService.remove(novelTagData.id);
+    //               })
+    //             );
+    //         }
+    //         return of(null);
+    //       })
+    //     ).subscribe({
+    //       next: () => {
+    //         tagCheckbox.tag.novels = tagCheckbox.tag.novels.filter(
+    //           (novel) =>
+    //             !checkedNovels.find(
+    //               (checkedNovel) => checkedNovel.id === novel.id
+    //             )
+    //         );
+    //         console.log(tagCheckbox.tag.novels.length);
+    //         this.getDataFromCurrentPages();
+    //       },
+    //     });
   }
 
   toggleNovelCheckbox(novelCheckbox: NovelCheckbox) {
     novelCheckbox.toggleCheck();
+    this.getCheckedNovels().length === this.novelCheckboxes.length
+      ? (this.checkAllNovelCheckboxes = true)
+      : (this.checkAllNovelCheckboxes = false);
     this.updateTagCheckboxes();
   }
 
