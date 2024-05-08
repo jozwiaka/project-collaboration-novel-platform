@@ -491,12 +491,8 @@ export class NovelListComponent implements OnInit {
                   : novelCheckbox.uncheck();
               }
             });
-
-            console.log('update');
-
-            this.updateSelectAllNovels();
-
             this.novelsPage = novelsPage;
+            this.updateSelectAllNovels();
           },
           error: (err) => {},
         });
@@ -617,7 +613,6 @@ export class NovelListComponent implements OnInit {
   }
 
   private updateSelectAllNovels() {
-    console.log(this.getCheckedNovels().length);
     this.getCheckedNovels().length === this.novelCheckboxes.length &&
     this.getCheckedNovels().length !== 0
       ? (this.selectAllNovels = true)
