@@ -1,3 +1,4 @@
+import { CopyNovelDialogComponent } from './components/novel-list/dialogs/copy-novel-dialog/copy-novel-dialog.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -18,12 +19,15 @@ import { ResizableModule } from 'angular-resizable-element';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NewTagDialogComponent } from './components/novel-list/dialogs/new-tag-dialog/new-tag-dialog.component';
 import { EditTagDialogComponent } from './components/novel-list/dialogs/edit-tag-dialog/edit-tag-dialog.component';
+import { RenameNovelDialogComponent } from './components/novel-list/dialogs/rename-novel-dialog/rename-novel-dialog.component';
 
 @NgModule({
   declarations: [
     NovelListComponent,
     NovelEditorComponent,
     NewNovelDialogComponent,
+    RenameNovelDialogComponent,
+    CopyNovelDialogComponent,
     NewTagDialogComponent,
     EditTagDialogComponent,
     ShareNovelDialogComponent,
