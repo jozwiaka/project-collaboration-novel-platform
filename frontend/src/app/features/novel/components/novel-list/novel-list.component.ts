@@ -140,8 +140,8 @@ export class NovelListComponent implements OnInit {
             (n) => n.id !== novel.id
           );
 
-          this.updateSelectAllNovels();
           this.getNovelsFromCurrentPages();
+          this.updateSelectAllNovels();
         },
       });
   }
@@ -521,6 +521,7 @@ export class NovelListComponent implements OnInit {
             });
             this.novelsPage = novelsPage;
             this.updateSelectAllNovels();
+            this.updateTagCheckboxes();
           },
           error: (err) => {},
         });
