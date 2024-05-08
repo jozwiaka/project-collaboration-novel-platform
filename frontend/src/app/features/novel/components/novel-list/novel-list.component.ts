@@ -49,7 +49,7 @@ export class NovelListComponent implements OnInit {
 
   novelCheckboxes: NovelCheckbox[] = [];
   tagCheckboxes: TagCheckbox[] = [];
-  checkAllNovelCheckboxes = false;
+  selectAllNovels = false;
 
   searchOption: string = '';
   searchQuery: string = '';
@@ -84,10 +84,6 @@ export class NovelListComponent implements OnInit {
         return tagCheckbox.tag;
       })
       .filter((tag) => tag.novels.find((n) => n.id === novel.id));
-  }
-
-  navigateToUserSettings(): void {
-    this.router.navigate(['/user/settings']);
   }
 
   onSearchChange(): void {
@@ -179,11 +175,7 @@ export class NovelListComponent implements OnInit {
                 novelCheckbox.uncheck();
               }
             });
-
-            this.getCheckedNovels().length === this.novelCheckboxes.length
-              ? (this.checkAllNovelCheckboxes = true)
-              : (this.checkAllNovelCheckboxes = false);
-
+            this.updateSelectAllNovels();
             this.getNovelsFromCurrentPages();
           },
         });
@@ -191,9 +183,7 @@ export class NovelListComponent implements OnInit {
 
   toggleNovelCheckbox(novelCheckbox: NovelCheckbox) {
     novelCheckbox.toggleCheck();
-    this.getCheckedNovels().length === this.novelCheckboxes.length
-      ? (this.checkAllNovelCheckboxes = true)
-      : (this.checkAllNovelCheckboxes = false);
+    this.updateSelectAllNovels();
     this.updateTagCheckboxes();
   }
 
@@ -202,8 +192,8 @@ export class NovelListComponent implements OnInit {
   }
 
   allNovelsCheckboxesChangedEvent() {
-    this.checkAllNovelCheckboxes = !this.checkAllNovelCheckboxes;
-    this.checkAllNovelCheckboxes
+    this.selectAllNovels = !this.selectAllNovels;
+    this.selectAllNovels
       ? this.novelCheckboxes.forEach((ncb) => {
           ncb.check();
         })
@@ -285,10 +275,6 @@ export class NovelListComponent implements OnInit {
     }
   }
 
-  navigateToNovel(id: number): void {
-    this.router.navigateByUrl(`novel/${id}`);
-  }
-
   getOwnerName(author: UserDTO): string {
     if (author.id === this.authService.currentUser?.id) {
       return 'You';
@@ -304,18 +290,8 @@ export class NovelListComponent implements OnInit {
     return this.novelsPage.size;
   }
 
-  resetOptions(): void {
-    this.novelsFilterOption = NovelsFilterOption.AllNovels;
-    this.novelsSort = {
-      sortBy: NovelsSortBy.UpdatedAt,
-      direction: SortDirection.Desc,
-    };
-  }
-
   changeNovelsFilterOption(newNovelsFilterOption: string): void {
-    this.checkAllNovelCheckboxes = false;
-    this.novelCheckboxes.forEach((novelCheckbox) => novelCheckbox.uncheck());
-
+    this.resetNovelCheckoboxes();
     this.resetOptions();
     this.novelsFilterOption = newNovelsFilterOption;
     this.getNovelsFromPages(1);
@@ -621,5 +597,24 @@ export class NovelListComponent implements OnInit {
     return this.novelCheckboxes
       .filter((ncb) => ncb.getChecked())
       .map((ncb) => ncb.novel);
+  }
+
+  private resetOptions(): void {
+    this.novelsFilterOption = NovelsFilterOption.AllNovels;
+    this.novelsSort = {
+      sortBy: NovelsSortBy.UpdatedAt,
+      direction: SortDirection.Desc,
+    };
+  }
+
+  private resetNovelCheckoboxes() {
+    this.selectAllNovels = false;
+    this.novelCheckboxes.forEach((novelCheckbox) => novelCheckbox.uncheck());
+  }
+
+  private updateSelectAllNovels() {
+    this.getCheckedNovels().length === this.novelCheckboxes.length
+      ? (this.selectAllNovels = true)
+      : (this.selectAllNovels = false);
   }
 }
