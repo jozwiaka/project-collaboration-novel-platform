@@ -465,6 +465,7 @@ export class NovelListComponent implements OnInit {
             if (!observables.length) {
               this.novelCheckboxes = [];
               this.novelsPage = data.page;
+              this.updateSelectAllNovels();
             }
 
             return forkJoin(observables).pipe(
@@ -490,6 +491,10 @@ export class NovelListComponent implements OnInit {
                   : novelCheckbox.uncheck();
               }
             });
+
+            console.log('update');
+
+            this.updateSelectAllNovels();
 
             this.novelsPage = novelsPage;
           },
@@ -612,7 +617,9 @@ export class NovelListComponent implements OnInit {
   }
 
   private updateSelectAllNovels() {
-    this.getCheckedNovels().length === this.novelCheckboxes.length
+    console.log(this.getCheckedNovels().length);
+    this.getCheckedNovels().length === this.novelCheckboxes.length &&
+    this.getCheckedNovels().length !== 0
       ? (this.selectAllNovels = true)
       : (this.selectAllNovels = false);
   }
