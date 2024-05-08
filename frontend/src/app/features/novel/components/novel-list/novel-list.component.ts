@@ -75,7 +75,12 @@ export class NovelListComponent implements OnInit {
 
   ngOnInit(): void {
     this.changeNovelsFilterOption(NovelsFilterOption.AllNovels);
-    this.fetchAuthUserTags();
+    this.fetchAuthUserTagsObservable().subscribe({
+      next: (tags: Tag[]) => {
+        this.tagCheckboxes = tags.map((tag) => new TagCheckbox(tag));
+        this.sortTagCheckboxes();
+      },
+    });
   }
 
   getNovelTags(novel: Novel): Tag[] {
@@ -202,6 +207,7 @@ export class NovelListComponent implements OnInit {
   }
 
   showNewNovelDialog(): void {
+    console.log(this.tagCheckboxes.map((tc) => tc.tag.novels));
     const dialogRef = this.dialog.open(NewNovelDialogComponent, {
       width: '600px',
       height: 'auto',
@@ -239,6 +245,7 @@ export class NovelListComponent implements OnInit {
     this.removeNovelObservable(novel).subscribe({
       next: () => {
         this.getNovelsFromCurrentPages();
+        this.removeNovelFromTagCheckboxes(novel);
       },
     });
   }
@@ -258,6 +265,9 @@ export class NovelListComponent implements OnInit {
     forkJoin(observables.filter((obs) => obs !== null)).subscribe({
       next: () => {
         this.getNovelsFromCurrentPages();
+        novelsToRemove.forEach((novelToRemove) => {
+          this.removeNovelFromTagCheckboxes(novelToRemove);
+        });
       },
     });
   }
@@ -337,30 +347,25 @@ export class NovelListComponent implements OnInit {
     });
   }
 
-  private fetchAuthUserTags() {
-    if (this.authService.currentUser?.id) {
-      const tagsSort: Sort = {
-        sortBy: TagsSortBy.Name,
-        direction: SortDirection.Asc,
-      };
-      this.tagService
-        .findByUserId(this.authService.currentUser?.id, 1, tagsSort)
-        .pipe(
-          mergeMap((response: TagsResponse) => {
-            return forkJoin(
-              response._embedded.tags.map((tagData) => {
-                return this.tagService.build(tagData);
-              })
-            );
-          })
-        )
-        .subscribe({
-          next: (tags: Tag[]) => {
-            this.tagCheckboxes = tags.map((tag) => new TagCheckbox(tag));
-            this.sortTagCheckboxes();
-          },
-        });
+  private fetchAuthUserTagsObservable(): Observable<Tag[]> {
+    if (!this.authService.currentUser?.id) {
+      return of([]);
     }
+    const tagsSort: Sort = {
+      sortBy: TagsSortBy.Name,
+      direction: SortDirection.Asc,
+    };
+    return this.tagService
+      .findByUserId(this.authService.currentUser?.id, 1, tagsSort)
+      .pipe(
+        mergeMap((response: TagsResponse) => {
+          return forkJoin(
+            response._embedded.tags.map((tagData) => {
+              return this.tagService.build(tagData);
+            })
+          );
+        })
+      );
   }
 
   private getNovelsFromPages(pages: number) {
@@ -617,5 +622,13 @@ export class NovelListComponent implements OnInit {
     this.getCheckedNovels().length !== 0
       ? (this.selectAllNovels = true)
       : (this.selectAllNovels = false);
+  }
+
+  private removeNovelFromTagCheckboxes(novel: Novel) {
+    this.tagCheckboxes.forEach((tagCheckbox) => {
+      tagCheckbox.tag.novels = tagCheckbox.tag.novels.filter(
+        (n) => n.id !== novel.id
+      );
+    });
   }
 }
