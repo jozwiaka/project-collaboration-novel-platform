@@ -114,6 +114,42 @@ export class NovelListComponent implements OnInit {
     }
   }
 
+  untagNovel(tag: Tag, novel: Novel) {
+    if (!tag.id || !novel.id) {
+      return;
+    }
+
+    this.novelTagService
+      .findByNovelIdAndTagId(novel.id, tag.id)
+      .pipe(
+        mergeMap((novelTagData: NovelTagDTO) => {
+          return this.novelTagService.remove(novelTagData.id);
+        })
+      )
+      .subscribe({
+        next: () => {
+          const tagCheckbox = this.tagCheckboxes.find(
+            (tagCheckbox) => tagCheckbox.tag.id === tag.id
+          );
+          if (!tagCheckbox) {
+            return;
+          }
+
+          tagCheckbox.tag.novels = tagCheckbox.tag.novels.filter(
+            (n) => n.id !== novel.id
+          );
+
+          // this.novelCheckboxes.forEach((novelCheckbox) => {
+          //   if (novel.id === novelCheckbox.novel.id) {
+          //     novelCheckbox.uncheck();
+          //   }
+          // });
+          // this.updateSelectAllNovels();
+          this.getNovelsFromCurrentPages();
+        },
+      });
+  }
+
   toggleTagCheckbox(tagCheckbox: TagCheckbox) {
     tagCheckbox.toggleCheck();
     const checkedNovels = this.getCheckedNovels();

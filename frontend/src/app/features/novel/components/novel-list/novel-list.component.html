@@ -201,7 +201,7 @@
               <div *ngFor="let tag of getNovelTags(novelCheckbox.novel); let i = index" class="tag-label"><button
                   class="label label-default tag-label-name" aria-label="Select tag CV"><span
                     [style.color]="tag.color"><i class="fa fa-circle" aria-hidden="true"></i></span>
-                  {{tag.name}}</button><button class="label label-default tag-label-remove"
+                  {{tag.name}}</button><button (click)="untagNovel(tag, novelCheckbox.novel)" class="label label-default tag-label-remove"
                   aria-label="Remove tag CV"><span aria-hidden="true">×</span></button></div>
             </td>
             <td class="align-middle">
