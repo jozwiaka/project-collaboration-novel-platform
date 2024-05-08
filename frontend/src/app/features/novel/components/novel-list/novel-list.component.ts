@@ -140,12 +140,7 @@ export class NovelListComponent implements OnInit {
             (n) => n.id !== novel.id
           );
 
-          // this.novelCheckboxes.forEach((novelCheckbox) => {
-          //   if (novel.id === novelCheckbox.novel.id) {
-          //     novelCheckbox.uncheck();
-          //   }
-          // });
-          // this.updateSelectAllNovels();
+          this.updateSelectAllNovels();
           this.getNovelsFromCurrentPages();
         },
       });
@@ -207,15 +202,6 @@ export class NovelListComponent implements OnInit {
                   (checkedNovel) => checkedNovel.id === novel.id
                 )
             );
-            this.novelCheckboxes.forEach((novelCheckbox) => {
-              if (
-                checkedNovels.find(
-                  (checkedNovel) => checkedNovel.id === novelCheckbox.novel.id
-                )
-              ) {
-                novelCheckbox.uncheck();
-              }
-            });
             this.updateSelectAllNovels();
             this.getNovelsFromCurrentPages();
           },
