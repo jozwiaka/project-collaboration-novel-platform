@@ -131,6 +131,7 @@ export class NovelListComponent implements OnInit {
           const tagCheckbox = this.tagCheckboxes.find(
             (tagCheckbox) => tagCheckbox.tag.id === tag.id
           );
+
           if (!tagCheckbox) {
             return;
           }
