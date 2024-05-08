@@ -165,7 +165,6 @@ export class NovelListComponent implements OnInit {
                   (checkedNovel) => checkedNovel.id === novel.id
                 )
             );
-
             this.novelCheckboxes.forEach((novelCheckbox) => {
               if (
                 checkedNovels.find(
@@ -245,11 +244,11 @@ export class NovelListComponent implements OnInit {
   }
 
   removeCheckedNovels(): void {
-    const novelsToDelete = this.novelCheckboxes
+    const novelsToRemove = this.novelCheckboxes
       .filter((ncb) => ncb.getChecked())
       .map((ncb) => ncb.novel);
 
-    const observables = novelsToDelete.map((novel) => {
+    const observables = novelsToRemove.map((novel) => {
       if (!novel.id || !this.authService.currentUser?.id) {
         return of(null);
       }
