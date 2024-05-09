@@ -4,6 +4,8 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { Novel } from 'src/app/features/novel/models/novel.model';
+import { Tag } from 'src/app/features/novel/models/tag.model';
 
 @Component({
   selector: 'app-copy-novel-dialog',
@@ -11,20 +13,34 @@ import {
   styleUrls: ['./copy-novel-dialog.component.css'],
 })
 export class CopyNovelDialogComponent {
-  novelName: string = '';
+  newNovelTitle: string = '';
   errorMessage: string = '';
+  tags: Tag[];
 
-  constructor(public dialogRef: MatDialogRef<CopyNovelDialogComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<CopyNovelDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { newNovelTitle: string; tags: Tag[] }
+  ) {
+    this.newNovelTitle = data.newNovelTitle + ' (Copy)';
+    this.tags = data.tags;
+  }
 
   onCancel(): void {
     this.dialogRef.close();
   }
 
-  onCreate(): void {
-    if (this.novelName.trim() === '') {
+  onCopy(): void {
+    if (this.newNovelTitle.trim() === '') {
       this.errorMessage = 'Novel name cannot be empty';
     } else {
-      this.dialogRef.close(this.novelName.trim());
+      this.dialogRef.close({
+        newNovelTitle: this.newNovelTitle,
+        tags: this.tags,
+      });
     }
+  }
+
+  untagCopiedNovel(tag: Tag) {
+    this.tags = this.tags.filter((t) => t.id !== tag.id);
   }
 }

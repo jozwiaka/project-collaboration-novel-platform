@@ -24,6 +24,7 @@ import { NovelCheckbox } from './models/novel-checkbox.model';
 import { NovelsFilterOption } from './models/novels-filter-option.model';
 import { TagCheckbox } from './models/tag-checkbox.model';
 import { TagMenu } from './models/tag-menu.model';
+import { CopyNovelDialogComponent } from './dialogs/copy-novel-dialog/copy-novel-dialog.component';
 
 @Component({
   selector: 'app-novel-list',
@@ -230,7 +231,6 @@ export class NovelListComponent implements OnInit {
   }
 
   showNewNovelDialog(): void {
-    console.log(this.tagCheckboxes.map((tc) => tc.tag.novels));
     const dialogRef = this.dialog.open(NewNovelDialogComponent, {
       width: '600px',
       height: 'auto',
@@ -271,6 +271,20 @@ export class NovelListComponent implements OnInit {
         this.removeNovelFromTagCheckboxes(novel);
       },
     });
+  }
+
+  copyNovelAction(novel: Novel) {
+    const dialogRef = this.dialog.open(CopyNovelDialogComponent, {
+      width: '600px',
+      height: 'auto',
+      data: { newNovelTitle: novel.title, tags: this.getNovelTags(novel) },
+    });
+
+    dialogRef
+      .afterClosed()
+      .subscribe((copiedData: { newNovelTitle: string; tags: Tag[] }) => {
+        // this.novelService.create(copiedData.novel.getData()).subscribe();
+      });
   }
 
   removeCheckedNovels(): void {

@@ -14,19 +14,19 @@ services:
     volumes:
       - db_data:/var/lib/dbql/data
 
-  # rest-api-service:
-  #   build:
-  #     context: ./
-  #     dockerfile: ./docker/rest-api-service.Dockerfile
-  #   container_name: rest-api-service-container
-  #   image: rest-api-service-image:latest
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - my_network
-  #   depends_on:
-  #     - db
-  #   restart: always
+  rest-api-service:
+    build:
+      context: ./
+      dockerfile: ./docker/rest-api-service.Dockerfile
+    container_name: rest-api-service-container
+    image: rest-api-service-image:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - my_network
+    depends_on:
+      - db
+    restart: always
 
   ai-service:
     build:
