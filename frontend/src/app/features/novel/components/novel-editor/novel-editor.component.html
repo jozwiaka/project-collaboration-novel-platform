@@ -203,7 +203,7 @@
         <span class="suggestion-text" *ngIf="aiSuggestion">
           {{ aiSuggestion }}
           <button class="btn btn-sm btn-light generate-suggestion-btn" (click)="appendSuggestion()"
-            [hidden]="collaborator?.readOnly">
+            [hidden]="readOnly">
             <i class="fa-solid fa-arrow-right"></i>
           </button>
         </span>

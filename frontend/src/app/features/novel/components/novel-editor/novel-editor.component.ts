@@ -57,7 +57,7 @@ import { MessageData } from './models/message-data.model';
 })
 export class NovelEditorComponent implements OnInit, OnDestroy {
   novel: Novel | undefined = undefined;
-  collaborator: Collaborator | undefined = undefined;
+  readOnly: boolean = false;
   onlineUsers: User[] = [];
 
   messages: Message[] = [];
@@ -128,35 +128,37 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.fetchInitialData().subscribe(([novel, collaborator, messageData]) => {
-      this.novel = novel;
-      this.collaborator = collaborator;
-      this.messages = messageData.messages;
-      this.page = messageData.page;
+    this.fetchInitialData().subscribe(
+      ([novel, collaborationData, messageData]) => {
+        this.novel = novel;
+        this.messages = messageData.messages;
+        this.page = messageData.page;
+        this.readOnly = collaborationData.readOnly;
 
-      if (this.collaborator?.user?.id && this.novel.id) {
-        const collaborationMessageRequest: CollaborationMessageRequest = {
-          type: CollaborationMessageTypeRequest.JoinNovel,
-          userId: this.collaborator?.user?.id,
-          novelId: this.novel.id,
-        };
-        this.collaborationService.send(collaborationMessageRequest);
+        if (this.authService.currentUser?.id && this.novel.id) {
+          const collaborationMessageRequest: CollaborationMessageRequest = {
+            type: CollaborationMessageTypeRequest.JoinNovel,
+            userId: this.authService.currentUser.id,
+            novelId: this.novel.id,
+          };
+          this.collaborationService.send(collaborationMessageRequest);
+        }
+
+        this.setUpEditor();
+        this.subscribeCollaborationWebSocket();
+        this.subscribeAutosaveIfEnabled();
+        this.subscribeGetNovel();
       }
-
-      this.setUpEditor();
-      this.subscribeCollaborationWebSocket();
-      this.subscribeAutosaveIfEnabled();
-      this.subscribeGetNovel();
-    });
+    );
   }
 
   ngOnDestroy() {
-    if (!this.collaborator?.user?.id || !this.novel?.id) {
+    if (!this.authService.currentUser?.id || !this.novel?.id) {
       return;
     }
     const collaborationMessageRequest: CollaborationMessageRequest = {
       type: CollaborationMessageTypeRequest.LeaveNovel,
-      userId: this.collaborator?.user?.id,
+      userId: this.authService.currentUser?.id,
       novelId: this.novel.id,
     };
     this.collaborationService.send(collaborationMessageRequest);
@@ -165,7 +167,9 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  fetchInitialData(): Observable<never[] | [Novel, Collaborator, MessageData]> {
+  fetchInitialData(): Observable<
+    never[] | [Novel, CollaboratorDTO, MessageData]
+  > {
     return this.route.paramMap.pipe(
       map((params) => Number(params.get('id'))),
       switchMap((novelId) => this.novelService.buildWithId(novelId)),
@@ -176,14 +180,11 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
 
         const novelObservable: Observable<Novel> = of(novel);
 
-        const collaboratorObservable: Observable<Collaborator> =
-          this.collaboratorService
-            .findByNovelIdAndUserId(novel.id, this.authService.currentUser?.id)
-            .pipe(
-              mergeMap((collaboratorData: CollaboratorDTO) => {
-                return this.collaboratorService.build(collaboratorData);
-              })
-            );
+        const collaboratorObservable: Observable<CollaboratorDTO> =
+          this.collaboratorService.findByNovelIdAndUserId(
+            novel.id,
+            this.authService.currentUser?.id
+          );
 
         const messageObservable: Observable<MessageData> = this.messageService
           .findByNovelId(novel.id, 1, this.messagesSort)
@@ -238,7 +239,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
           next: (users: User[]) => {
             this.onlineUsers = users;
             const index = this.onlineUsers.findIndex(
-              (item) => item.id === this.collaborator?.user.id
+              (item) => item.id === this.authService.currentUser?.id
             );
             if (index !== -1) {
               this.onlineUsers.splice(index, 1);
@@ -255,7 +256,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
     }
     this.editor = new Quill('#editor', {
       theme: 'snow',
-      readOnly: this.collaborator?.readOnly,
+      readOnly: this.readOnly,
       modules: {
         toolbar: this.toolbarOptions,
       },
@@ -300,7 +301,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
 
   sendEditNovelReq(oldContent: string, newContent: string) {
     if (
-      !this.collaborator?.user?.id ||
+      !this.authService.currentUser?.id ||
       !this.novel?.id ||
       oldContent === newContent
     ) {
@@ -316,7 +317,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
     const patchText = this.dmp.patch_toText(patch);
     const collaborationMessageRequest: CollaborationMessageRequest = {
       type: CollaborationMessageTypeRequest.EditNovel,
-      userId: this.collaborator?.user?.id,
+      userId: this.authService.currentUser?.id,
       novelId: this.novel.id,
       content: patchText,
     };
@@ -489,10 +490,10 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (message: Message) => {
           this.messages.push(message);
-          if (this.collaborator?.user?.id && this.novel?.id) {
+          if (this.authService.currentUser?.id && this.novel?.id) {
             const collaborationMessageRequest: CollaborationMessageRequest = {
               type: CollaborationMessageTypeRequest.SendMessageInChat,
-              userId: this.collaborator?.user?.id,
+              userId: this.authService.currentUser?.id,
               novelId: this.novel.id,
               messageId: message.id,
             };
