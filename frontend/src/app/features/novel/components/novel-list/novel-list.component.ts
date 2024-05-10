@@ -294,6 +294,7 @@ export class NovelListComponent implements OnInit {
           .pipe(
             mergeMap((novelData: NovelDTO) => {
               return forkJoin([
+                this.novelService.build(novelData),
                 ...copiedNovelData.tags.map((tag) => {
                   if (!tag.id || !novelData.id) {
                     return of(null);
@@ -314,7 +315,21 @@ export class NovelListComponent implements OnInit {
             })
           )
           .subscribe({
-            next: () => {},
+            next: ([novel, novelTags, colalborator]: [
+              Novel,
+              ...(NovelTagDTO | null)[],
+              CollaboratorDTO | null
+            ]) => {
+              copiedNovelData.tags.forEach((tag) => {
+                let tagCheckbox = this.tagCheckboxes.find(
+                  (tagCheckbox) => tagCheckbox.tag.id === tag.id
+                );
+                if (tagCheckbox) {
+                  tagCheckbox.tag.novels.push(novel);
+                }
+              });
+              this.getNovelsFromCurrentPages();
+            },
           });
       }
     });
