@@ -25,6 +25,7 @@ import { NovelsFilterOption } from './models/novels-filter-option.model';
 import { TagCheckbox } from './models/tag-checkbox.model';
 import { TagMenu } from './models/tag-menu.model';
 import { CopyNovelDialogComponent } from './dialogs/copy-novel-dialog/copy-novel-dialog.component';
+import { CopiedNovelData } from './models/copied-novel-data.model';
 
 @Component({
   selector: 'app-novel-list',
@@ -277,14 +278,46 @@ export class NovelListComponent implements OnInit {
     const dialogRef = this.dialog.open(CopyNovelDialogComponent, {
       width: '600px',
       height: 'auto',
-      data: { newNovelTitle: novel.title, tags: this.getNovelTags(novel) },
+      data: {
+        newNovelTitle: novel.title,
+        tags: this.getNovelTags(novel),
+      } as CopiedNovelData,
     });
 
-    dialogRef
-      .afterClosed()
-      .subscribe((copiedData: { newNovelTitle: string; tags: Tag[] }) => {
-        // this.novelService.create(copiedData.novel.getData()).subscribe();
-      });
+    dialogRef.afterClosed().subscribe((copiedNovelData: CopiedNovelData) => {
+      if (copiedNovelData) {
+        let newNovelData = novel.getData();
+        newNovelData.title = copiedNovelData.newNovelTitle;
+
+        this.novelService
+          .create(newNovelData)
+          .pipe(
+            mergeMap((novelData: NovelDTO) => {
+              return forkJoin([
+                ...copiedNovelData.tags.map((tag) => {
+                  if (!tag.id || !novelData.id) {
+                    return of(null);
+                  }
+                  return this.novelTagService.create({
+                    tagId: tag.id,
+                    novelId: novelData.id,
+                  });
+                }),
+                this.authService.currentUser?.id && novelData.id
+                  ? this.collaboratorService.create({
+                      userId: this.authService.currentUser?.id,
+                      novelId: novelData.id,
+                      readOnly: false,
+                    })
+                  : of(null),
+              ]);
+            })
+          )
+          .subscribe({
+            next: () => {},
+          });
+      }
+    });
   }
 
   removeCheckedNovels(): void {

@@ -6,6 +6,7 @@ import {
 } from '@angular/material/dialog';
 import { Novel } from 'src/app/features/novel/models/novel.model';
 import { Tag } from 'src/app/features/novel/models/tag.model';
+import { CopiedNovelData } from '../../models/copied-novel-data.model';
 
 @Component({
   selector: 'app-copy-novel-dialog',
@@ -19,7 +20,7 @@ export class CopyNovelDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<CopyNovelDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { newNovelTitle: string; tags: Tag[] }
+    @Inject(MAT_DIALOG_DATA) public data: CopiedNovelData
   ) {
     this.newNovelTitle = data.newNovelTitle + ' (Copy)';
     this.tags = data.tags;
