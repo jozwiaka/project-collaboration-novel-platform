@@ -14,7 +14,12 @@ export class RenameNovelDialogComponent {
   newNovelName: string = '';
   errorMessage: string = '';
 
-  constructor(public dialogRef: MatDialogRef<RenameNovelDialogComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<RenameNovelDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: string
+  ) {
+    this.newNovelName = data;
+  }
 
   onCancel(): void {
     this.dialogRef.close();

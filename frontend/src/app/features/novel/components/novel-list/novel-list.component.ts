@@ -253,7 +253,7 @@ export class NovelListComponent implements OnInit {
     const dialogRef = this.dialog.open(RenameNovelDialogComponent, {
       width: '600px',
       height: 'auto',
-      data: { newNovelName: checkedNovel.title },
+      data: checkedNovel.title,
     });
 
     dialogRef.afterClosed().subscribe((newNovelTitle) => {
