@@ -78,3 +78,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 
   border-top-left-radius: 0;
   padding-left: 2px;
 }
+
+.dropdown-menu-right {
+  right: 0;
+  left: auto;
+}

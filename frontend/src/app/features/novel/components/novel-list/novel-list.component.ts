@@ -26,6 +26,7 @@ import { TagCheckbox } from './models/tag-checkbox.model';
 import { TagMenu } from './models/tag-menu.model';
 import { CopyNovelDialogComponent } from './dialogs/copy-novel-dialog/copy-novel-dialog.component';
 import { CopiedNovelData } from './models/copied-novel-data.model';
+import { RenameNovelDialogComponent } from './dialogs/rename-novel-dialog/rename-novel-dialog.component';
 
 @Component({
   selector: 'app-novel-list',
@@ -95,7 +96,7 @@ export class NovelListComponent implements OnInit {
   }
 
   onSearchChange(): void {
-    this.getNovelsFromCurrentPages();
+    this.fetchNovelsFromCurrentPages();
   }
 
   toggleTagMenu(tagId: number | undefined): void {
@@ -147,7 +148,7 @@ export class NovelListComponent implements OnInit {
             (n) => n.id !== novel.id
           );
 
-          this.getNovelsFromCurrentPages();
+          this.fetchNovelsFromCurrentPages();
           this.updateSelectAllNovels();
         },
       });
@@ -185,7 +186,7 @@ export class NovelListComponent implements OnInit {
             tagCheckbox.tag.novels.push(
               ...checkedNovelsToAdd.map((novel) => novel)
             );
-            this.getNovelsFromCurrentPages();
+            this.fetchNovelsFromCurrentPages();
           },
         })
       : forkJoin(
@@ -210,7 +211,7 @@ export class NovelListComponent implements OnInit {
                 )
             );
             this.updateSelectAllNovels();
-            this.getNovelsFromCurrentPages();
+            this.fetchNovelsFromCurrentPages();
           },
         });
   }
@@ -247,6 +248,28 @@ export class NovelListComponent implements OnInit {
     });
   }
 
+  showRenameNovelDialog(): void {
+    const checkedNovel = this.getCheckedNovels()[0];
+    const dialogRef = this.dialog.open(RenameNovelDialogComponent, {
+      width: '600px',
+      height: 'auto',
+      data: { newNovelName: checkedNovel.title },
+    });
+
+    dialogRef.afterClosed().subscribe((newNovelTitle) => {
+      if (newNovelTitle) {
+        const novelData: NovelDTO = checkedNovel.getData();
+        novelData.title = newNovelTitle;
+        novelData.content = undefined;
+        this.novelService.update(novelData).subscribe({
+          next: () => {
+            this.fetchNovelsFromCurrentPages();
+          },
+        });
+      }
+    });
+  }
+
   showNewTagDialog(): void {
     const dialogRef = this.dialog.open(NewTagDialogComponent, {
       width: '600px',
@@ -273,7 +296,7 @@ export class NovelListComponent implements OnInit {
   removeNovelAction(novel: Novel) {
     this.removeNovelObservable(novel).subscribe({
       next: () => {
-        this.getNovelsFromCurrentPages();
+        this.fetchNovelsFromCurrentPages();
         this.removeNovelFromTagCheckboxes(novel);
       },
     });
@@ -333,7 +356,7 @@ export class NovelListComponent implements OnInit {
                   tagCheckbox.tag.novels.push(novel);
                 }
               });
-              this.getNovelsFromCurrentPages();
+              this.fetchNovelsFromCurrentPages();
             },
           });
       }
@@ -354,7 +377,7 @@ export class NovelListComponent implements OnInit {
 
     forkJoin(observables.filter((obs) => obs !== null)).subscribe({
       next: () => {
-        this.getNovelsFromCurrentPages();
+        this.fetchNovelsFromCurrentPages();
         novelsToRemove.forEach((novelToRemove) => {
           this.removeNovelFromTagCheckboxes(novelToRemove);
         });
@@ -393,7 +416,7 @@ export class NovelListComponent implements OnInit {
     this.resetNovelCheckoboxes();
     this.resetOptions();
     this.novelsFilterOption = newNovelsFilterOption;
-    this.getNovelsFromPages(1);
+    this.fetchNovelsFromPages(1);
   }
 
   changeSortBy(newSortBy: NovelsSortBy): void {
@@ -407,20 +430,24 @@ export class NovelListComponent implements OnInit {
       this.novelsSort.sortBy = newSortBy;
       this.novelsSort.direction = SortDirection.Desc;
     }
-    this.getNovelsFromCurrentPages();
+    this.fetchNovelsFromCurrentPages();
   }
 
-  getNovelsFromCurrentPages() {
-    this.getNovelsFromPages(this.novelsPage.number + 1);
+  fetchNovelsFromCurrentPages() {
+    this.fetchNovelsFromPages(this.novelsPage.number + 1);
   }
 
-  getNovelsFromNextPage() {
+  fetchNovelsFromNextPage() {
     this.novelsPage.number++;
-    this.getNovelsFromPages(this.novelsPage.number + 1);
+    this.fetchNovelsFromPages(this.novelsPage.number + 1);
   }
 
-  getNovelsFromAllPages() {
-    this.getNovelsFromPages(this.novelsPage.totalPages);
+  fetchNovelsFromAllPages() {
+    this.fetchNovelsFromPages(this.novelsPage.totalPages);
+  }
+
+  showMore() {
+    return this.getCheckedNovels().length === 1;
   }
 
   private updateTagCheckboxes() {
@@ -458,7 +485,7 @@ export class NovelListComponent implements OnInit {
       );
   }
 
-  private getNovelsFromPages(pages: number) {
+  private fetchNovelsFromPages(pages: number) {
     let userData = this.authService.currentUser;
     if (userData?.id) {
       let serviceMethod;

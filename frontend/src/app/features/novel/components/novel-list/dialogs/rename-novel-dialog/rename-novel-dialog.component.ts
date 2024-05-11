@@ -11,7 +11,7 @@ import {
   styleUrls: ['./rename-novel-dialog.component.css'],
 })
 export class RenameNovelDialogComponent {
-  novelName: string = '';
+  newNovelName: string = '';
   errorMessage: string = '';
 
   constructor(public dialogRef: MatDialogRef<RenameNovelDialogComponent>) {}
@@ -20,11 +20,11 @@ export class RenameNovelDialogComponent {
     this.dialogRef.close();
   }
 
-  onCreate(): void {
-    if (this.novelName.trim() === '') {
+  onRename(): void {
+    if (this.newNovelName.trim() === '') {
       this.errorMessage = 'Novel name cannot be empty';
     } else {
-      this.dialogRef.close(this.novelName.trim());
+      this.dialogRef.close(this.newNovelName.trim());
     }
   }
 }

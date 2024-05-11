@@ -1,12 +1,12 @@
 <p>rename-novel-dialog works!</p>
-<h1 mat-dialog-title>Create new novel</h1>
+<h1 mat-dialog-title>Rename novel</h1>
 
 <mat-dialog-content>
   <mat-form-field appearance="fill">
-    <mat-label>Novel name</mat-label>
+    <mat-label>New name</mat-label>
     <input
       matInput
-      [(ngModel)]="novelName"
+      [(ngModel)]="newNovelName"
     />
   </mat-form-field>
   <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
@@ -14,5 +14,5 @@
 
 <mat-dialog-actions align="end">
   <button mat-button color="warn" (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onCreate()">Create</button>
+  <button mat-raised-button color="primary" (click)="onRename()">Rename</button>
 </mat-dialog-actions>

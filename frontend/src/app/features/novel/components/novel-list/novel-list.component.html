@@ -64,7 +64,7 @@
             <div class="tag-menu dropdown align-middle">
               <button class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle=""
                 (click)="toggleTagMenu(tagCheckbox.tag.id)"></button>
-              <ul class="dropdown-menu" role="menu" [class.show]="
+              <ul class="dropdown-menu dropdown-menu-right" role="menu" [class.show]="
                   tagMenu.tagId === tagCheckbox.tag.id && tagMenu.show
                 ">
                 <a type="button" class="tag-action btn btn-default dropdown-item"
@@ -104,7 +104,7 @@
                 (click)="toggleAddToTagMenu()">
                 <span>Tags</span>
               </button>
-              <ul role="menu" class="dropdown-menu dropdown-menu-end w-100" [class.show]="showAddToTagMenu">
+              <ul role="menu" class="dropdown-menu dropdown-menu-right w-100" [class.show]="showAddToTagMenu">
                 <li class="dropdown-header" role="heading" aria-level="3">
                   <span> Add to tag </span>
                 </li>
@@ -130,17 +130,17 @@
                 </li>
               </ul>
             </div>
-            <div class="dropdown">
+            <div class="dropdown" *ngIf="showMore()">
               <button id="project-tools-more-dropdown" role="button" type="button"
                 class="btn-secondary dropdown-toggle btn" (click)="toggleMoreMenu()">
                 More <span class="caret"></span>
               </button>
               <ul role="menu" class="dropdown-menu-right dropdown-menu" aria-labelledby="project-tools-more-dropdown" [class.show]="showMoreMenu">
                 <li role="presentation" class="">
-                  <a role="menuitem" tabindex="-1" href="#">Rename</a>
+                  <a (click)="showRenameNovelDialog()" class="tag-action btn btn-default dropdown-item" style="font-size: 14px">Rename</a>
                 </li>
                 <li role="presentation" class="">
-                  <a role="menuitem" tabindex="-1" href="#">Make a copy</a>
+                  <a class="tag-action btn btn-default dropdown-item" style="font-size: 14px" role="menuitem" tabindex="-1" href="#">Make a copy</a>
                 </li>
               </ul>
             </div>
@@ -241,14 +241,14 @@
       </table>
 
       <div class="align-middle justify-content-center align-items-center text-center">
-        <button (click)="getNovelsFromNextPage()" *ngIf="getHowManyPagesToShow()" type="button"
+        <button (click)="fetchNovelsFromNextPage()" *ngIf="getHowManyPagesToShow()" type="button"
           class="btn btn-light btn-outline-dark" style="margin-bottom: 10px; font-size: 14px">
           Show {{ getHowManyPagesToShow() }} more
         </button>
         <div>
           Showing {{ novelCheckboxes.length }} out of
           {{ novelsPage.totalElements }} novels.
-          <button (click)="getNovelsFromAllPages()" *ngIf="novelCheckboxes.length !== novelsPage.totalElements"
+          <button (click)="fetchNovelsFromAllPages()" *ngIf="novelCheckboxes.length !== novelsPage.totalElements"
             type="button" class="btn btn-link text-decoration-none" aria-label="Show all novelCheckboxes"
             style="padding: 0px; font-size: 14px">
             Show all
