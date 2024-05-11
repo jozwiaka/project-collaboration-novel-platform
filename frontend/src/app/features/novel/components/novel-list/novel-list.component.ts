@@ -62,7 +62,8 @@ export class NovelListComponent implements OnInit {
     show: false,
   };
 
-  showAddToTag: boolean = false;
+  showAddToTagMenu: boolean = false;
+  showMoreMenu: boolean = false;
 
   constructor(
     private novelService: NovelService,
@@ -109,11 +110,15 @@ export class NovelListComponent implements OnInit {
     }
   }
 
-  toggleAddToTag() {
-    this.showAddToTag = !this.showAddToTag;
-    if (this.showAddToTag) {
+  toggleAddToTagMenu() {
+    this.showAddToTagMenu = !this.showAddToTagMenu;
+    if (this.showAddToTagMenu) {
       this.updateTagCheckboxes();
     }
+  }
+
+  toggleMoreMenu() {
+    this.showMoreMenu = !this.showMoreMenu;
   }
 
   untagNovel(tag: Tag, novel: Novel) {

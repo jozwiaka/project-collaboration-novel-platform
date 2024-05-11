@@ -101,10 +101,10 @@
 
             <div class="dropdown">
               <button data-toggle="dropdown" dropdown-toggle="" class="btn-secondary dropdown-toggle btn"
-                (click)="toggleAddToTag()">
+                (click)="toggleAddToTagMenu()">
                 <span>Tags</span>
               </button>
-              <ul role="menu" class="dropdown-menu dropdown-menu-end w-100" [class.show]="showAddToTag">
+              <ul role="menu" class="dropdown-menu dropdown-menu-end w-100" [class.show]="showAddToTagMenu">
                 <li class="dropdown-header" role="heading" aria-level="3">
                   <span> Add to tag </span>
                 </li>
@@ -130,12 +130,12 @@
                 </li>
               </ul>
             </div>
-            <div class="dropdown btn-group">
+            <div class="dropdown">
               <button id="project-tools-more-dropdown" role="button" type="button"
-                class="btn-secondary dropdown-toggle btn">
+                class="btn-secondary dropdown-toggle btn" (click)="toggleMoreMenu()">
                 More <span class="caret"></span>
               </button>
-              <ul role="menu" class="dropdown-menu-right dropdown-menu" aria-labelledby="project-tools-more-dropdown">
+              <ul role="menu" class="dropdown-menu-right dropdown-menu" aria-labelledby="project-tools-more-dropdown" [class.show]="showMoreMenu">
                 <li role="presentation" class="">
                   <a role="menuitem" tabindex="-1" href="#">Rename</a>
                 </li>
