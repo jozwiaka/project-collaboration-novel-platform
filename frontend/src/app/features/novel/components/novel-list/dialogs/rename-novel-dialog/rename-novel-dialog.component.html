@@ -14,5 +14,5 @@
 
 <mat-dialog-actions align="end">
   <button mat-button color="warn" (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onRename()" [disabled]="this.newNovelName === this.oldNovelName">Rename</button>
+  <button mat-raised-button color="primary" (click)="onRename()" [disabled]="canRename()">Rename</button>
 </mat-dialog-actions>
