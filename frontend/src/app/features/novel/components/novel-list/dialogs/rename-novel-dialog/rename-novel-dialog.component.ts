@@ -11,6 +11,7 @@ import {
   styleUrls: ['./rename-novel-dialog.component.css'],
 })
 export class RenameNovelDialogComponent {
+  oldNovelName: string = '';
   newNovelName: string = '';
   errorMessage: string = '';
 
@@ -19,10 +20,15 @@ export class RenameNovelDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: string
   ) {
     this.newNovelName = data;
+    this.oldNovelName = data;
   }
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  canRename(): boolean {
+    return this.newNovelName.trim() === this.oldNovelName.trim();
   }
 
   onRename(): void {
