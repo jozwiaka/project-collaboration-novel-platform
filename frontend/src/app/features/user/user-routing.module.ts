@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SettingsComponent } from './components/settings/settings.component';
+import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 import { authGuard } from 'src/app/core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'user/settings',
-    component: SettingsComponent,
+    component: UserSettingsComponent,
     canActivate: [authGuard],
   },
 ];
