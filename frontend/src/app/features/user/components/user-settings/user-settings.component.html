@@ -55,15 +55,8 @@
                 <div class="row">
                   <div class="col-md-5">
                     <h3>Update Account Info</h3>
-                    <form id="account-info-form">
-                      <div class="form-group"><label for="first-name-input" class="control-label">First
-                          Name</label><input data-ol-dirty="false" type="text" id="first-name-input"
-                          class="form-control" value="Arek">
-                      </div>
-                      <div class="form-group"><label for="last-name-input" class="control-label">Last Name</label><input
-                          data-ol-dirty="false" type="text" id="last-name-input" class="form-control" value="Jozwiak">
-                      </div><button form="account-info-form" type="submit" class="btn btn-primary">Update</button>
-                    </form>
+                    <input type="text" id="name-input" [(ngModel)]="newUserName">
+                    <button (click)="updateUserName()" class="btn btn-primary">Update</button>
                   </div>
                   <div class="col-md-5 col-md-offset-1">
                     <h3>Change Password</h3>
