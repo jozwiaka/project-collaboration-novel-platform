@@ -332,9 +332,9 @@ export class NovelListComponent implements OnInit {
                     novelId: novelData.id,
                   });
                 }),
-                this.authService.currentUser?.id && novelData.id
+                this.authService.user?.id && novelData.id
                   ? this.collaboratorService.create({
-                      userId: this.authService.currentUser?.id,
+                      userId: this.authService.user?.id,
                       novelId: novelData.id,
                       readOnly: false,
                     })
@@ -369,7 +369,7 @@ export class NovelListComponent implements OnInit {
       .map((ncb) => ncb.novel);
 
     const observables = novelsToRemove.map((novel) => {
-      if (!novel.id || !this.authService.currentUser?.id) {
+      if (!novel.id || !this.authService.user?.id) {
         return of(null);
       }
       return this.removeNovelObservable(novel);
@@ -398,7 +398,7 @@ export class NovelListComponent implements OnInit {
   }
 
   getOwnerName(author: UserDTO): string {
-    if (author.id === this.authService.currentUser?.id) {
+    if (author.id === this.authService.user?.id) {
       return 'You';
     }
     return author.name;
@@ -465,7 +465,7 @@ export class NovelListComponent implements OnInit {
   }
 
   private fetchAuthUserTagsObservable(): Observable<Tag[]> {
-    if (!this.authService.currentUser?.id) {
+    if (!this.authService.user?.id) {
       return of([]);
     }
     const tagsSort: Sort = {
@@ -473,7 +473,7 @@ export class NovelListComponent implements OnInit {
       direction: SortDirection.Asc,
     };
     return this.tagService
-      .findByUserId(this.authService.currentUser?.id, 1, tagsSort)
+      .findByUserId(this.authService.user?.id, 1, tagsSort)
       .pipe(
         mergeMap((response: TagsResponse) => {
           return forkJoin(
@@ -486,7 +486,7 @@ export class NovelListComponent implements OnInit {
   }
 
   private fetchNovelsFromPages(pages: number) {
-    let userData = this.authService.currentUser;
+    let userData = this.authService.user;
     if (userData?.id) {
       let serviceMethod;
 
@@ -627,19 +627,19 @@ export class NovelListComponent implements OnInit {
   }
 
   private createNovel(novelTitle: string) {
-    if (!this.authService.currentUser?.id || !novelTitle) {
+    if (!this.authService.user?.id || !novelTitle) {
       return;
     }
     let novelData: NovelDTO = {
       title: novelTitle,
-      authorId: this.authService.currentUser.id,
+      authorId: this.authService.user.id,
     };
     for (let i = 0; i < 1; i++) {
       this.novelService.create(novelData).subscribe({
         next: (response: NovelDTO) => {
-          if (this.authService?.currentUser?.id && response.id) {
+          if (this.authService?.user?.id && response.id) {
             let collaboratorData: CollaboratorDTO = {
-              userId: this.authService.currentUser.id,
+              userId: this.authService.user.id,
               novelId: response.id,
               readOnly: false,
             };
@@ -655,12 +655,12 @@ export class NovelListComponent implements OnInit {
   }
 
   private createTag(tagName: string) {
-    if (!this.authService.currentUser?.id || !tagName) {
+    if (!this.authService.user?.id || !tagName) {
       return;
     }
     let tagData: TagDTO = {
       name: tagName,
-      userId: this.authService.currentUser.id,
+      userId: this.authService.user.id,
     };
     this.tagService
       .create(tagData)
@@ -678,11 +678,7 @@ export class NovelListComponent implements OnInit {
   }
 
   private updateTag(tag: Tag, newTagName: string) {
-    if (
-      !this.authService.currentUser?.id ||
-      newTagName === tag.name ||
-      !newTagName
-    ) {
+    if (!this.authService.user?.id || newTagName === tag.name || !newTagName) {
       return;
     }
     let tagData: TagDTO = tag.getData();
@@ -701,14 +697,14 @@ export class NovelListComponent implements OnInit {
   }
 
   private removeNovelObservable(novel: Novel): Observable<any> {
-    if (!novel.id || !novel.author.id || !this.authService.currentUser?.id) {
+    if (!novel.id || !novel.author.id || !this.authService.user?.id) {
       return of(null);
     }
 
-    return this.authService.currentUser.id === novel.author.id
+    return this.authService.user.id === novel.author.id
       ? this.novelService.remove(novel.id)
       : this.collaboratorService
-          .findByNovelIdAndUserId(novel.id, this.authService.currentUser.id)
+          .findByNovelIdAndUserId(novel.id, this.authService.user.id)
           .pipe(
             switchMap((response: CollaboratorDTO) =>
               this.collaboratorService.remove(response.id)

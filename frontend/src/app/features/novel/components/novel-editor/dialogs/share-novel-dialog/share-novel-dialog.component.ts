@@ -91,7 +91,7 @@ export class ShareNovelDialogComponent implements OnInit {
   }
 
   canShare(): boolean {
-    return this.authService.currentUser?.id === this.novel.author.id;
+    return this.authService.user?.id === this.novel.author.id;
   }
 
   onShare(): void {

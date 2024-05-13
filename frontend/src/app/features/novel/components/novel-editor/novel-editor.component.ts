@@ -135,10 +135,10 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
         this.page = messageData.page;
         this.readOnly = collaborationData.readOnly;
 
-        if (this.authService.currentUser?.id && this.novel.id) {
+        if (this.authService.user?.id && this.novel.id) {
           const collaborationMessageRequest: CollaborationMessageRequest = {
             type: CollaborationMessageTypeRequest.JoinNovel,
-            userId: this.authService.currentUser.id,
+            userId: this.authService.user.id,
             novelId: this.novel.id,
           };
           this.collaborationService.send(collaborationMessageRequest);
@@ -153,12 +153,12 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (!this.authService.currentUser?.id || !this.novel?.id) {
+    if (!this.authService.user?.id || !this.novel?.id) {
       return;
     }
     const collaborationMessageRequest: CollaborationMessageRequest = {
       type: CollaborationMessageTypeRequest.LeaveNovel,
-      userId: this.authService.currentUser?.id,
+      userId: this.authService.user?.id,
       novelId: this.novel.id,
     };
     this.collaborationService.send(collaborationMessageRequest);
@@ -174,7 +174,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
       map((params) => Number(params.get('id'))),
       switchMap((novelId) => this.novelService.buildWithId(novelId)),
       switchMap((novel) => {
-        if (!novel.id || !this.authService.currentUser?.id) {
+        if (!novel.id || !this.authService.user?.id) {
           return of([]);
         }
 
@@ -183,7 +183,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
         const collaboratorObservable: Observable<CollaboratorDTO> =
           this.collaboratorService.findByNovelIdAndUserId(
             novel.id,
-            this.authService.currentUser?.id
+            this.authService.user?.id
           );
 
         const messageObservable: Observable<MessageData> = this.messageService
@@ -239,7 +239,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
           next: (users: User[]) => {
             this.onlineUsers = users;
             const index = this.onlineUsers.findIndex(
-              (item) => item.id === this.authService.currentUser?.id
+              (item) => item.id === this.authService.user?.id
             );
             if (index !== -1) {
               this.onlineUsers.splice(index, 1);
@@ -301,7 +301,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
 
   sendEditNovelReq(oldContent: string, newContent: string) {
     if (
-      !this.authService.currentUser?.id ||
+      !this.authService.user?.id ||
       !this.novel?.id ||
       oldContent === newContent
     ) {
@@ -317,7 +317,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
     const patchText = this.dmp.patch_toText(patch);
     const collaborationMessageRequest: CollaborationMessageRequest = {
       type: CollaborationMessageTypeRequest.EditNovel,
-      userId: this.authService.currentUser?.id,
+      userId: this.authService.user?.id,
       novelId: this.novel.id,
       content: patchText,
     };
@@ -470,12 +470,12 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
-    if (!this.authService.currentUser?.id || !this.novel?.id) {
+    if (!this.authService.user?.id || !this.novel?.id) {
       return;
     }
 
     const messageData: MessageDTO = {
-      userId: this.authService.currentUser.id,
+      userId: this.authService.user.id,
       novelId: this.novel.id,
       content: this.messageContent,
     };
@@ -490,10 +490,10 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (message: Message) => {
           this.messages.push(message);
-          if (this.authService.currentUser?.id && this.novel?.id) {
+          if (this.authService.user?.id && this.novel?.id) {
             const collaborationMessageRequest: CollaborationMessageRequest = {
               type: CollaborationMessageTypeRequest.SendMessageInChat,
-              userId: this.authService.currentUser?.id,
+              userId: this.authService.user?.id,
               novelId: this.novel.id,
               messageId: message.id,
             };

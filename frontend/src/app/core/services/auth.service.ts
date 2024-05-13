@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { UserDTO } from '../api/user.api';
 import { LoginResponse, RegisterRequest } from '../api/auth.api';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class AuthService {
       .pipe(
         tap((response: LoginResponse) => {
           if (response) {
-            localStorage.setItem('currentUser', JSON.stringify(response.user));
+            localStorage.setItem('user', JSON.stringify(response.user));
             localStorage.setItem('token', response.token);
           }
         })
@@ -36,7 +37,7 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('user');
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
@@ -45,25 +46,15 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  get currentUser(): UserDTO | null {
-    const userData = localStorage.getItem('currentUser');
+  get user(): User | null {
+    const userData = localStorage.getItem('user');
     if (userData) {
-      return this.convertToUserDTO(JSON.parse(userData));
+      return new User(JSON.parse(userData) as UserDTO);
     }
     return null;
   }
 
   get token(): string | null {
     return localStorage.getItem('token');
-  }
-
-  private convertToUserDTO(user: any): UserDTO {
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      createdAt: user.created_at,
-      updatedAt: user.updated_at,
-    };
   }
 }

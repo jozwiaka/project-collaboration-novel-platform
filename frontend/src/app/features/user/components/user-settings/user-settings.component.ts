@@ -17,8 +17,8 @@ export class UserSettingsComponent {
     private userService: UserService,
     private authService: AuthService
   ) {
-    if (this.authService.currentUser) {
-      this.user = new User(this.authService.currentUser);
+    if (this.authService.user) {
+      this.user = this.authService.user;
       this.newUserName = this.user.name;
     }
   }
@@ -31,7 +31,9 @@ export class UserSettingsComponent {
         name: this.user.name,
         email: this.user.email,
       };
-      this.userService.update(userData).subscribe();
+      this.userService.update(userData).subscribe({
+        next: () => {},
+      });
     }
   }
 }

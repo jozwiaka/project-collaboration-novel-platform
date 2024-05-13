@@ -16,7 +16,7 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"
           [ngClass]="{ show: isDropdownOpen }">
-          <span class="dropdown-item-text" style="font-size: 16px; color: grey">{{ authService.currentUser?.name
+          <span class="dropdown-item-text" style="font-size: 16px; color: grey">{{ authService.user?.name
             }}</span>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" style="font-size: 16px" href="user/settings">Account Settings</a>
