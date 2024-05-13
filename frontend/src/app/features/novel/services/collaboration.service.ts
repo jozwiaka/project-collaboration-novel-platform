@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import {
   CollaborationMessageRequest,
   CollaborationMessageResponse,
-} from '../models/collaboration-api.models';
+} from '../api/collaboration.api';
 
 @Injectable({
   providedIn: 'root',

@@ -1,32 +1,32 @@
-import { TagsResponse } from './../../models/tag-api.models';
+import { TagsResponse } from '../../api/tag.api';
 import { TagService } from './../../services/tag.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { mergeMap, forkJoin, map, switchMap, Observable, of } from 'rxjs';
-import { UserDTO } from 'src/app/core/models/user-api.models';
-import { CollaboratorDTO } from 'src/app/features/novel/models/collaborator-api.models';
+import { UserDTO } from 'src/app/core/api/user.api';
 import { Novel } from 'src/app/features/novel/models/novel.model';
-import { Page, Sort, SortDirection } from 'src/app/core/models/api.models';
+import { Page, Sort, SortDirection } from 'src/app/core/api/util.api';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NovelService } from 'src/app/features/novel/services/novel.service';
 import { TimeService } from 'src/app/core/services/time.service';
 import { NewNovelDialogComponent } from './dialogs/new-novel-dialog/new-novel-dialog.component';
-import { NovelDTO, NovelsSortBy } from '../../models/novel-api.models';
+import { NovelDTO, NovelsSortBy } from '../../api/novel.api';
 import { CollaboratorService } from '../../services/collaborator.service';
 import { NewTagDialogComponent } from './dialogs/new-tag-dialog/new-tag-dialog.component';
-import { TagDTO, TagsSortBy } from '../../models/tag-api.models';
+import { TagDTO, TagsSortBy } from '../../api/tag.api';
 import { Tag } from '../../models/tag.model';
 import { EditTagDialogComponent } from './dialogs/edit-tag-dialog/edit-tag-dialog.component';
 import { NovelTagService } from '../../services/novel-tag.service';
-import { NovelTagDTO } from '../../models/novel-tag-api';
+import { NovelTagDTO } from '../../api/novel-tag.api';
 import { NovelCheckbox } from './models/novel-checkbox.model';
-import { NovelsFilterOption } from './models/novels-filter-option.model';
+import { NovelsFilterOption } from './enums/novels-filter-option.enum';
 import { TagCheckbox } from './models/tag-checkbox.model';
-import { TagMenu } from './models/tag-menu.model';
+import { TagMenu } from './interfaces/tag-menu.interface';
 import { CopyNovelDialogComponent } from './dialogs/copy-novel-dialog/copy-novel-dialog.component';
-import { CopiedNovelData } from './models/copied-novel-data.model';
+import { CopiedNovelData } from './interfaces/copied-novel-data.interface';
 import { RenameNovelDialogComponent } from './dialogs/rename-novel-dialog/rename-novel-dialog.component';
+import { CollaboratorDTO } from '../../api/collaborator.api';
 
 @Component({
   selector: 'app-novel-list',

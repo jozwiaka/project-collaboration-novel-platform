@@ -1,15 +1,15 @@
-import { Sort, SortDirection } from '../../../core/models/api.models';
+import { Sort, SortDirection } from '../../../core/api/util.api';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { TagDTO, TagsResponse } from '../models/tag-api.models';
+import { TagDTO, TagsResponse } from '../api/tag.api';
 import { UserService } from 'src/app/core/services/user.service';
 import { NovelService } from './novel.service';
-import { UserDTO } from 'src/app/core/models/user-api.models';
+import { UserDTO } from 'src/app/core/api/user.api';
 import { User } from 'src/app/core/models/user.model';
 import { Tag } from '../models/tag.model';
-import { NovelDTO, NovelsResponse } from '../models/novel-api.models';
+import { NovelDTO, NovelsResponse } from '../api/novel.api';
 import { Novel } from '../models/novel.model';
 import { ColorService } from 'src/app/core/services/color.service';
 

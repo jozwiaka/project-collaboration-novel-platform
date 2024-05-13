@@ -1,11 +1,11 @@
-import { LoginRequest, RegisterResponse } from './../models/auth-api.models';
+import { LoginRequest, RegisterResponse } from '../api/auth.api';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { UserDTO } from '../models/user-api.models';
-import { LoginResponse, RegisterRequest } from '../models/auth-api.models';
+import { UserDTO } from '../api/user.api';
+import { LoginResponse, RegisterRequest } from '../api/auth.api';
 
 @Injectable({
   providedIn: 'root',

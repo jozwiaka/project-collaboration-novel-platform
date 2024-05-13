@@ -2,11 +2,11 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { NovelDTO, NovelsResponse } from '../models/novel-api.models';
+import { NovelDTO, NovelsResponse } from '../api/novel.api';
 import { UserService } from 'src/app/core/services/user.service';
 import { Novel } from '../models/novel.model';
 import { User } from 'src/app/core/models/user.model';
-import { Sort } from 'src/app/core/models/api.models';
+import { Sort } from 'src/app/core/api/util.api';
 
 @Injectable({
   providedIn: 'root',

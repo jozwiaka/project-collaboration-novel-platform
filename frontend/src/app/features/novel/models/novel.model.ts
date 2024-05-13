@@ -1,6 +1,6 @@
 import { User } from 'src/app/core/models/user.model';
-import { UserDTO } from '../../../core/models/user-api.models';
-import { NovelDTO } from './novel-api.models';
+import { UserDTO } from '../../../core/api/user.api';
+import { NovelDTO } from '../api/novel.api';
 import { Tag } from './tag.model';
 
 export class Novel {

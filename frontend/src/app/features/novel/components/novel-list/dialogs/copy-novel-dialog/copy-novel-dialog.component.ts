@@ -6,7 +6,7 @@ import {
 } from '@angular/material/dialog';
 import { Novel } from 'src/app/features/novel/models/novel.model';
 import { Tag } from 'src/app/features/novel/models/tag.model';
-import { CopiedNovelData } from '../../models/copied-novel-data.model';
+import { CopiedNovelData } from '../../interfaces/copied-novel-data.interface';
 
 @Component({
   selector: 'app-copy-novel-dialog',

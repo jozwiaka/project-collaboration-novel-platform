@@ -1,4 +1,4 @@
-import { UserDTO } from './user-api.models';
+import { UserDTO } from './user.api';
 
 export interface RegisterRequest {
   name: string;

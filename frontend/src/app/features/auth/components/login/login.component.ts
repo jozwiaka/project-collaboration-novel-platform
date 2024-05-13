@@ -1,7 +1,4 @@
-import {
-  LoginRequest,
-  RegisterRequest,
-} from './../../../../core/models/auth-api.models';
+import { LoginRequest, RegisterRequest } from '../../../../core/api/auth.api';
 // login.component.ts
 
 import { Component } from '@angular/core';

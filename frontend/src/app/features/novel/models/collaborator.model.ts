@@ -1,6 +1,6 @@
 import { User } from 'src/app/core/models/user.model';
 import { Novel } from './novel.model';
-import { CollaboratorDTO } from './collaborator-api.models';
+import { CollaboratorDTO } from '../api/collaborator.api';
 
 export class Collaborator {
   id?: number;

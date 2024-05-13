@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, forkJoin, map, throwError } from 'rxjs';
-import { UserDTO, UsersResponse } from '../models/user-api.models';
-import { Page, Sort } from '../models/api.models';
+import { UserDTO, UsersResponse } from '../api/user.api';
+import { Page, Sort } from '../api/util.api';
 
 @Injectable({
   providedIn: 'root',

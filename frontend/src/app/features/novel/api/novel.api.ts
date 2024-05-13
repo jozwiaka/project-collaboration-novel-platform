@@ -1,4 +1,4 @@
-import { Page } from 'src/app/core/models/api.models';
+import { Page } from 'src/app/core/api/util.api';
 
 export interface NovelDTO {
   id?: number;

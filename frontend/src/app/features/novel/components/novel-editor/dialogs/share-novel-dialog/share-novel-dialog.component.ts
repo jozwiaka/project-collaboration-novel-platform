@@ -3,19 +3,15 @@ import {
   CollaboratorDTO,
   CollaboratorsResponse,
   CollaboratorsSortBy,
-} from '../../../../models/collaborator-api.models';
+} from '../../../../api/collaborator.api';
 import { UserService } from '../../../../../../core/services/user.service';
 import { CollaboratorService } from '../../../../services/collaborator.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {
-  UserDTO,
-  UsersResponse,
-  UsersSortBy,
-} from 'src/app/core/models/user-api.models';
+import { UserDTO, UsersResponse, UsersSortBy } from 'src/app/core/api/user.api';
 import { Novel } from '../../../../models/novel.model';
-import { Page, Sort, SortDirection } from 'src/app/core/models/api.models';
+import { Page, Sort, SortDirection } from 'src/app/core/api/util.api';
 import { Collaborator } from '../../../../models/collaborator.model';
 import { map, mergeMap, forkJoin } from 'rxjs';
 

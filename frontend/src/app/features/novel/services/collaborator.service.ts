@@ -12,13 +12,13 @@ import {
 import {
   CollaboratorDTO,
   CollaboratorsResponse,
-} from '../models/collaborator-api.models';
-import { Sort } from 'src/app/core/models/api.models';
+} from '../api/collaborator.api';
+import { Sort } from 'src/app/core/api/util.api';
 import { User } from 'src/app/core/models/user.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { Collaborator } from '../models/collaborator.model';
 import { NovelService } from './novel.service';
-import { UserDTO } from 'src/app/core/models/user-api.models';
+import { UserDTO } from 'src/app/core/api/user.api';
 import { Novel } from '../models/novel.model';
 
 @Injectable({

@@ -2,14 +2,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { MessageDTO, MessagesResponse } from '../models/message-api.models';
+import { MessageDTO, MessagesResponse } from '../api/message.api';
 import { UserService } from 'src/app/core/services/user.service';
 import { Message } from '../models/message.model';
 import { User } from 'src/app/core/models/user.model';
 import { NovelService } from './novel.service';
-import { UserDTO } from 'src/app/core/models/user-api.models';
+import { UserDTO } from 'src/app/core/api/user.api';
 import { Novel } from '../models/novel.model';
-import { Sort } from 'src/app/core/models/api.models';
+import { Sort } from 'src/app/core/api/util.api';
 
 @Injectable({
   providedIn: 'root',

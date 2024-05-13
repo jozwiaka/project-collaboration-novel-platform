@@ -1,9 +1,8 @@
-import { NovelDTO } from './../../models/novel-api.models';
+import { NovelDTO } from '../../api/novel.api';
 import { Message } from './../../models/message.model';
-import { CollaboratorDTO } from 'src/app/features/novel/models/collaborator-api.models';
 import { UserService } from './../../../../core/services/user.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AiRequest, AiResponse } from './../../models/ai-api.models';
+import { AiRequest, AiResponse } from '../../api/ai.api';
 import {
   Component,
   ElementRef,
@@ -32,22 +31,23 @@ import {
 } from 'rxjs';
 import { CollaborationService } from '../../services/collaboration.service';
 import { MessageService } from '../../services/message.service';
-import { MessageDTO, MessagesSortBy } from '../../models/message-api.models';
-import { Page, Sort, SortDirection } from 'src/app/core/models/api.models';
+import { MessageDTO, MessagesSortBy } from '../../api/message.api';
+import { Page, Sort, SortDirection } from 'src/app/core/api/util.api';
 import { TimeService } from 'src/app/core/services/time.service';
 import { Collaborator } from '../../models/collaborator.model';
 import { CollaboratorService } from '../../services/collaborator.service';
 import { User } from 'src/app/core/models/user.model';
-import { UserDTO } from 'src/app/core/models/user-api.models';
+import { UserDTO } from 'src/app/core/api/user.api';
 import { DiffMatchPatch } from 'diff-match-patch-ts';
 import {
   CollaborationMessageRequest,
   CollaborationMessageTypeRequest,
   CollaborationMessageResponse,
   CollaborationMessageTypeResponse,
-} from '../../models/collaboration-api.models';
-import { SuggestionOptions } from './models/suggestion-options.model';
-import { MessageData } from './models/message-data.model';
+} from '../../api/collaboration.api';
+import { SuggestionOptions } from './interfaces/suggestion-options.interface';
+import { MessageData } from './interfaces/message-data.interface';
+import { CollaboratorDTO } from '../../api/collaborator.api';
 
 @Component({
   selector: 'app-novel-editor',

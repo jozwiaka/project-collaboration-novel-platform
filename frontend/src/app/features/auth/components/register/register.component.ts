@@ -4,10 +4,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, of, tap } from 'rxjs';
-import {
-  RegisterRequest,
-  RegisterResponse,
-} from 'src/app/core/models/auth-api.models';
+import { RegisterRequest, RegisterResponse } from 'src/app/core/api/auth.api';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({

@@ -1,6 +1,6 @@
 import { User } from 'src/app/core/models/user.model';
 import { Novel } from './novel.model';
-import { TagDTO } from './tag-api.models';
+import { TagDTO } from '../api/tag.api';
 
 export class Tag {
   id?: number;

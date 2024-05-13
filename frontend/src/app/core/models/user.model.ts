@@ -1,4 +1,4 @@
-import { UserDTO } from './user-api.models';
+import { UserDTO } from '../api/user.api';
 
 export class User {
   id?: number;

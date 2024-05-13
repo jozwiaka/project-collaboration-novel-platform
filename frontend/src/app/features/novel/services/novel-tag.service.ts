@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { NovelTagDTO } from '../models/novel-tag-api';
+import { NovelTagDTO } from '../api/novel-tag.api';
 
 @Injectable({
   providedIn: 'root',

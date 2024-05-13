@@ -1,6 +1,6 @@
-import { UserDTO } from 'src/app/core/models/user-api.models';
-import { MessageDTO } from './message-api.models';
-import { NovelDTO } from './novel-api.models';
+import { UserDTO } from 'src/app/core/api/user.api';
+import { MessageDTO } from '../api/message.api';
+import { NovelDTO } from '../api/novel.api';
 import { Novel } from './novel.model';
 import { User } from 'src/app/core/models/user.model';
 

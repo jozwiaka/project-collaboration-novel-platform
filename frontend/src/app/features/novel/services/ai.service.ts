@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { AiRequest, AiResponse } from './../models/ai-api.models';
+import { AiRequest, AiResponse } from '../api/ai.api';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
