@@ -32,7 +32,9 @@ export class UserSettingsComponent {
         email: this.user.email,
       };
       this.userService.update(userData).subscribe({
-        next: () => {},
+        next: () => {
+          this.authService.editName(userData.name);
+        },
       });
     }
   }

@@ -46,6 +46,15 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
+  editName(newUserName: string) {
+    let updatedUser = this.user;
+    if (!updatedUser) {
+      throw new Error('User not logged in.');
+    }
+    updatedUser.name = newUserName;
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+  }
+
   get user(): User | null {
     const userData = localStorage.getItem('user');
     if (userData) {
