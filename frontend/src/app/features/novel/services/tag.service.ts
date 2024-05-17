@@ -17,7 +17,7 @@ import { ColorService } from 'src/app/core/services/color.service';
   providedIn: 'root',
 })
 export class TagService {
-  private baseUrl = 'http://localhost:8080/api/tags';
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(
     private http: HttpClient,
@@ -27,24 +27,25 @@ export class TagService {
   ) {}
 
   findOne(id: number): Observable<TagDTO> {
-    const url = `${this.baseUrl}/${id}`;
+    const url = `${this.apiUrl}/tags/${id}`;
     return this.http.get<TagDTO>(url).pipe(catchError(this.handleError));
   }
 
   create(tag: TagDTO): Observable<TagDTO> {
+    const url = `${this.apiUrl}/users/${tag.userId}/tags`;
     const { id, ...payload } = tag;
     return this.http
-      .post<any>(this.baseUrl, payload)
+      .post<any>(this.apiUrl, payload)
       .pipe(catchError(this.handleError));
   }
 
   update(tag: TagDTO): Observable<TagDTO> {
-    const url = `${this.baseUrl}/${tag.id}`;
+    const url = `${this.apiUrl}/${tag.id}`;
     return this.http.put<TagDTO>(url, tag).pipe(catchError(this.handleError));
   }
 
   remove(id: number): Observable<void> {
-    const url = `${this.baseUrl}/${id}`;
+    const url = `${this.apiUrl}/${id}`;
     return this.http.delete<void>(url).pipe(catchError(this.handleError));
   }
 
@@ -53,7 +54,7 @@ export class TagService {
     totalNumberOfPages: number,
     sort: Sort
   ): Observable<TagsResponse> {
-    const urlStr = `${this.baseUrl}/search/findByUserId`;
+    const urlStr = `${this.apiUrl}/search/findByUserId`;
     const url = new URL(urlStr);
     url.searchParams.set('userId', `${userId}`);
     url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
@@ -67,7 +68,7 @@ export class TagService {
     sort: Sort
   ): Observable<TagsResponse> {
     const url = new URL(
-      `${this.baseUrl}/search/findByUserIdAndNovelTags_Novel_Id`
+      `${this.apiUrl}/search/findByUserIdAndNovelTags_Novel_Id`
     );
     url.searchParams.set('userId', `${userId}`);
     url.searchParams.set('novelId', `${novelId}`);

@@ -36,12 +36,10 @@ public class Novel {
     @OneToMany(mappedBy = "novel")
     private List<Collaborator> collaborators;
 
-    @ManyToMany(mappedBy = "novel")
-    private List<NovelTag> novelTags;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "novel_id", referencedColumnName = "id", insertable = false, updatable = false)
-//    private List<Tag> tags;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name="novel_tag", joinColumns = {@JoinColumn(name="novel_id")}, inverseJoinColumns = {@JoinColumn(name="tag_id")})
+    private List<Tag> tags;
 
     @PrePersist
     protected void onCreate() {

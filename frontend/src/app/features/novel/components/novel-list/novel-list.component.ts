@@ -17,8 +17,6 @@ import { NewTagDialogComponent } from './dialogs/new-tag-dialog/new-tag-dialog.c
 import { TagDTO, TagsSortBy } from '../../api/tag.api';
 import { Tag } from '../../models/tag.model';
 import { EditTagDialogComponent } from './dialogs/edit-tag-dialog/edit-tag-dialog.component';
-import { NovelTagService } from '../../services/novel-tag.service';
-import { NovelTagDTO } from '../../api/novel-tag.api';
 import { NovelCheckbox } from './models/novel-checkbox.model';
 import { NovelsFilterOption } from './enums/novels-filter-option.enum';
 import { TagCheckbox } from './models/tag-checkbox.model';
@@ -71,7 +69,6 @@ export class NovelListComponent implements OnInit {
     private authService: AuthService,
     public timeService: TimeService,
     private collaboratorService: CollaboratorService,
-    private novelTagService: NovelTagService,
     private tagService: TagService,
     private router: Router,
     public dialog: MatDialog
@@ -127,31 +124,24 @@ export class NovelListComponent implements OnInit {
       return;
     }
 
-    this.novelTagService
-      .findByNovelIdAndTagId(novel.id, tag.id)
-      .pipe(
-        mergeMap((novelTagData: NovelTagDTO) => {
-          return this.novelTagService.remove(novelTagData.id);
-        })
-      )
-      .subscribe({
-        next: () => {
-          const tagCheckbox = this.tagCheckboxes.find(
-            (tagCheckbox) => tagCheckbox.tag.id === tag.id
-          );
+    this.novelService.unassignTag(novel.id, tag.id).subscribe({
+      next: () => {
+        const tagCheckbox = this.tagCheckboxes.find(
+          (tagCheckbox) => tagCheckbox.tag.id === tag.id
+        );
 
-          if (!tagCheckbox) {
-            return;
-          }
+        if (!tagCheckbox) {
+          return;
+        }
 
-          tagCheckbox.tag.novels = tagCheckbox.tag.novels.filter(
-            (n) => n.id !== novel.id
-          );
+        tagCheckbox.tag.novels = tagCheckbox.tag.novels.filter(
+          (n) => n.id !== novel.id
+        );
 
-          this.fetchNovelsFromCurrentPages();
-          this.updateSelectAllNovels();
-        },
-      });
+        this.fetchNovelsFromCurrentPages();
+        this.updateSelectAllNovels();
+      },
+    });
   }
 
   toggleTagCheckbox(tagCheckbox: TagCheckbox) {
@@ -173,10 +163,10 @@ export class NovelListComponent implements OnInit {
               )
             ) {
               if (tagCheckbox.tag.id && novel.id) {
-                return this.novelTagService.create({
-                  tagId: tagCheckbox.tag.id,
-                  novelId: novel.id,
-                });
+                return this.novelService.assignTag(
+                  novel.id,
+                  tagCheckbox.tag.id
+                );
               }
             }
             return of(null);
@@ -192,13 +182,10 @@ export class NovelListComponent implements OnInit {
       : forkJoin(
           checkedNovels.map((novel) => {
             if (tagCheckbox.tag.id && novel.id) {
-              return this.novelTagService
-                .findByNovelIdAndTagId(novel.id, tagCheckbox.tag.id)
-                .pipe(
-                  mergeMap((novelTagData: NovelTagDTO) => {
-                    return this.novelTagService.remove(novelTagData.id);
-                  })
-                );
+              return this.novelService.unassignTag(
+                novel.id,
+                tagCheckbox.tag.id
+              );
             }
             return of(null);
           })
@@ -327,10 +314,7 @@ export class NovelListComponent implements OnInit {
                   if (!tag.id || !novelData.id) {
                     return of(null);
                   }
-                  return this.novelTagService.create({
-                    tagId: tag.id,
-                    novelId: novelData.id,
-                  });
+                  return this.novelService.assignTag(novelData.id, tag.id);
                 }),
                 this.authService.user?.id && novelData.id
                   ? this.collaboratorService.create({
@@ -345,7 +329,7 @@ export class NovelListComponent implements OnInit {
           .subscribe({
             next: ([novel, novelTags, colalborator]: [
               Novel,
-              ...(NovelTagDTO | null)[],
+              ...(TagDTO | null)[],
               CollaboratorDTO | null
             ]) => {
               copiedNovelData.tags.forEach((tag) => {

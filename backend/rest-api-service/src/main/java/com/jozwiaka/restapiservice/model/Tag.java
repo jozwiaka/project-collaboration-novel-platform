@@ -1,5 +1,6 @@
 package com.jozwiaka.restapiservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,7 +20,7 @@ public class Tag {
     @Column(name = "user_id")
     private Integer userId;
 
-    @ManyToMany(mappedBy = "tag")
-    private List<NovelTag> novelTags;
-
+    @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "tags")
+    @JsonIgnore
+    private List<Novel> novels;
 }

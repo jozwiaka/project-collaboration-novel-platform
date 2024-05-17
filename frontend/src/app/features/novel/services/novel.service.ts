@@ -7,6 +7,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { Novel } from '../models/novel.model';
 import { User } from 'src/app/core/models/user.model';
 import { Sort } from 'src/app/core/api/util.api';
+import { TagDTO } from '../api/tag.api';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,16 @@ export class NovelService {
     return this.http
       .put<NovelDTO>(url, novel)
       .pipe(catchError(this.handleError));
+  }
+
+  assignTag(id: number, tagId: number) {
+    const url = `${this.baseUrl}/${id}/tags/${tagId}`;
+    return this.http.put<TagDTO>(url, tagId).pipe(catchError(this.handleError));
+  }
+
+  unassignTag(id: number, tagId: number) {
+    const url = `${this.baseUrl}/${id}/tags/${tagId}`;
+    return this.http.delete<any>(url).pipe(catchError(this.handleError));
   }
 
   remove(id: number): Observable<void> {
@@ -78,7 +89,7 @@ export class NovelService {
     totalNumberOfPages: number,
     sort: Sort
   ): Observable<NovelsResponse> {
-    const url = new URL(`${this.baseUrl}/search/findByNovelTags_Tag_Id`);
+    const url = new URL(`${this.baseUrl}/search/findByTagsId`);
     url.searchParams.set('tagId', `${tagId}`);
     url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
     return this.find(url, totalNumberOfPages);
@@ -136,7 +147,7 @@ export class NovelService {
     title: string
   ): Observable<NovelsResponse> {
     const url = new URL(
-      `${this.baseUrl}/search/findByNovelTags_Tag_IdAndTitleContainingIgnoreCase`
+      `${this.baseUrl}/search/findByTagsIdAndTitleContainingIgnoreCase`
     );
     url.searchParams.set('tagId', `${tagId}`);
     url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
