@@ -40,12 +40,12 @@ export class TagService {
   }
 
   update(tag: TagDTO): Observable<TagDTO> {
-    const url = `${this.apiUrl}/${tag.id}`;
+    const url = `${this.apiUrl}/tags/${tag.id}`;
     return this.http.put<TagDTO>(url, tag).pipe(catchError(this.handleError));
   }
 
   remove(id: number): Observable<void> {
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.apiUrl}/tags/${id}`;
     return this.http.delete<void>(url).pipe(catchError(this.handleError));
   }
 
@@ -54,7 +54,7 @@ export class TagService {
     totalNumberOfPages: number,
     sort: Sort
   ): Observable<TagsResponse> {
-    const urlStr = `${this.apiUrl}/search/findByUserId`;
+    const urlStr = `${this.apiUrl}/tags/search/findByUserId`;
     const url = new URL(urlStr);
     url.searchParams.set('userId', `${userId}`);
     url.searchParams.set('sort', `${sort.sortBy},${sort.direction}`);
@@ -68,7 +68,7 @@ export class TagService {
     sort: Sort
   ): Observable<TagsResponse> {
     const url = new URL(
-      `${this.apiUrl}/search/findByUserIdAndNovelTags_Novel_Id`
+      `${this.apiUrl}/tags/search/findByUserIdAndNovelTags_Novel_Id`
     );
     url.searchParams.set('userId', `${userId}`);
     url.searchParams.set('novelId', `${novelId}`);
