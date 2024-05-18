@@ -32,7 +32,8 @@ export class TagService {
   }
 
   create(tag: TagDTO): Observable<TagDTO> {
-    const url = `${this.apiUrl}/users/${tag.userId}/tags`;
+    // const url = `${this.apiUrl}/users/${tag.userId}/tags`;
+    const url = `${this.apiUrl}/tags`;
     const { id, ...payload } = tag;
     return this.http.post<any>(url, payload).pipe(catchError(this.handleError));
   }
