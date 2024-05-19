@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "novel")
+@NamedEntityGraph(name = "Novel.tags", attributeNodes = @NamedAttributeNode("tags"))
 public class Novel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +42,7 @@ public class Novel {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name="novel_tag", joinColumns = {@JoinColumn(name="novel_id")}, inverseJoinColumns = {@JoinColumn(name="tag_id")})
-    private Set<Tag> tags;
+    private Set<Tag> tags = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {

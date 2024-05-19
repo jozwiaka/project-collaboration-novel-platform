@@ -17,11 +17,10 @@ public class NovelTag {
     @Column(name = "tag_id")
     private Integer tagId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "novel_id", referencedColumnName = "id", insertable = false, updatable = false)
-//    private Novel novel;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "tag_id", referencedColumnName = "id", insertable = false, updatable = false)
-//    private Tag tag;
+    public NovelTag(){}
+
+    public NovelTag(Integer novelId, Integer tagId){
+        this.novelId = novelId;
+        this.tagId = tagId;
+    }
 }

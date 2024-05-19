@@ -11,16 +11,16 @@ public class NovelController {
     @Autowired
     private NovelService novelService;
 
-    @GetMapping("/hello")
-    public String hello() {
-        System.out.println("Hello");
-        return "Hello, world!";
+    @PostMapping("/{novelId}/tags/{tagId}")
+    public void assignTag(@PathVariable Integer novelId, @PathVariable Integer tagId) {
+        System.out.println("Assigning tag " + tagId + " to novel " + novelId);
+        novelService.assignTag(novelId, tagId);
     }
 
-    @PostMapping("/{novelId}/tags/{tagId}")
-    public void assignTagToNovel(@PathVariable Integer novelId, @PathVariable Integer tagId) {
-        System.out.println("Assigning tag " + tagId + " to novel " + novelId);
-        novelService.assignTagToNovel(novelId, tagId);
+    @DeleteMapping("/{novelId}/tags/{tagId}")
+    public void unassingTag(@PathVariable Integer novelId, @PathVariable Integer tagId) {
+        System.out.println("Unassigning tag " + tagId + " from novel " + novelId);
+        novelService.unassignTag(novelId, tagId);
     }
 
 }

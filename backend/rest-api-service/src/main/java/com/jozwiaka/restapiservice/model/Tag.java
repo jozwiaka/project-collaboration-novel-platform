@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,5 +23,5 @@ public class Tag {
 
     @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "tags")
     @JsonIgnore
-    private Set<Novel> novels;
+    private Set<Novel> novels = new HashSet<>();
 }
