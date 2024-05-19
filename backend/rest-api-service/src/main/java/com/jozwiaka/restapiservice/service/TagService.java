@@ -25,13 +25,13 @@ public class TagService {
         });
     }
 
-    @Transactional
-    public boolean deleteTag(Long tagId) {
-        if (tagRepository.existsById(tagId)) {
-            tagRepository.deleteById(tagId);
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    @Transactional
+//    public boolean deleteTag(Long tagId) {
+//        if (tagRepository.existsById(tagId)) {
+//            tagRepository.deleteById(tagId);
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 }

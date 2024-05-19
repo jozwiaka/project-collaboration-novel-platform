@@ -21,12 +21,12 @@ public class TagController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/users/{userId}/tags/{tagId}")
-    public ResponseEntity<Void> deleteTag(@PathVariable Long tagId) {
-        if (tagService.deleteTag(tagId)) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @DeleteMapping("/tags/{tagId}")
+//    public ResponseEntity<Void> deleteTag(@PathVariable Long tagId) {
+//        if (tagService.deleteTag(tagId)) {
+//            return ResponseEntity.noContent().build();
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 }

@@ -372,8 +372,8 @@ export class NovelListComponent implements OnInit {
   }
 
   removeTag(tag: Tag): void {
-    if (tag.id && this.authService.user?.id) {
-      this.tagService.remove(this.authService.user.id, tag.id).subscribe({
+    if (tag.id) {
+      this.tagService.remove(tag.id).subscribe({
         next: () => {
           this.tagCheckboxes = this.tagCheckboxes.filter(
             (tcb) => tag.id !== tcb.tag.id
