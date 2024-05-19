@@ -38,7 +38,7 @@ export class NovelService {
 
   assignTag(id: number, tagId: number) {
     const url = `${this.baseUrl}/${id}/tags/${tagId}`;
-    return this.http.put<TagDTO>(url, tagId).pipe(catchError(this.handleError));
+    return this.http.post<TagDTO>(url, {}).pipe(catchError(this.handleError));
   }
 
   unassignTag(id: number, tagId: number) {

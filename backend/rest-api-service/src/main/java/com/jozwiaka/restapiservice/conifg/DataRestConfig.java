@@ -1,4 +1,4 @@
-package com.jozwiaka.restapiservice.config;
+package com.jozwiaka.restapiservice.conifg;
 
 import com.jozwiaka.restapiservice.model.User;
 import jakarta.persistence.EntityManager;
