@@ -15,10 +15,10 @@ import java.util.Set;
 public class Novel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "author_id", nullable = false)
-    private Integer authorId;
+    private Long authorId;
 
     @Column(nullable = false)
     private String title;

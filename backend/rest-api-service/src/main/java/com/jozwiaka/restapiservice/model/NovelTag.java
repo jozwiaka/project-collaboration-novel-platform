@@ -9,17 +9,17 @@ import lombok.Data;
 public class NovelTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     
     @Column(name = "novel_id")
-    private Integer novelId;
+    private Long novelId;
 
     @Column(name = "tag_id")
-    private Integer tagId;
+    private Long tagId;
 
     public NovelTag(){}
 
-    public NovelTag(Integer novelId, Integer tagId){
+    public NovelTag(Long novelId, Long tagId){
         this.novelId = novelId;
         this.tagId = tagId;
     }

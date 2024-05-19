@@ -11,10 +11,10 @@ import java.time.Instant;
 public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "user_id", nullable = false)
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "token", nullable = false)
     private String token;

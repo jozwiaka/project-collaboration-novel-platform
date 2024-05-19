@@ -7,12 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin("http://localhost:4200")
-public interface TagRepository extends JpaRepository<Tag, Integer> {
+public interface TagRepository extends JpaRepository<Tag, Long> {
 
     Tag findByName(String name);
-    Page<Tag> findByUserId(Integer userId, Pageable pageable);
+    Page<Tag> findByUserId(Long userId, Pageable pageable);
 
-    Page<Tag> findTagsByNovelsId(Integer novelId, Pageable pageable);
+    Page<Tag> findTagsByNovelsId(Long novelId, Pageable pageable);
 
-    Page<Tag> findByUserIdAndNovelsId(Integer userId, Integer novelId, Pageable pageable);
+    Page<Tag> findByUserIdAndNovelsId(Long userId, Long novelId, Pageable pageable);
 }

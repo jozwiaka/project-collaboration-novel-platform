@@ -33,7 +33,7 @@ export class TagService {
 
   create(tag: TagDTO): Observable<TagDTO> {
     // const url = `${this.apiUrl}/users/${tag.userId}/tags`;
-    const url = `${this.apiUrl}/tags`;
+    const url = `${this.apiUrl}/users/${tag.userId}/tags`;
     const { id, ...payload } = tag;
     return this.http.post<any>(url, payload).pipe(catchError(this.handleError));
   }
@@ -43,8 +43,8 @@ export class TagService {
     return this.http.put<TagDTO>(url, tag).pipe(catchError(this.handleError));
   }
 
-  remove(id: number): Observable<void> {
-    const url = `${this.apiUrl}/tags/${id}`;
+  remove(userId: number, id: number): Observable<void> {
+    const url = `${this.apiUrl}/users/${userId}/tags/${id}`;
     return this.http.delete<void>(url).pipe(catchError(this.handleError));
   }
 

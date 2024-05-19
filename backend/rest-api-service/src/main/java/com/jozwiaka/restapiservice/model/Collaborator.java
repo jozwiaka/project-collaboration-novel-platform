@@ -10,13 +10,13 @@ import java.time.Instant;
 public class Collaborator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "novel_id")
-    private Integer novelId;
+    private Long novelId;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "is_read_only")
     private boolean isReadOnly;

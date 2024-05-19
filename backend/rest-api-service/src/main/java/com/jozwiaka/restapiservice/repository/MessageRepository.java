@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 
 @CrossOrigin("http://localhost:4200")
-public interface MessageRepository extends JpaRepository<Message, Integer> {
+public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    Page<Message> findByNovelId(Integer novelId, Pageable pageable);
+    Page<Message> findByNovelId(Long novelId, Pageable pageable);
 }

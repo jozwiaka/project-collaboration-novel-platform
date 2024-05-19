@@ -31,7 +31,7 @@ async fn register_handler(credentials: web::Json<RegisterRequest>) -> Result<Htt
         .query_one(&stmt, &[&credentials.name, &credentials.email, &hashed_password]).await
         .map_err(convert_postgres_error)?;
 
-    let id: i32 = row.get(0);
+    let id: i64 = row.get(0);
     let name: String = row.get(1);
     let email: String = row.get(2);
     let password_hash: String = row.get(3);
@@ -71,7 +71,7 @@ async fn login_handler(credentials: web::Json<LogInRequest>) -> Result<HttpRespo
         }
     };
 
-    let id: i32 = row.get(0);
+    let id: i64 = row.get(0);
     let name: String = row.get(1);
     let email: String = row.get(2);
     let password_hash: String = row.get(3);

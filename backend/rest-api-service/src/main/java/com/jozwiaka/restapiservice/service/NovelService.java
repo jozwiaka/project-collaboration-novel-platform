@@ -23,7 +23,7 @@ public class NovelService {
     private NovelTagRepository novelTagRepository;
 
     @Transactional
-    public void assignTag(Integer novelId, Integer tagId) {
+    public void assignTag(Long novelId, Long tagId) {
         Novel novel = novelRepository.findById(novelId)
                 .orElseThrow(() -> new ResourceNotFoundException("Novel not found with id " + novelId));
         Tag tag = tagRepository.findById(tagId)
@@ -33,7 +33,7 @@ public class NovelService {
     }
 
     @Transactional
-    public void unassignTag(Integer novelId, Integer tagId) {
+    public void unassignTag(Long novelId, Long tagId) {
         NovelTag novelTag = this.novelTagRepository.findByNovelIdAndTagId(novelId, tagId)
                 .orElseThrow(() -> new ResourceNotFoundException("NovelTag not found with novelId " + novelId + " and tagId " + tagId));
 

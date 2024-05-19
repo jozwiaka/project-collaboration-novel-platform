@@ -11,13 +11,13 @@ import java.time.Instant;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     
     @Column(name = "user_id", nullable = false)
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "novel_id", nullable = false)
-    private Integer novelId;
+    private Long novelId;
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;

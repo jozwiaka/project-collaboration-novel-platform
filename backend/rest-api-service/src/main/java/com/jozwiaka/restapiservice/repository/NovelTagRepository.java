@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @CrossOrigin("http://localhost:4200")
 @RepositoryRestResource(collectionResourceRel = "novelTags", path = "novel-tags")
-public interface NovelTagRepository extends JpaRepository<NovelTag, Integer> {
-    Optional<NovelTag> findByNovelIdAndTagId(Integer novelId, Integer tagId);
+public interface NovelTagRepository extends JpaRepository<NovelTag, Long> {
+    Optional<NovelTag> findByNovelIdAndTagId(Long novelId, Long tagId);
 }
