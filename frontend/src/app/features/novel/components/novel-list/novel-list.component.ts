@@ -310,12 +310,14 @@ export class NovelListComponent implements OnInit {
             mergeMap((novelData: NovelDTO) => {
               return forkJoin([
                 this.novelService.build(novelData),
+
                 ...copiedNovelData.tags.map((tag) => {
                   if (!tag.id || !novelData.id) {
                     return of(null);
                   }
                   return this.novelService.assignTag(novelData.id, tag.id);
                 }),
+
                 this.authService.user?.id && novelData.id
                   ? this.collaboratorService.create({
                       userId: this.authService.user?.id,
@@ -327,9 +329,9 @@ export class NovelListComponent implements OnInit {
             })
           )
           .subscribe({
-            next: ([novel, novelTags, colalborator]: [
+            next: ([novel, , collaborator]: [
               Novel,
-              ...(TagDTO | null)[],
+              ...(void | null)[],
               CollaboratorDTO | null
             ]) => {
               copiedNovelData.tags.forEach((tag) => {

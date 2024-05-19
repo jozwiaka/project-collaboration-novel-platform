@@ -38,12 +38,12 @@ export class NovelService {
 
   assignTag(id: number, tagId: number) {
     const url = `${this.baseUrl}/${id}/tags/${tagId}`;
-    return this.http.post<TagDTO>(url, {}).pipe(catchError(this.handleError));
+    return this.http.post<void>(url, {}).pipe(catchError(this.handleError));
   }
 
-  unassignTag(id: number, tagId: number) {
+  unassignTag(id: number, tagId: number): Observable<void> {
     const url = `${this.baseUrl}/${id}/tags/${tagId}`;
-    return this.http.delete<any>(url).pipe(catchError(this.handleError));
+    return this.http.delete<void>(url).pipe(catchError(this.handleError));
   }
 
   remove(id: number): Observable<void> {
