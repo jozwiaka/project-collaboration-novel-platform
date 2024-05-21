@@ -78,6 +78,7 @@ export class NovelListComponent implements OnInit {
     this.changeNovelsFilterOption(NovelsFilterOption.AllNovels);
     this.fetchAuthUserTagsObservable().subscribe({
       next: (tags: Tag[]) => {
+        console.log(tags[0].getData());
         this.tagCheckboxes = tags.map((tag) => new TagCheckbox(tag));
         this.sortTagCheckboxes();
       },

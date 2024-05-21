@@ -42,6 +42,7 @@ public class Novel {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name="novel_tag", joinColumns = {@JoinColumn(name="novel_id")}, inverseJoinColumns = {@JoinColumn(name="tag_id")})
+//    @JsonManagedReference
     private Set<Tag> tags = new HashSet<>();
 
     @PrePersist
