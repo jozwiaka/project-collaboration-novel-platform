@@ -11,8 +11,6 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "novel")
-
-@NamedEntityGraph(name = "Novel.tags", attributeNodes = @NamedAttributeNode("tags"))
 public class Novel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

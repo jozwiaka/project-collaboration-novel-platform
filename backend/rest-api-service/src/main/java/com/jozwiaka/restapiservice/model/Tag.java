@@ -23,5 +23,6 @@ public class Tag {
     private User user;
 
     @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "tags")
+    @JsonIgnore
     private Set<Novel> novels = new HashSet<>();
 }
