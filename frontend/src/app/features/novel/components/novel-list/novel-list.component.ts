@@ -647,10 +647,9 @@ export class NovelListComponent implements OnInit {
     }
     let tagData: TagDTO = {
       name: tagName,
-      userId: this.authService.user.id,
     };
     this.tagService
-      .create(tagData)
+      .create(tagData, this.authService.user.id)
       .pipe(
         mergeMap((response: TagDTO) => {
           return this.tagService.build(response);

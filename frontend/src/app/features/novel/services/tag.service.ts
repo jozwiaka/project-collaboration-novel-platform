@@ -1,3 +1,4 @@
+import { AuthService } from './../../../core/services/auth.service';
 import { Sort, SortDirection } from '../../../core/api/util.api';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -6,10 +7,8 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { TagDTO, TagsResponse } from '../api/tag.api';
 import { UserService } from 'src/app/core/services/user.service';
 import { NovelService } from './novel.service';
-import { UserDTO } from 'src/app/core/api/user.api';
-import { User } from 'src/app/core/models/user.model';
 import { Tag } from '../models/tag.model';
-import { NovelDTO, NovelsResponse } from '../api/novel.api';
+import { NovelsResponse } from '../api/novel.api';
 import { Novel } from '../models/novel.model';
 import { ColorService } from 'src/app/core/services/color.service';
 
@@ -31,8 +30,8 @@ export class TagService {
     return this.http.get<TagDTO>(url).pipe(catchError(this.handleError));
   }
 
-  create(tag: TagDTO): Observable<TagDTO> {
-    const url = `${this.apiUrl}/users/${tag.userId}/tags`;
+  create(tag: TagDTO, userId: number): Observable<TagDTO> {
+    const url = `${this.apiUrl}/users/${userId}/tags`;
     const { id, ...payload } = tag;
     console.log(payload);
     return this.http.post<any>(url, payload).pipe(catchError(this.handleError));

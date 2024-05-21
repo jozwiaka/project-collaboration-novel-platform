@@ -11,6 +11,7 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "novel")
+
 @NamedEntityGraph(name = "Novel.tags", attributeNodes = @NamedAttributeNode("tags"))
 public class Novel {
     @Id
@@ -42,7 +43,6 @@ public class Novel {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name="novel_tag", joinColumns = {@JoinColumn(name="novel_id")}, inverseJoinColumns = {@JoinColumn(name="tag_id")})
-//    @JsonManagedReference
     private Set<Tag> tags = new HashSet<>();
 
     @PrePersist

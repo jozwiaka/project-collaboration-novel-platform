@@ -7,13 +7,11 @@ export class Tag {
   name: string;
   novels: Novel[];
   color: string;
-  private userId;
 
   constructor(tagData: TagDTO, novels: Novel[], randomColor: string) {
     this.id = tagData.id;
     this.name = tagData.name;
     this.novels = novels;
-    this.userId = tagData.userId;
     this.color = randomColor;
   }
 
@@ -21,7 +19,6 @@ export class Tag {
     return {
       id: this.id,
       name: this.name,
-      userId: this.userId,
     };
   }
 }
