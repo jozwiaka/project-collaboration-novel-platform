@@ -8,8 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -29,8 +28,8 @@ public class Tag {
     @JsonBackReference
     private User user;
 
-    @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags")
     @JsonIgnore
     @JsonManagedReference
-    private Set<Novel> novels = new HashSet<>();
+    private List<Novel> novels;
 }
