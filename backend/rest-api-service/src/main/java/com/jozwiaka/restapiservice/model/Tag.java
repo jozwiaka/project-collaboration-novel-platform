@@ -1,6 +1,8 @@
 package com.jozwiaka.restapiservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,9 +26,11 @@ public class Tag {
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
+    @JsonBackReference
     private User user;
 
     @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "tags")
     @JsonIgnore
+    @JsonManagedReference
     private Set<Novel> novels = new HashSet<>();
 }
