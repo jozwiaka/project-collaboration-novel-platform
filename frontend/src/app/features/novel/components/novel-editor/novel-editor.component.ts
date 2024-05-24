@@ -113,6 +113,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
   private autosaveSubscription!: Subscription;
   private getNovelSubscription!: Subscription;
   private dmp = new DiffMatchPatch();
+  @ViewChild('chatRef') private chatRef!: ElementRef;
 
   constructor(
     private aiService: AiService,
@@ -142,6 +143,15 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
             novelId: this.novel.id,
           };
           this.collaborationService.send(collaborationMessageRequest);
+        }
+
+        try {
+          this.chatRef.nativeElement.scrollTop =
+            this.chatRef.nativeElement.scrollHeight;
+          console.log(this.chatRef.nativeElement.scrollTop);
+          console.log(this.chatRef.nativeElement.scrollHeight);
+        } catch (err) {
+          console.error('Error scrolling to bottom', err);
         }
 
         this.setUpEditor();
@@ -410,19 +420,19 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
     });
   }
 
-  // @HostListener('document:keydown', ['$event'])
-  // handleKeyboardEvent(event: KeyboardEvent) {
-  //   if (event.ctrlKey && event.key === 's') {
-  //     event.preventDefault();
-  //     this.saveChanges();
-  //   }
-  // }
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === 's') {
+      event.preventDefault();
+      this.saveChanges();
+    }
+  }
 
-  // @HostListener('window:beforeunload', ['$event'])
-  // beforeUnloadHandler(event: Event) {
-  //   this.ngOnDestroy();
-  //   return confirm('Are you sure you want to leave?');
-  // }
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event: Event) {
+    this.ngOnDestroy();
+    return confirm('Are you sure you want to leave?');
+  }
 
   showShareNovelDialog() {
     const dialogRef = this.dialog.open(ShareNovelDialogComponent, {
