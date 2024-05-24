@@ -4,6 +4,8 @@ import { UserService } from './../../../../core/services/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AiRequest, AiResponse } from '../../api/ai.api';
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
@@ -55,7 +57,7 @@ import { CollaboratorDTO } from '../../api/collaborator.api';
   styleUrls: ['./novel-editor.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class NovelEditorComponent implements OnInit, OnDestroy {
+export class NovelEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   novel: Novel | undefined = undefined;
   readOnly: boolean = false;
   onlineUsers: User[] = [];
@@ -113,12 +115,13 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
   private autosaveSubscription!: Subscription;
   private getNovelSubscription!: Subscription;
   private dmp = new DiffMatchPatch();
-  @ViewChild('chatRef') private chatRef!: ElementRef;
+  @ViewChild('chatRef') private chatRef: ElementRef | undefined;
 
   constructor(
     private aiService: AiService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
     private novelService: NovelService,
     private userService: UserService,
     private collaboratorService: CollaboratorService,
@@ -127,6 +130,23 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     public timeService: TimeService
   ) {}
+
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom(): void {
+    try {
+      if (this.chatRef) {
+        console.log(this.chatRef.nativeElement.scrollTop);
+        this.chatRef.nativeElement.scrollTop =
+          this.chatRef.nativeElement.scrollHeight;
+        console.log(this.chatRef.nativeElement.scrollTop);
+      }
+    } catch (err) {
+      console.error('Error scrolling to bottom', err);
+    }
+  }
 
   ngOnInit() {
     this.fetchInitialData().subscribe(
@@ -145,15 +165,7 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
           this.collaborationService.send(collaborationMessageRequest);
         }
 
-        try {
-          this.chatRef.nativeElement.scrollTop =
-            this.chatRef.nativeElement.scrollHeight;
-          console.log(this.chatRef.nativeElement.scrollTop);
-          console.log(this.chatRef.nativeElement.scrollHeight);
-        } catch (err) {
-          console.error('Error scrolling to bottom', err);
-        }
-
+        this.scrollToBottom();
         this.setUpEditor();
         this.subscribeCollaborationWebSocket();
         this.subscribeAutosaveIfEnabled();
@@ -428,11 +440,11 @@ export class NovelEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('window:beforeunload', ['$event'])
-  beforeUnloadHandler(event: Event) {
-    this.ngOnDestroy();
-    return confirm('Are you sure you want to leave?');
-  }
+  // @HostListener('window:beforeunload', ['$event'])
+  // beforeUnloadHandler(event: Event) {
+  //   this.ngOnDestroy();
+  //   return confirm('Are you sure you want to leave?');
+  // }
 
   showShareNovelDialog() {
     const dialogRef = this.dialog.open(ShareNovelDialogComponent, {
