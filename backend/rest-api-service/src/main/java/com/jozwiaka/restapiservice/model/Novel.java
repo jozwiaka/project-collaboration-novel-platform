@@ -44,7 +44,6 @@ public class Novel {
     @OneToMany(mappedBy = "novel")
     private List<Collaborator> collaborators;
 
-
     @ManyToMany
     @JoinTable(name="novel_tag", joinColumns = {@JoinColumn(name="novel_id")}, inverseJoinColumns = {@JoinColumn(name="tag_id")})
     private List<Tag> tags;
