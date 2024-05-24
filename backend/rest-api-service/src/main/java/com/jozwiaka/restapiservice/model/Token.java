@@ -1,12 +1,17 @@
 package com.jozwiaka.restapiservice.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.Instant;
+import java.sql.Timestamp;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "token")
 public class Token {
     @Id
@@ -20,13 +25,9 @@ public class Token {
     private String token;
 
     @Column(name = "expiration_date", nullable = false)
-    private Instant expirationDate;
+    private Timestamp expirationDate;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Instant createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = Instant.now();
-    }
+    @Column(name="created_at", nullable = false)
+    @CreationTimestamp
+    private Timestamp created_at;
 }

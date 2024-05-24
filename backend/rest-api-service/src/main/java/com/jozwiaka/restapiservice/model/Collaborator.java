@@ -1,11 +1,17 @@
 package com.jozwiaka.restapiservice.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import java.time.Instant;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "collaborator")
 public class Collaborator {
     @Id
@@ -21,8 +27,9 @@ public class Collaborator {
     @Column(name = "is_read_only")
     private boolean isReadOnly;
 
-    @Column(name = "created_at", updatable = false)
-    private Instant createdAt;
+    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    private Timestamp createdAt;
 
     @ManyToOne
     @JoinColumn(name = "novel_id", referencedColumnName = "id", insertable = false, updatable = false)
@@ -31,9 +38,4 @@ public class Collaborator {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     private User user;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = Instant.now();
-    }
 }

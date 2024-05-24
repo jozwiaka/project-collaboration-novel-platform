@@ -1,15 +1,21 @@
 package com.jozwiaka.restapiservice.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.Instant;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "novel")
 public class Novel {
     @Id
@@ -25,11 +31,13 @@ public class Novel {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "created_at", updatable = false)
-    private Instant createdAt;
+    @Column(name="created_at", nullable = false)
+    @CreationTimestamp
+    private Timestamp createdAt;
 
-    @Column(name = "updated_at")
-    private Instant updatedAt;
+    @Column(name="updated_at", nullable = false)
+    @UpdateTimestamp
+    private Timestamp updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id", insertable = false, updatable = false)
@@ -42,15 +50,4 @@ public class Novel {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name="novel_tag", joinColumns = {@JoinColumn(name="novel_id")}, inverseJoinColumns = {@JoinColumn(name="tag_id")})
     private Set<Tag> tags = new HashSet<>();
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = Instant.now();
-        updatedAt = Instant.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = Instant.now();
-    }
 }
