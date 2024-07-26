@@ -1,4 +1,4 @@
-FROM rust:latest
+FROM rust:1.75
 
 ENV DATABASE_URL=postgres://jozwiaka:password@db:5432/collaboration_novel_platform_db
 

@@ -1,5 +1,9 @@
 # Collaboration Novel Writing Plarform with AI Assitance
 
+![alt text](img_01.png)
+![alt text](img_02.png)
+![alt text](img_03.png)
+
 Frontend (Angular)
 
 Services:
